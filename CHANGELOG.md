@@ -1,6 +1,12 @@
 ## Changelog
 All notable changes to A-Team Agent are documented in this file.
 
+## v2.3
+- **New Project dialog:** Integrated the supplied anchored-dialog fix for reliable placement above the welcome greeting.
+- **Projects dialog:** Explicitly moved both New Project dialogs 140px above viewport center after previous positioning changes had no visible effect.
+- **Script permissions:** Restored executable permissions for shell scripts.
+- **Releases:** Release v2.3
+
 ## v2.2
 - **Chat placement:** Shifted the welcome greeting, composer, and suggestion buttons down so the bottom of the buttons aligns with the top of the sidebar Settings label.
 - Adjusted welcome chat group 12px lower while preserving spacing and bottom padding.
@@ -1179,7 +1185,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from `plugins:`; inert until its `config.enabled` is set, provider failures
   and timeouts pass the result through, and runs without a task store screen
   nothing. ([#5833])
-
 - **mcp:** The admin cache reset (`POST /api/mcp/cache/reset`) now publishes a
   durable generation marker beside `extensions_config.json`, so every Gateway
   worker sharing that directory retires its cached tools and pooled sessions
@@ -1188,7 +1193,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for a shared-directory reset and `scope: process` when no config path
   resolves; replicas with independent filesystems are not implicitly
   covered. ([#6126])
-
 - **extensions:** The Capability Center's extension gallery shows the
   repository's bundled extension catalog by default — **Behavior change:** a
   deployment without registered plugins now sees five example packages with
@@ -1198,7 +1202,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entries are discovery metadata: they claim no installation or activation
   state, never enter the module loader, and stay visible while runtime
   discovery is pending or unavailable. ([#6188])
-
 - **extensions:** Full-stack plugins can contribute candidates to the
   composer's `@` mention picker. A browser module's optional
   `mentionProviders` entries are searched alongside built-in skills, files,
@@ -1210,7 +1213,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   provider cannot remove healthy candidates. The metadata is user input, not
   authorization — plugins must revalidate referenced objects and viewer
   permissions. ([#6189])
-
 - **extensions:** Packaged extensions gain host-bound control of full Agent
   runs (extension-api 0.2.5). Plugin backend actions and model tools receive
   `context.agent_runs` — contributed routes can call
@@ -1222,7 +1224,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   credentials (PAT and internal/channel callers get none), idempotency keys
   are scoped to the plugin namespace, and handles cannot be serialized or
   survive a restart. ([#6190])
-
 - **extensions:** A new agent-teams example plugin lets existing full Custom
   Agents collaborate as a team: each member keeps its own persistent
   conversation bound to its agent, members delegate work through native `@`
@@ -1231,9 +1232,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   opt-in via `plugins:` in `config.yaml`; Capability Center lists the example
   with localized installation information even before it is installed.
   ([#6243])
-
-#### Persistence
-
 - **persistence:** Add a checkpoint retention service implementing the deletion
   side of #4189 item 3 on the #5255 contract. Trailing duration-only leaves are
   pruned by default (each materializes its parent's payload, so removal reclaims
@@ -1250,7 +1248,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   defaults to `false` and no producer is migrated yet (viewed images and
   externalized tool results are the named follow-ups), so unset deployments
   behave exactly as today. ([#5361])
-
 - **persistence:** With blob storage enabled, oversized tool results externalized
   to a virtual `read_file` path are also persisted to the shared blob store, and
   the Gateway handling the next model call restores the exact digest-verified
@@ -1258,7 +1255,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the tool, so a load-balanced follow-up read hit a broken path. Blob write
   failures and outputs above the 64 MiB producer cap fall back inline instead of
   advertising a non-durable path; blob storage stays disabled by default. ([#6159])
-
 - **persistence:** With blob storage enabled, images viewed through `view_image` are
   persisted to the shared blob store alongside their local path, so a later model
   call landing on another Gateway rebuilds the image context from the validated
@@ -1266,9 +1262,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   write failures return a generic tool error instead of checkpointing state that
   falsely claims cross-instance durability; blob storage stays disabled by
   default. ([#6160])
-
-#### Frontend
-
 - **frontend:** Unify the Capability Center into a searchable catalog with plugin
   configuration and custom-agent selection. Catalog entries over the existing MCP, Lark
   CLI, and skill services carry localized metadata, categories, icons, and editable
@@ -1281,20 +1274,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   batch delegation without changing the shared MCP cache or granting authorization.
   Bundles DingTalk/WeCom group notification and HubSpot CRM tools; existing MCP and Lark
   workflows are preserved and nothing is enabled automatically. ([#5497])
-
 - **frontend:** The composer supports inline `@` references: `@` at the cursor
   or the `@` button opens a grouped picker that searches enabled skills,
   current-project documents, and other conversations, inserting atomic tokens
   that normal editing removes. Multiple skills can be selected in one message
   (up to 16 unique skills), each validated against the user registry and agent
   allowlist before activation. ([#6063])
-
 - **frontend:** The composer's `/` menu now lists only the built-in `/goal` and
   `/compact` commands. **Behavior change:** the web slash picker no longer selects
   skills — select skills as inline `@` references instead; the legacy selected-skill
   chip is removed, older drafts restore their skill selection as an inline reference,
   and manually typed legacy slash text still submits as a normal message. ([#6154])
-
 - **frontend:** The goal bar above the composer now says what an active
   `/goal` is doing and why it stopped. It shows "In progress" while a run works
   on the goal, and after auto-continue stands down "Stopped", "Waiting for
@@ -1307,50 +1297,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   latest turn's edit pencil is shown disabled with a tooltip instead of hidden,
   and the message toolbar also appears on keyboard focus. A `/goal` refused
   because a run is still going keeps the draft and says so. ([#6556])
-
-### Changed
-
 - **workspace branding:** Keep the native window title to the app name and restore the configurable assistant name in the workspace sidebar heading.
-
 - **workspace navigation:** Updated the sidebar button label to show “{assistant name} Settings”, falling back to “A-Team Agent Settings” when no assistant name is configured.
-
 - **landing page:** Removed the top-right Open A-Team Agent button.
 - **workspace navigation:** Renamed “Settings and more” to the configured assistant name, falling back to “A-Team Agent” when the name setting is blank. Updated Official Website, GitHub, Report an Issue, and Contact Us links to the A-Team Agent website, repository, issue tracker, and Telegram.
-
 - **landing page:** Renamed Docs to Documentation, removed Blog from desktop and mobile navigation, set the header action to Open A-Team Agent, renamed the hero action to use `Get Started With v{APP_VERSION}`, linked the community buttons to the A-Team GitHub and Telegram destinations, and centered the Case Studies cards without changing the section heading.
 - **settings:** Moved the close control into the settings pane's top-right, kept the responsive scrolling/viewport layout, and raised dropdown menus above the settings overlay.
 - **about:** Removed the development-version suffix from the About page.
 - **runtime identity and app shell:** Updated the default assistant identity and visible app shell to A-Team Agent while retaining runtime compatibility identifiers where required.
-
 - **skills:** Treat `allowed-tools` as non-enforced compatibility metadata.
   Activating a skill no longer hides or blocks tools that Agent configuration
   and host authorization already permit, including when the declaration is
   empty. Parsing, validation, export, skill-activation permissions and the
   existing secret and user isolation boundaries are retained. ([#6935])
-
-### Fixed
-
 - **settings and startup:** Fixed the settings dialog viewport centering and scroll container, moved its close action into the pane, and corrected the stacking order for dropdown overlays. Added the opt-in skip-landing-page preference so the next app open can go directly to chat.
 - **frontend build:** Fixed the shared i18n server module import pattern that caused `next/headers` to be pulled into the Pages Router.
-
 - **tui:** Quitting after `Ctrl+C` interrupted a run no longer hangs on the
   step that run is still finishing. The run thread was joined on exit, so the
   TUI closed but the shell prompt stayed blocked until a long tool call or model
   request returned, and further `Ctrl+C` only printed a traceback. Quitting now
   says it is waiting for that step and closes when it finishes; press `Ctrl+C`
   again to quit at once. ([#7326])
-  
 - **tui:** The streamed transcript no longer drops tokens that repeat or extend
   the text already shown. Deltas were merged by prefix, so `ha` + `ha` rendered
   as `ha`, `1` + `10` as `10`, and an answer that opened with a Markdown marker
   lost every later standalone copy of it (closing `**`, list bullets, table
   pipes, closing code fences). Each delta is now appended as sent. ([#7325])
-
 - **sandbox:** Release an E2B VM's ownership lease when acquire finds it gone
   (a dead cached client or a warm-pool VM reaped while parked). The lease was
   kept and renewed until Gateway shutdown, so every reaped VM left a tracked
   ID and a renewed ownership key behind. ([#7277])
-  
 - **auth:** SSO login and callback no longer fail with a `500` when the OIDC
   provider answers `200` with a body that is not the expected JSON object, such
   as a maintenance HTML page. Discovery, token, JWKS and UserInfo bodies, a
@@ -1359,7 +1335,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   discovery document is no longer cached. A malformed UserInfo body is skipped
   like a failed UserInfo request instead of aborting a login whose ID token is
   valid. ([#7258])
-
 - **mcp:** MCP servers using the OAuth `refresh_token` grant keep working
   across Gateway restarts, tool-cache resets, repeated personal-connection runs
   and multiple Gateway instances when the provider rotates refresh tokens
@@ -1382,336 +1357,258 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   every instance needs the same key). A declared multi-instance deployment with
   an enabled `refresh_token` OAuth server now refuses to start without
   `DEER_FLOW_CREDENTIALS_KEY`. ([#7207])
-
 - **community:** Reject booleans in numeric LightRAG and RAGFlow
   `knowledge_search` settings instead of silently treating `true` as a
   one-second timeout, one result or one character of output. Invalid settings
   return the existing configuration error. ([#7042])
-
 - **uploads:** Keep filesystem operations and resource ownership together
   across request cancellation. Staging, conversion, publication and remote
   sync finish or reclaim their own resources before releasing the sandbox
   lease, preventing orphaned files and cleanup races. ([#7170])
-
 - **checkpoints:** Run conservative retention after successful completion,
   before releasing the thread's finalizing barrier. Under the checkpoint
   writer lock, remove at most one trailing duration-only leaf while preserving
   ancestors, sibling branches and pending writes. ([#6051])
-
 - **sandbox:** Measure warm-pool idle age with a monotonic clock across AIO,
   BoxLite, E2B, OpenSandbox, Tenki and the shared lifecycle, including reset
   paths, so wall-clock corrections neither reap fresh sandboxes nor retain
   expired ones. Absolute creation timestamps remain wall-clock based. ([#7035])
-
 - **goal:** Stop automatic continuations after a `loop_capped` hard stop,
   preserving the active goal for a later user turn. The goal bar, scheduled
   history and IM notices recognize the stop reason. ([#7167])
-
 - **channels:** Make staged-file close, unlink and warning logging independent
   best-effort cleanup steps in channel state, runtime credentials and WeChat
   persistence. Cleanup failures no longer replace the original save error or
   skip the remaining cleanup. ([#7106])
-
 - **uploads:** Preserve separate bold spans in document-outline titles such
   as `**Revenue** and **Profit**`, instead of mistaking them for a single
   whole-title wrapper and leaving broken Markdown. ([#7150])
-
 - **skills:** Escape backslashes, pipes and line breaks consistently in both
   headers and values of data-analysis Markdown tables. CSV and JSON exports
   retain their existing behavior. ([#7163])
-
 - **helm:** Forward Live Browser WebSocket upgrades through a dedicated nginx
   browser-stream location before the generic threads route, preserving
   `Upgrade`/`Connection` headers and the long-running read timeout. ([#7148])
-
 - **projects:** Preserve oversized-upload responses, publication errors and
   recovery of already-committed shelf documents even when staging cleanup or
   warning logging also fails. ([#7141])
-
 - **memory:** Quarantine unreadable UTF-8 memory summaries before returning
   from the read-error path, so a subsequent save cannot overwrite the only
   copy of the original bytes. ([#7076])
-
 - **tui:** Accept tabs and newlines between slash commands and their arguments.
   Pasted skill tasks preserve their original indentation and line breaks,
   while builtin precedence and reserved names are unchanged. ([#7117])
-
 - **models:** Continue credential lookup after an unusable source. Blank
   Claude environment tokens no longer hide valid file credentials, and an
   invalid Codex token field no longer masks a usable alternate layout. ([#7140])
-
 - **memory:** Preserve consecutive emergency pre-compaction snapshots in
   arrival order while extraction is busy, instead of overwriting earlier
   pending messages. Normal cumulative updates still coalesce. ([#7152])
-
 - **codex:** Honor valid `retry-after-ms` and `Retry-After` hints in provider
   retries. Invalid, non-finite or over-24-hour hints fall back to the existing
   exponential schedule; retry statuses and attempt limits are unchanged. ([#7151])
-
 - **frontend:** Restore thinking-only Anthropic steps behind their user
   message after reconnect. Completed-answer boundaries now depend on visible
   content rather than a non-empty content array. ([#7144])
-
 - **storage:** Accept single-module `module:Class` custom blob-backend
   selectors through the existing importer and subclass validation, matching
   the already-supported dotted form. ([#7017])
-
 - **docker:** Make the development Kubernetes provisioner opt-in through the
   `provisioner` Compose profile. Docker wrappers enable it only for provisioner
   sandbox mode and still remove it on stop. ([#6948])
-
 - **skill-creator:** Validate optional timing documents and each token/duration
   field independently. Malformed measurements warn and use existing fallbacks
   without aborting a benchmark or discarding valid sibling measurements. ([#7078])
-
 - **memory:** Read canonical fact Markdown with UTF-8 BOM support, so valid
   hand-edited facts are not rejected as missing YAML front matter. ([#7116])
-
 - **subagents:** Publish `TIMED_OUT` at the configured execution deadline even
   when stream teardown resists cancellation. Keep cleanup supervised and
   retain resource/capacity fences until teardown settles, while collecting
   late token usage within the bounded tail window. ([#7053])
-
 - **frontend:** Reject upload responses carrying `success: false` even when
   HTTP status is 200. Chat sends stop and retain the draft and attachments
   for retry instead of starting a run without the rejected file. ([#7122])
-
 - **models:** Derive saved-key reuse from the current provider and endpoint,
   so reverting a connection edit no longer sends an empty key or removes
   stored credentials. Explicit key removal remains available. ([#6813])
-
 - **browser:** Preserve the original capture publication error or interruption
   when descriptor close, temporary-file removal or diagnostic logging also
   fails. Cleanup steps remain independent and best-effort. ([#6871])
-
 - **runtime:** Recover Redis SSE and `/wait` consumers after a producer dies
   between durable terminal persistence and stream completion. Token-fenced
   producer leases and a second empty heartbeat protect late tail frames.
   Recovery is disabled by default behind the restart-required
   `stream_bridge.producer_lease_recovery_enabled` gate; drain old writers and
   pre-feature runs before enabling it across Gateways. ([#7093])
-
 - **config:** Accept a leading UTF-8 BOM in operator-authored environment and
   secret files, preserving valid variables and credentials without rewriting
   the files or relaxing malformed-secret checks. ([#7112])
-
 - **managed-models:** Map the generic `minimal` reasoning effort to `low` for
   official DeepSeek endpoints and advertise their explicit supported efforts.
   Third-party endpoint contracts retain their existing behavior. ([#6717])
-
 - **streaming:** Replay retained successors when a Memory cursor is exactly
   the known last-evicted event, avoiding a false replay gap. Unverifiable
   cursors and genuinely missing successors still require gap recovery. ([#6812])
-
 - **runtime:** Require attributable terminal-write acknowledgments before
   publishing completion metadata, fence expired owners and isolate lease
   renewal work per run. Blocked Store I/O can no longer starve other runs,
   and late results cannot revive lost ownership. ([#6919])
-
 - **memory:** Accept UTF-8 BOM-prefixed DeerMem summaries in both storage
   implementations instead of reporting corruption or quarantining otherwise
   valid JSON. Genuinely malformed summaries keep their existing handling. ([#7084])
-
 - **github-research:** Resolve repository trees against `HEAD`, letting GitHub
   select the actual default branch instead of falling back from `main` to a
   potentially stale `master`. ([#7074])
-
 - **frontend:** Cancel stale memory queries before caching successful create,
   update, import, delete or clear results, preventing an older background
   response from visually undoing a confirmed mutation. ([#6959])
-
 - **mcp:** Treat a durable task's removed, disabled or otherwise unresolvable
   server connection as a permanent failure, rather than indefinitely retrying
   polling and cancellation against a connection that no longer exists. ([#7058])
-
 - **frontend:** Retry failed Custom Agent setup saves and report creation
   success only after a confirmed save and read-back. Exhausted retries restore
   the idle Save state with localized error feedback. ([#6628])
-
 - **skills:** Preserve data-analysis source identities across duplicate file
   and sheet names, quoted paths, SQL rewriting and cached lookups. Valid SQL
   literals, CTEs and aliases retain their meaning instead of being rewritten
   as source-name substitutions. ([#6739])
-
 - **workspace:** Skip files that disappear while being hashed and continue
   the snapshot, retaining file-change recording and produced-output checks.
   Permission and other I/O failures remain errors. ([#7057])
-
 - **frontend:** Stop subtask-history pagination when a full page does not
   advance the cursor, discarding that page while returning the valid prefix
   already fetched instead of retrying or losing earlier steps. ([#6729])
-
 - **frontend:** Keep Escape and Ctrl/Cmd+Enter with the IME during message-edit
   composition, preventing accidental cancellation or submission. ([#6768])
-
 - **crawl4ai:** Return a stable response-format error for non-object HTTP-200
   payloads and non-string Markdown fields instead of exposing raw Python
   attribute errors. ([#7065])
-
 - **skills:** Strip a leading UTF-8 BOM when reading `SKILL.md` for activation,
   custom-skill read-back and assembly hashing, keeping model-visible content
   and content fingerprints consistent with the parser. ([#6984])
-
 - **memory:** Apply Honcho category filtering before the result limit instead
   of labeling unfiltered hits with the requested category. ([#6981])
-
 - **agents:** Strip a leading UTF-8 BOM from default and named-agent `SOUL.md`
   files before inserting their contents into the system prompt. ([#7061])
-
 - **memory:** Drop extracted facts with confidence outside `[0, 1]` at the
   per-item normalization boundary, so one invalid score no longer fails the
   complete update and repeatedly re-extracts the same messages. ([#6971])
-
 - **sandbox:** Search long lines for literal `grep` patterns instead of
   inheriting the regex long-line guard and returning false negatives. Existing
   file, binary, symlink, summary and result limits still apply. ([#6969])
-
 - **skill-creator:** Preserve recorded token counts, including zero, even
   when grading already supplied a duration. Only missing or null token
   measurements use the output-character fallback. ([#7033])
-
 - **models:** Tolerate non-mapping `when_thinking_enabled.extra_body` values
   on the reasoning-contract path instead of crashing every model construction
   with an attribute error. ([#7039])
-
 - **artifacts:** Preserve balanced ASCII `()`, `[]` and `{}` delimiters inside
   captured paths and URLs while continuing to strip unmatched prose closers,
   so persistent handles resolve to the original reference. ([#6967])
-
 - **searxng:** Contain malformed HTTP-200 search payloads as format errors,
   rather than raw Python exceptions or misleading empty-result responses.
   Valid search results remain usable. ([#6931])
-
 - **harness:** Scope deferred MCP schema promotion to the current genuine user
   turn. A new turn re-defers earlier schemas while same-turn discovery,
   execution, concurrent promotion merging and auditing remain consistent. ([#6977])
-
 - **agents:** Clear an inherited `knowledge_scope` when a real tool-group
   update removes knowledge access, preventing the next run from failing with
   422. Explicit API scope values and unrelated updates keep precedence. ([#6995])
-
 - **runtime:** Persist the effective resolved model name for every run,
   including default selections and fallbacks, and write only when the stored
   name changes. Run history no longer retains a missing or merely requested
   model name. ([#6980])
-
 - **tencent-wsa:** Fall back to the default result count when a digit-like
   configured string cannot be converted to an integer, while retaining valid
   non-ASCII decimal counts. ([#6973])
-
 - **scheduler:** Recheck lease liveness under the parent and occurrence locks
   during expired-launch recovery. A fresh claim keeps its execution slot and
   row state even if an earlier recovery scan observed it as expired. ([#6975])
-
 - **sandbox:** Surface local `grep` sampling, open and read failures instead
   of reporting unreadable text as no matches. Expected file disappearance
   remains skippable; permission and other I/O failures become tool errors. ([#7004])
-
 - **checkpoints:** Skip unserializable Redis history-cache entries individually
   and continue writing valid neighbors. Optional caching no longer interrupts
   authoritative history operations, and logs omit serializer exception text.
   ([#7014])
-
 - **frontend:** Preserve sanitized submitted input when the initial run stream
   encounters a replay gap before its first durable checkpoint, merging it
   with reloaded state through existing message-ID deduplication. ([#6800])
-
 - **sandbox:** Retain generation-bound metadata and quarantine fences after
   failed AIO teardown, confirm runtime absence before retiring records, and
   preserve failed shutdown targets for retry instead of falsely reporting
   successful destruction. Other resources still receive cleanup attempts. ([#7001])
-
 - **streaming:** Retire Memory stream generations under their condition lock,
   release retained payloads and wake unfinished readers with a replay-gap
   signal. Cleanup no longer strands subscribers on detached buffers or lets
   them follow a newly created generation. ([#6992])
-
 - **runtime:** Bound force-close settlement of RunJournal progress snapshots
   alongside event writes. Cancellation-resistant persistence remains
   supervised without indefinitely blocking resource release or shutdown;
   normal flushing retains its durability semantics. ([#6990])
-
 - **skills:** Allow concurrent `skill_manage` callers on different event loops
   to wake and serialize correctly, preventing sync-client and TUI hangs.
   Waiting does not occupy executor workers, and cancelled waiters do not
   leak ownership. ([#7020])
-
 - **streaming:** Validate numeric reconnect cursors before subscription,
   including integer-conversion failures and Redis's ASCII unsigned 64-bit
   components. Oversized or invalid values follow the malformed-cursor policy
   instead of terminating the subscription. ([#6690])
-
 - **mcp:** Consume resolved or missing durable-task notification snapshots
   before dispatch, so a recovered tracking condition no longer launches an
   empty notification run or retries empty events until dead-lettering. ([#6693])
-
 - **sandbox:** Translate every entry in colon-joined virtual path lists when
   writing local files or shell commands, preserving usable PATH, PYTHONPATH
   and custom-mount lists instead of translating only the first entry. ([#7002])
-
 - **scripts:** Honor `DEER_FLOW_PROJECT_ROOT/config.yaml` when detecting
   optional dependencies and admitting local startup, after an explicit
   `DEER_FLOW_CONFIG_PATH`. External-project settings no longer lose required
   extras or fail because the checkout lacks its own config. ([#6934])
-
 - **github-research:** Encode raw repository-relative file paths once for
   Contents API requests, preserving directory separators, percent signs,
   query/fragment characters, spaces and Unicode with either HTTP backend. ([#7018])
-
 - **uploads:** Offload document conversion for every source size instead of
   using a compressed-size cutoff that lets small but expensive files block
   the event loop. Conversion remains opt-in and cancellation still waits
   for worker cleanup. ([#6924])
-
 - **sandbox:** Preserve a concurrently written quarantine fence when retiring
   an absent generation. A newly non-empty directory no longer aborts teardown
   or removes another worker's protection. ([#6961])
-
 - **tui:** Request cancellation of pending persistence work when the bridge
   deadline expires, preventing an abandoned title update from continuing
   unchecked. Cancellation remains cooperative and does not undo committed
   writes. ([#6927])
-
 - **infoquest:** Validate search response envelopes and result containers,
   reporting malformed HTTP-200 payloads as format errors instead of Python
   exceptions or an apparently successful empty search. ([#6932])
-
 - **mcp:** Preserve remote URL bytes, including signed query strings and
   fragments, during local-file result rewriting. Actual local paths and
   `file:` references still translate under existing thread-root checks. ([#6878])
-
 - **agents:** Preserve saved thinking and reasoning defaults when the model
   catalog is loading, unavailable or missing the effective model, so an
   unrelated settings edit cannot silently clear those overrides. ([#6907])
-
 - **acceptance:** Recognize complete native Node TAP/spec summaries, requiring
   an actual pass and prioritizing failures and cancellations. Empty,
   all-skipped, all-todo and incomplete records remain unverified, including
   colored Node 24 output. ([#6953])
-
 - **streaming:** Signal a replay gap when an observed Redis stream disappears,
   allowing SSE to reload durable state instead of heartbeating forever.
   `/wait` refreshes persisted state before deciding that the run is complete.
   ([#6951])
-
 - **docker:** Treat omitted, blank, empty-quoted and YAML-null AIO provisioner
   URLs consistently in both launchers, selecting local AIO and its socket
   overlay instead of incorrectly starting the Kubernetes provisioner. ([#6945])
-
 - **frontend:** Recognize a tab after a level-1 Markdown heading in fetched
   content, displaying the document title instead of falling back to its URL.
   Existing indentation and heading-level restrictions remain in place. ([#6923])
-
 - **client:** Accumulate incremental streaming token usage per message and
   reconcile completed snapshots without double counting. Terminal usage and
   the TUI now match Gemini/vLLM usage-only chunks and input corrections. ([#6939])
-
 - **summarization:** Consume all selected history from oldest to newest in
   bounded chunks before compaction replaces it, including contiguous fragments
   of oversized messages. Only generated summary carry may be shortened;
   failed chunks, impossible budgets or the 64-chunk limit leave history intact.
   ([#6918])
-
 - **harness:** Apply the length-cap policy to Responses API
   `incomplete`/`max_output_tokens` termination, including SSE. Suppress parsed
   and native tool-call blocks while retaining text and reasoning, preventing
@@ -2480,7 +2377,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **sandbox:** Remote sandbox providers number `read_file` line ranges the
   same way `LocalSandbox` does. The E2B, BoxLite, Tenki and OpenSandbox
   providers sliced ranged reads with `str.splitlines()`, which also ends
-  lines at a bare `\r`, `\f`, `\v`, `\x85`, ` `/` (
+  lines at a bare `\r`, `\f`, `\v`, `\x85`, ` `/`\00(
 ` and other
   control separators, so line N was a different line than on the local
   sandbox: a progress log whose updates end in a bare `\r` reads
@@ -10807,7 +10704,6 @@ This release closes that milestone with **772 merged pull requests**.
   degrade gracefully. ([#5490])
 
 ## v2.0.0 — 2026-06-15
-
 DeerFlow 2.0 is a ground-up rewrite around a "super agent" harness with
 sub-agents, persistent memory, sandbox execution, and an extensible
 skills/tools system. It shares no code with the 1.x line, which now lives on
@@ -10815,17 +10711,10 @@ the [`main-1.x` branch](https://github.com/bytedance/deer-flow/tree/main-1.x).
 
 This release closes [milestone 2.0.0](https://github.com/bytedance/deer-flow/milestone/1)
 with **180 merged pull requests** since the first 2.0 milestone tag.
-
-### ⚠ Breaking changes
-
 - **harness:** Hydrate runs from `RunStore` and persist interrupted status. Run
   cancellation/multitask semantics now require a working RunStore on the
   worker that owns the run; cross-worker cancels return 409 instead of
   silently appearing successful. ([#2932])
-
-### Added
-
-#### Agents & runtime
 - **agent:** Custom-agent self-updates with user isolation — agents can persist
   edits to their own `SOUL.md` / `config.yaml` from inside a normal chat.
   ([#2713])
@@ -10840,8 +10729,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **memory:** Add `memory.token_counting` config to opt out of tiktoken for
   network-restricted deployments. ([#3465])
 - **suggest:** Make AI follow-up question suggestions optional. ([#3591])
-
-#### Models & integrations
 - **models:** Add StepFun reasoning model adapter. ([#3461])
 - **community:** Add Brave Search web search tool. ([#3528])
 - **channels:** Enhance Discord with mention-only mode, thread routing, and
@@ -10856,8 +10743,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **community:** Add Serper Google Images provider for `image_search`. ([#3575])
 - **channels:** Stream Telegram agent replies by editing the placeholder
   message in place. ([#3534])
-
-#### Observability
 - **trace:** Set the LangGraph trace name to `lead_agent` (or the custom
   agent's `agent_name`) for cleaner Langfuse/LangSmith traces. ([#3101])
 - **frontend:** Refine token usage display modes. ([#2329])
@@ -10865,15 +10750,10 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **defaults:** Raise default summarization trigger threshold. ([#3174])
 - **trace:** Attribute subagent spans to the parent thread's Langfuse trace.
   ([#3611])
-
-#### Skills
 - **skill:** Add `blocking-io-guard` skill for blocking-IO triage and runtime
   anchors. ([#3503])
 - **skill:** Add maintainer issue and PR workflow skill. ([#3554])
 - **skill:** Strengthen the maintainer orchestrator review workflow. ([#3606])
-
-### Performance
-
 - **harness:** Push thread metadata filters into SQL instead of post-filtering
   in Python. ([#2865])
 - **runtime:** Index runs by `thread_id` to avoid O(n) scans in `RunManager`.
@@ -10882,9 +10762,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
   ([#3531])
 - **persistence:** Cache `Base.to_dict` column reflection per class. ([#3654])
 - **sandbox:** Speed up `should_ignore_name` in glob/grep walks. ([#3657])
-
-### Security
-
 - **upload:** Reject symlinked upload destinations. ([#2623])
 - **uploads:** Add Windows support for safe symlink-protected uploads.
   ([#2794])
@@ -10896,10 +10773,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **sandbox:** Mount the host Docker socket only in aio (DooD) sandbox mode.
   ([#3517])
 - **sandbox:** Do not bind-mount host CLI auth dirs by default. ([#3521])
-
-### Fixed
-
-#### Runtime, gateway & persistence
 - **runtime:** Rollback restore checkpoint now supersedes newer checkpoints.
   ([#2582])
 - **runtime:** Persist run message summaries. ([#2850])
@@ -10929,8 +10802,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
   ([#3631])
 - **history:** Strip base64 image data from REST endpoint responses. ([#3535])
 - **gateway:** Attribute token usage to the actual models. ([#3658])
-
-#### Agents, subagents & middleware
 - **subagents:** Make subagent timeout terminal state atomic. ([#2583])
 - **subagents:** Use model override for tools and middleware. ([#2641])
 - **subagents:** Consolidate `system_prompt` and skills into a single
@@ -10964,8 +10835,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **middleware:** Preserve the sandbox reducer in middleware state. ([#3629])
 - **subagents:** Raise general-purpose `max_turns` to 150 and default timeout to
   30 min. ([#3610])
-
-#### Memory & tracing
 - **memory:** Replace short-lived `asyncio.run()` with a persistent event
   loop. ([#2627])
 - **memory:** Isolate queued memory updates by agent. ([#2941])
@@ -10974,8 +10843,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
   ([#2944])
 - **trace:** Decode unicode escape sequences in non-ASCII memory trace info.
   ([#3104])
-
-#### Tools, sandbox & MCP
 - **mcp:** Fix env resolution in MCP config lists. ([#2556])
 - **models:** Record Codex token usage in `usage_metadata`. ([#2585])
 - **sandbox:** Supplement `list_running` in `RemoteSandboxBackend`. ([#2716])
@@ -11010,8 +10877,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **mcp:** Surface admin-required state on the settings tools page. ([#3533])
 - **mcp:** Add a tools cache reset endpoint. ([#3602])
 - **uploads:** Fix the upload file size contract. ([#3408])
-
-#### Skills & channels
 - **skills:** Enforce `allowed-tools` metadata. ([#2626])
 - **skills:** Harden slash skill activation across chat channels. ([#3466])
 - **skills:** Fix custom skill install permissions. ([#3241])
@@ -11032,15 +10897,11 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **channels:** Centralize shared channel retry helpers. ([#3583])
 - **channels:** Add operational guardrails. ([#3584])
 - **channels:** Unsubscribe channel listeners by equality. ([#3608])
-
-#### Auth
 - **auth:** Replace setup-status 429 rate limit with a cached response.
   ([#2915])
 - **auth:** Persist auto-generated JWT secret so it survives restarts.
   ([#2933])
 - **auth:** Align auth-disabled mode with mock history loading. ([#3471])
-
-#### Frontend
 - **frontend:** Restore `localhost` fallback for `getGatewayConfig` in prod
   mode. ([#2718])
 - **chat:** Prevent the first user message from being swallowed in new
@@ -11078,8 +10939,6 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **frontend:** Reset the active chat after deletion. ([#3519])
 - **frontend:** Improve the mobile workspace layout. ([#3646])
 - **frontend:** Render full content for multi-part AI messages. ([#3649])
-
-#### Build, deploy, scripts & config
 - **packaging:** Add `postgres` extra for store/checkpointer support; clarify
   install guidance. ([#2584])
 - **harness:** Resolve runtime paths from the project root. ([#2642])
@@ -11104,24 +10963,15 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 - **makefile:** Fix per-commit hooks installation. ([#3569])
 - **replay-e2e:** Match replay by conversation, not the living system prompt.
   ([#3436])
-
-### Changed
-
 - **provider (refactor):** Share assistant payload replay matching across
   providers. ([#3307])
 - **lead-agent (refactor):** Make `build_middlewares` public to drop the last
   cross-module private import. ([#3458])
 - **todo (refactor):** Remove the unused completion reminder counter. ([#3530])
-
-### Documentation
-
 - Document blocking-IO detection usage and maintenance. ([#3233])
 - Clean standalone LangGraph server remnants from docs. ([#3301])
 - Add AI assistance disclosure to the PR template and CONTRIBUTING. ([#3398])
 - Document custom AIO sandbox images. ([#3548])
-
-### Internal
-
 - **dev:** Add async/thread boundary detector. ([#2936])
 - **runtime:** Add lifecycle end-to-end coverage. ([#2946])
 - **windows:** Add `PYTHONIOENCODING` and `PYTHONUTF8` to backend Makefile
