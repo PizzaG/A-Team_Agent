@@ -1,23 +1,54 @@
-# Changelog
+## Changelog
+All notable changes to A-Team Agent are documented in this file.
 
-All notable changes to DeerFlow are documented in this file.
+## v2.2
+- **Chat placement:** Shifted the welcome greeting, composer, and suggestion buttons down so the bottom of the buttons aligns with the top of the sidebar Settings label.
+- Adjusted welcome chat group 12px lower while preserving spacing and bottom padding.
+- **chat placement:** Reduced the welcome group’s upward translation by 12px so the greeting, composer, and suggestion buttons sit slightly lower.
+- **landing page:** Removed the Case Studies section and updated the footer copyright to “© 2019-Present -- A-Team Digital Solutions”.
+- **chat placement:** Moved the welcome chat group down by a small additional amount while keeping the composer and suggestion buttons together and visible.
+- Adjusted the new-chat welcome group 8px lower while keeping the composer and suggestion buttons together.
+- Corrected welcome chat positioning so the composer and suggestion buttons remain visible with bottom padding.
+- **Appearance and layout:** Raised the welcome composer and suggestion buttons slightly to leave bottom padding; moved Greeting name into its own User Name section separated from Assistant name.
+- **Welcome screen:** Moved the composer and suggestion buttons farther down while preserving their original relative placement; added an optional saved User name in Appearance settings that personalizes the greeting, with “Hello, again!” unchanged when unset.
+- Restored the welcome composer and suggestion buttons to their original relative placement, then moved the complete group lower in the app.
+- **Appearance:** Main chat transparency now defaults to 0% in YAML and frontend settings.
+- **Wallpapers:** Removed the legacy A-Team drifting-star option; shortened Starfield Depth trails to prevent long diagonal lines.
+- **Layout:** Moved the welcome chat composer lower in the app.
+- **Updater:** Removed the redundant Close button and duplicate repository link; the footer GitHub link and Done button remain.
+- **Updater:** Added an overlay window above Settings that checks `Updates/version.json` on the A-Team Agent GitHub repository, compares the numeric `version` field against the installed update sequence, displays `display` to the user, shows the manifest changelog, and offers the root-level 7z download when a newer sequence is available.
+- **Appearance:** Main chat transparency slider now supports 0–100%.
+- **Animated wallpapers:** Fixed Starfield Depth color resolution, visibility, and drifting/trail rendering; corrected ASCII Fireflies sizing to measure actual monospace glyph width and cover the right/bottom viewport edges.
+- Fixed Starfield Depth rendering so stars remain visible with CSS theme tokens and trail fading stays translucent.
+- Fixed ASCII Fireflies background positioning so its glyph layer stays behind the application UI and does not displace or obscure chat content.
+- Added a Main chat transparency slider beneath Particle size in Appearance settings; the setting persists locally and updates the chat surface immediately.
+- Fixed Odysseus wallpaper runtime error by defining the missing `hexToRgb` color helper used by Starfield Depth and Embers.
+- Replaced the recreated Odysseus wallpaper effects with the original animation implementations and wired their color, intensity, size, and speed controls into A-Team Agent.
+- **wallpapers:** Set animated wallpaper defaults to 100% intensity, 90% speed, and 125% particle size; added YAML-configurable `chat_transparency` (default 68%) to control how much wallpaper shows through the main workspace/chat surface.
+- Imported the Odysseus animated background effect family into A-Team Agent, including selectable effects, color/intensity/size/speed controls, persisted preferences, and reduced-motion handling.
+- **About settings:** Moved the AI disclaimer from below the chat composer into the About tab's Open source section.
+- **window title:** Set the app window title to `A-Team Agent - v{APP_VERSION}`, using the shared version value from `config.yaml`.
+- **chat header:** Removed the conversation title from the in-chat header row; preserved the app window title and configurable agent name in the sidebar.
+- **A-Team community:** Added an A-Team Telegram button linking to `https://t.me/a_team_android` and linked Contribute Now to `https://github.com/PizzaG/A-Team_Agent`.
+- **About settings:** Added a placeholder Check For Update button next to About A-Team Agent.
+- **versioning:** Added `app_version: "2.2"` to `config.yaml` and `config.example.yaml`; the frontend sync script generates the shared displayed version from that YAML value before frontend commands.
+- **branding and appearance:** Replaced user-facing DeerFlow brand marks with A-Team branding; added the configurable assistant display name, Odysseus-inspired palettes, and animated wallpaper choices (Aurora, Waves, Vortex, Starfield, and None), with browser-persisted preferences and reduced-motion support.
+- **workspace:** Added native `DEER_FLOW_WORKSPACE_DIR` support, defaulting to `~/DeerFlow-Work` in the native launcher path while preserving per-thread behavior when not configured.
+- **developer launcher:** Improved `Run-A-Team_Agent.sh` environment loading and terminal startup behavior, and retained the provided runtime configuration in the source bundle.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
+## Pre v2.2
 This section accumulates work toward the **2.2.0** milestone
 ([2.2.0](https://github.com/bytedance/deer-flow/milestone/3)).
 As of 2026-10-21, the milestone includes **829 merged pull requests**.
 
-### Added
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - **mcp:** Cache fully wrapped tools per unchanged server, selectively
   rediscovering only missing or changed configurations after binding
   reconciliation. Preserve successful zero-tool results separately from failures
   and retain generation, shared-reset and stdio-owner fencing. ([#6795])
-
 - **channels:** IM bot credentials entered in the web UI now live in the shared
   `channel_runtime_configs` table (migration `0044_channel_runtime_configs`)
   instead of each host's plaintext `channels/runtime-config.json`. Each
@@ -35,7 +66,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   Without a usable key, saving credentials answers `503` instead of storing
   plaintext, and rows the key cannot decrypt read as not configured.
   `database.backend: memory` keeps the JSON file. ([#6988])
-
 - **channels:** Option-based clarifications on the Feishu channel render as an
   interactive button card instead of plain text: each option becomes a button
   (up to 4 — beyond that the plain-text path reads better), a click resolves
@@ -54,7 +84,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `channels.feishu.card_interaction_enabled` (default off), because the Feishu
   app needs a one-time `card.action.trigger` subscription under the callback
   configuration tab and a newly published app version. ([#6670])
-
 - **tools:** Deferred tool discovery gains a `keywords:` query mode for
   case-insensitive literal substring matching across tool names and
   descriptions in any term order, so `keywords: notebook jupyter` now finds
@@ -64,7 +93,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   after the prefix and 16 unique whitespace-separated terms are processed,
   and punctuation stays literal. Bare regex queries, `+required`, exact
   uncapped `select:` and schema promotion are unchanged. ([#6659])
-
 - **authz:** Settings gains an admin-only Users page, and disabled accounts
   now say so on every session surface. The new `core/auth/admin-users.ts`
   client calls `GET`/`PATCH /api/v1/admin/users` (PATCH sends only
@@ -78,7 +106,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   the reason, while every other 401 keeps the existing `?next=` round-trip;
   no `next` is preserved for disabled accounts, and `userSchema` is untouched
   so rows from backends without the field render as active. ([#6641])
-
 - **skills:** A custom skill with malformed YAML no longer silently vanishes
   from the skill list. Administrators see a "Could not load" section in
   Capability Center → Skills for their own malformed custom skills, with the
@@ -93,7 +120,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   endpoint before refetching both lists, preserving local/peer cache
   invalidation for subsequent runs; active runs keep their snapshots and
   failed reloads keep the warning visible. ([#6623])
-
 - **projects:** Project shelf documents can carry an opt-in LLM summary that
   gives the agent's retrieval decision more than the file name. Everything is
   off until `projects.summaries_enabled` is set (new restart-required
@@ -114,7 +140,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   untrusted document content: it rides the same user-role transient channel
   as document names and is tag-neutralized at both model-visible exits.
   ([#6581])
-
 - **authz:** Operators can suspend an account and every authentication
   surface rejects it while the row — credentials, role, OAuth linkage — is
   retained, so re-enabling restores exactly what was suspended. A
@@ -134,7 +159,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   (`system_role` and/or `disabled`): each present field routes to its
   field-scoped writer, empty bodies return 422, and a new
   last-active-admin 409 joins the unchanged 404/409 mappings. ([#6566])
-
 - **channels:** IM conversations can pick their model with
   `/model <name>`, validated against the caller-visible `GET /api/models`
   list (list membership doubles as the authorization check for user-owned
@@ -159,7 +183,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `Current model: unknown`, and a transient pin-preload failure on a
   reused thread no longer turns an ordinary chat into the generic
   "An internal error occurred" reply. ([#6534])
-
 - **mcp:** `list_background_tasks` accepts an optional task `status`, so
   agents can find failed tasks or tasks awaiting input instead of
   filtering a truncated list of recent or active tasks only. The filter is
@@ -169,7 +192,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   endpoint also accepts validated `status` and `active_only` query
   parameters, applied before its existing limit (default 50, range 1–100);
   unknown statuses return 422. ([#6527])
-
 - **community:** Add You.com as an opt-in `web_search` provider
   (`deerflow.community.youcom`). With no API key it calls the free keyless
   endpoint `https://api.you.com/v1/agents/search`; setting `YDC_API_KEY` (or
@@ -185,7 +207,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   picker as a no-key-required option and `make doctor`'s free providers, and
   its requests carry a DeerFlow-identifying `User-Agent`. No new dependency;
   no default changes for existing users. ([#6515])
-
 - **authz:** Add `ActivationDecisions`, a construction-enforced async decision
   batch that closes the "miss falls back to sync" failure family. The async
   decision map was a plain `dict | None`, so a per-step miss on an async path
@@ -201,7 +222,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   helpers (`SkillActivationMiddleware`, `SkillToolPolicyMiddleware`), their
   collectors and the render-decision publisher migrate to the type;
   sync-chain behavior is unchanged. ([#6508])
-
 - **jina:** Add an opt-in, process-local request admission budget for the Jina
   web fetch provider. Retry, `Retry-After` and response-size controls existed,
   but concurrent callers could still enter the HTTP transport without any
@@ -216,7 +236,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   cancellation and cross-loop wakeups release the permit without leaking or
   retrying the local admission failure, and queue time consumes the original
   retry budget. The model-facing `web_fetch` schema is unchanged. ([#6489])
-
 - **serper:** Opt-in bounded transient retries for Serper web and image
   search. New `max_retries` (default `0`, maximum `3`) and
   `retry_budget_seconds` settings; search stays single-attempt unless
@@ -229,7 +248,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   asctime dates. `retry_budget_seconds` bounds whether another attempt is
   scheduled, not an in-flight request, and enabling retries may consume
   additional Serper quota. ([#6456])
-
 - **memory:** Tool-mode agents can read a known fact directly by ID with
   `memory_get(fact_id)`, which returns one complete fact from the current
   runtime user and agent scope through `MemoryManager.get_memory`. Missing
@@ -239,7 +257,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   README and module-documentation updates; middleware mode is unchanged,
   and the implementation selects the fact from the existing scoped memory
   document rather than adding a storage-level point read. ([#6443])
-
 - **examples:** The extension example middleware summarizes tool call
   outcomes and elapsed time. Synchronous and asynchronous calls are observed
   at the existing `TOOL_VISIBLE` boundary, and the stats response gains
@@ -251,7 +268,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   Task statistics merge once at finalization, so duplicate stops no longer
   increment task totals twice, and outcome counters and duration samples
   update together under a lock. ([#6430])
-
 - **subagents:** Durable subagent batches gain bounded same-thread result
   inspection. While durable batch tools are enabled, `read_batch_result`
   reads one stable item position owned by the current user in the current
@@ -266,7 +282,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   concatenated before the document is parsed. The tool is wired into Gateway
   assembly and explicit SDK runtime binding; bulk results remain in the
   authorized JSONL export. ([#6416])
-
 - **subagents:** Durable knowledge-research results now retain their RAG
   evidence. A successful item stores a bounded
   `result_artifact.knowledge_sources` snapshot alongside the report in the
@@ -284,7 +299,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   publish nothing, and explicit retries clear previous snapshots. Compact
   item and progress responses and batch-panel previews do not include the
   snapshot. ([#6413])
-
 - **wizard:** Opper joins the setup wizard's LLM providers next to
   OpenRouter. Opper (opper.ai) is an EU-hosted AI gateway exposing 700+
   models from 50+ providers behind one OpenAI-compatible API; the entry
@@ -292,7 +306,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   with the `OPPER_API_KEY` env var. Models use Opper's bare model ids:
   `claude-sonnet-4-6` (default), `gpt-5.5`, `gemini-3.8-flash` and
   `gpt-5.4-mini`. ([#6399])
-
 - **authz:** Custom roles configured in the RBAC provider can now be
   assigned to authenticated users through an admin API. `User.system_role`
   was pinned to `Literal["admin", "user"]` at the API layer, so roles
@@ -310,7 +323,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   unchanged: the assignment only changes which role the principal carries;
   `@require_permission` guards and provider decisions remain the single
   enforcement points. ([#6382])
-
 - **jina:** Jina web fetch gains an opt-in response byte budget. The tool
   buffers a complete response before extracting an article and truncating
   the final Markdown, so the output limit does not constrain what is
@@ -325,7 +337,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   output truncation, cancellation and existing retry deadlines are
   preserved, and the documentation states it is not a hard bound on process
   memory, HTTPX decompressor allocations or wire-byte bandwidth. ([#6373])
-
 - **jina:** Jina web fetch honors provider-directed `Retry-After` recovery
   within its existing attempt and total-time limits. With retries enabled, a
   valid `Retry-After` on HTTP 503 sets the wait (missing or malformed hints
@@ -339,7 +350,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   default single attempt, cancellation, proxy settings, unhinted retries and
   the model-facing tool schema are unchanged, and no configuration fields or
   dependencies are added. ([#6352])
-
 - **agents:** Custom Agent definitions can now be shared as portable
   packages. The Gateway exports a versioned `deerflow.custom-agent` JSON
   package containing the portable Agent definition and SOUL, and import
@@ -354,7 +364,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   "Export Agent" downloads, with English and Chinese copy, and the
   documentation records the interchange contract and security boundary.
   ([#6127])
-
 - **agents:** The `history_search` tool returns a hit-centered excerpt with
   source offsets instead of the first 600 characters of the matched source,
   so a keyword at offset 5000 no longer leaves the caller reading unrelated
@@ -373,7 +382,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   ranking, the eight-result limit, role filtering, source IDs, checkpoint
   reachability and user/thread isolation are unchanged; task continuity
   stays disabled by default. ([#6008])
-
 - **search:** An opt-in Webz News Search provider plugs into the existing
   `web_search` interface and the setup wizard, replacing the separate MCP
   configuration and provider-specific tool name Webz users previously
@@ -394,9 +402,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   without string titles and URLs that previously threw during rendering.
   Setup and doctor integration, example configuration and README guidance
   are included; the default provider is unchanged. ([#5880])
-
-#### Scheduler
-
 - **scheduler:** Opt-in conversation tools create and manage owner-bound schedules,
   support bounded automatic launches and per-occurrence goals, and let a scheduled
   agent request stopping its own schedule. Unmet goals and automatic pause use
@@ -406,7 +411,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   runs may now accept disclosed low-risk, reversible assumptions, recorded as
   `relied_on_assumption`; interactive goal evaluation stays strict. Goal
   evaluator calls and tokens now count toward run usage. ([#6229])
-
 - **scheduler:** Scheduled-task lifecycle and limits behave the same on the
   tasks page, over REST and in chat. Page-created tasks accept a per-run goal,
   a safety cap (`max_runs`, `end_at`) and a new stop condition, and are
@@ -427,7 +431,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `total_tokens` and `summary`; thread task rows add `thread_relation`;
   `/api/features` adds `scheduled_tasks`; trigger returns `outcome`,
   `existing` and `thread_id`. ([#6378])
-
   **Breaking:** errors from `/api/scheduled-tasks*` are now
   `{"detail": {"code", "message", "params"}}` instead of a string `detail`.
   Clients reading `detail` as a string must read `detail.message`. Route
@@ -435,7 +438,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   missing thread store keep their old shape.
   The code list is in `backend/docs/API.md` and
   `contracts/scheduled_task_errors_contract.json`.
-
 - **scheduler:** Chat can now `update` and `resume` a task (same task ID and
   history, same validation and error codes as REST, `clear_fields` removes a
   goal, stop condition or cap) and passes the user's stop rule as its own
@@ -454,7 +456,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `continuations`, and the lead prompt keeps stored task text and scheduled
   replies in the user's language. The tools are offered only while the
   Gateway's scheduler is running. ([#6378])
-
 - **scheduler:** In web chat, `schedule_task` results render as a live task card
   (schedule, stop condition with the safety cap, results, "Run once now",
   Pause/Resume and "Open task") that follows the task's state while it is on
@@ -463,7 +464,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   scheduler tool steps have readable labels, and the chat header's "Scheduled
   tasks" button shows how many tasks a chat has (a run's chat links to its
   task). ([#6378])
-
 - **scheduler:** The Scheduled tasks page is list-first: status tabs and search
   above the task list, a "New task" dialog (create, edit and duplicate, including
   the per-run goal, the stop condition and the safety cap), and a detail view with
@@ -473,14 +473,12 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   after three missed goals or finished by their safety cap explain why, with
   "See that run", "Edit goal" or "Extend limit". `?task_id=` deep-links a task,
   and the page explains when the scheduler is off. ([#6378])
-
 - **scheduler:** The web app sends the browser timezone with chat runs
   (`context.client_timezone`), shows scheduled-task API errors as localized
   messages chosen by error code (raw server text only behind "Details"), and
   uses one scheduled-task vocabulary in English and Chinese (定时任务, 运行,
   智能体; no `lead_agent` in labels). Untitled chats and the Scheduled tasks and
   Agents breadcrumbs follow the interface language. ([#6378])
-
 - **scheduler:** Scheduled runs now share execution slots fairly between task
   owners. A new `scheduler.max_concurrent_runs_per_user` (default `2`, `0` =
   off, never more than `max_concurrent_runs`) caps how many scheduled runs one
@@ -492,11 +490,9 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   order within one owner are unchanged. A run that waits past
   `scheduler.queue_timeout_seconds` is skipped and shows "Skipped: it waited
   too long for a free slot" in the run history. ([#6393])
-
   **Behavior change:** one owner now runs at most 2 scheduled runs at a time by
   default (before: up to `max_concurrent_runs`, default 3).
   `scheduler.max_concurrent_runs_per_user: 0` restores the old behavior.
-
 - **scheduler:** When a schedule created in a chat is paused by the agent
   (its stop condition was met), is paused automatically after three missed
   goals, or finishes (all `max_runs` done, `end_at` passed, or a one-time task
@@ -510,7 +506,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `0032_activity_and_task_events` adds this table and the run-origin and
   read-state schema used by later changes; `runs.origin_kind` stays NULL for
   existing runs. ([#6393])
-
 - **scheduler:** Scheduled-task IM notices are honest, localized and
   self-contained. Each occurrence sends at most one message, queued by the
   finalization observer in the same transaction that records the outcome: a
@@ -529,13 +524,11 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `channel_connections.notification_locale` (default `en-US`). No public base
   URL setting is added: most deployments run on localhost or a LAN, where a
   link would be dead on the phone that receives it. ([#6393])
-
   **Behavior change:** runs finalized by crash or lease recovery now notify
   once (they used to be silent); one message per occurrence replaces separate
   goal-missed and pause messages; agent stops and finishes now notify; notice
   text changed and no longer shows the task or run ID. Rows already queued for
   providers without proactive push end once as `failed` without retries.
-
 - **frontend:** Threads the server creates now show who created them and
   whether they are new. In the sidebar and on the Chats page, a scheduled run
   has a clock icon ("Scheduled run"), an IM thread its app's icon ("From
@@ -546,7 +539,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   one clears its dot on every device, and the open chat stays read while a
   scheduled run in it updates. Nothing polls when the Gateway has no thread
   activity (memory persistence). ([#6393])
-
 - **frontend:** The chat that created a schedule now shows one line when the
   schedule pauses or ends ("Release checklist was paused by the agent. Stop
   condition met: …", "… was paused automatically: 3 runs in a row missed the
@@ -557,7 +549,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   channel list say for each app whether scheduled task updates are sent there
   ("sent here" for WeCom, "not available for this app yet" for the others).
   ([#6393])
-
 - **scheduler:** The web app keeps the account's `locale` preference equal to
   its interface language (after sign-in with session auth and on every
   language switch), so scheduled-task IM notices arrive in the language the
@@ -570,7 +561,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   server-originated thread changed or a thread was read on another device,
   debounced read marking, and the per-chat lifecycle events with their
   placement in the conversation. ([#6393])
-
 - **scheduler:** The tasks page shows the per-run goal and end conditions of
   conversation-created tasks. Run history shows whether a goal was met,
   including when it relied on stated assumptions; an unmet run shows a readable
@@ -579,7 +569,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   auto-pause and unmet values in a task's last error appear as text in the UI
   language, and goal-unmet/auto-pause IM notices state the reason in words.
   Tasks without a goal render as before; no API change. ([#6326])
-
 - **scheduler:** Scheduled tasks can be searched by title or prompt. Finding a
   task previously meant scanning every title or opening details to read its
   prompt. A search field above the existing filters matches a literal, trimmed,
@@ -587,31 +576,24 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   the status/type filters and thread scope, and clearing it retains the other
   filters; when nothing matches, task actions hide with localized feedback. Runs
   entirely on the existing authorized list response — no API change. ([#5355])
-
-#### Agents & runtime
-
 - **context:** Accept bounded `context.client` names, capability flags and
   preferences on Gateway run requests. The lead agent receives sanitized,
   untrusted hints in a transient user-role `<client_context>` block for choosing
   output formats; hints do not grant permissions or persist into checkpoints
   or run-config echoes. PII redaction applies when enabled. ([#7051])
-
 - **sandbox:** Add default-off `sandbox.prewarm` for managed asynchronous AIO
   runs and native subagents, overlapping authorized acquisition with the first
   model response. Existing execution leases own and drain pending acquisition;
   direct SDK graphs and other providers retain lazy behavior. Lifecycle
   benchmarks now distinguish real resource cleanup and concurrent pressure
   from successful measurements. ([#6998])
-
 - **acceptance:** Add `file:<path> csv-columns:["id","name"]` criteria for
   delegated tasks and batches. Check exact required header names in any order
   through authorized, bounded reads; malformed headers fail, unavailable or
   incomplete evidence stays unverified, and data rows are not validated. ([#6714])
-
 - **agents:** Add a configured tool-group catalog and tri-state Custom Agent
   tool-access controls. Preserve unavailable selections for removal and submit
   only edited fields to avoid overwriting concurrent settings changes. ([#6630])
-
 - **goal:** A met chat goal is now recorded on the thread, and the history
   head keeps goal state. When the evaluator finds a goal met, the checkpoint
   that clears it also writes a new `goal_outcome` channel: the objective, when
@@ -627,7 +609,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   or record that turn did not have. `contracts/thread_goal_contract.json` pins
   the stand-down and check-failure codes, the record's keys, the history head
   keys and the host-written reasons. ([#6556])
-
 - **gateway:** Threads the server creates for you can be noticed without a
   reload. Runs started by a schedule, an IM channel, a GitHub agent, an
   extension or an MCP notification now carry a server-owned
@@ -644,7 +625,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   runs, other users' runs in shared threads and runs from before the upgrade
   never do. `GET /api/features` reports `thread_activity.available` (SQL
   persistence only). ([#6393])
-
 - **uploads:** Add stable cursor pagination to the `list_uploaded_files`
   discovery tool. With more than 100 historical uploads matching the same
   filters the tool could only return the first page, giving an agent no
@@ -657,7 +637,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   discard previously collected pages. `total_count` still covers all filtered
   matches and no new dependency, storage layer, or HTTP endpoint is involved.
   ([#5570])
-
 - **agents:** Middleware-declared tools are now covered by Layer-1 tool
   authorization on every assembly path (lead agent, native subagents, and the
   embedded client). LangChain merges each middleware's `tools` into the bound
@@ -679,7 +658,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   exemption (the generated `tool_search` helper) to the concrete host-created
   tool object instead of its name, so a same-named foreign tool can no longer
   inherit the exemption. ([#6105])
-
 - **agents:** Custom agents can persist a default knowledge scope in agent
   settings, so a specialized agent starts each conversation with its own
   corpus instead of all operator-approved knowledge bases. When a new turn
@@ -697,7 +675,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   rendered memory-update system message. Empty overlays preserve prompt bytes
   and overlay text is literal, so stock behavior is unchanged until an
   operator opts in. ([#5794])
-
 - **agents:** Tool-produced file paths, URLs, and task ids become short, stable
   artifact handles (`art_xxxxxxxx`) that survive context compaction, so the model
   no longer loses or fabricates exact references after earlier tool messages are
@@ -712,7 +689,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   concrete references, and delegated reports must return concrete ones. Tool-call
   steps in the chat timeline show a badge per captured artifact, and SSE `values`
   snapshots gain an additive `tool_artifacts` key. ([#4929])
-
 - **context:** `history_search` accepts an optional `role` (`user`, `assistant`,
   or `tool`). The search returns at most eight matches across all roles, so when
   a caller needs a user's earlier correction, repeated assistant discussion or
@@ -722,7 +698,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   unchanged all-roles search, returned roles stay `human`/`ai`/`tool`, an
   unknown role returns an error, and no storage migration or `history_read`
   change is involved. ([#5927])
-
 - **subagents:** Delegations can opt into a JSON syntax acceptance criterion,
   `acceptance_criteria=["file:../outputs/report.json json-valid"]`, on both
   `task` and `batch_task`. A delegated task could produce a non-empty
@@ -738,7 +713,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   duplicate keys, and syntactically valid large numbers are allowed; a UTF-8 BOM
   is rejected. Syntax only — no schema or business-field checks; existing
   criteria and verdict semantics are unchanged. ([#5947])
-
 - **gateway:** The multi-process startup gate now fires on an explicit
   `deployment.multi_instance: true` (or `DEER_FLOW_MULTI_INSTANCE=1`) as well
   as `GATEWAY_WORKERS > 1`. The worker-count variables only see one process
@@ -754,7 +728,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   the memory stream bridge no longer starts; configure `stream_bridge.type:
   redis` or `DEER_FLOW_STREAM_BRIDGE_REDIS_URL` (docker-compose and the Helm
   chart already inject it). ([#6328])
-
 - **dev:** `scripts/dev_multi_instance.sh` (`make dev-multi`, `make dev-multi-check`,
   `make dev-multi-down`) runs two Gateways as one local multi-instance cluster:
   throwaway Postgres and Redis containers on loopback, Gateway A on port 8001 and
@@ -772,14 +745,12 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   internal token, thread, upload and artifact visibility, skill toggles, nginx
   balancing, and SSE `Last-Event-ID` resume across instances. See "Local
   two-Gateway harness" in `backend/docs/CONFIGURATION.md`. ([#6613])
-
 - **config:** `DEER_FLOW_ENV_FILE` selects one explicit UTF-8 dotenv file for the backend at
   startup, shared by configuration loading, authentication startup, and the debug entry
   point; relative paths resolve from the backend process working directory, existing process
   variables keep precedence, and empty, missing, unreadable, or invalid-encoding selections
   are rejected without fallback. Unset keeps default dotenv discovery; an explicit selection
   errors when `PYTHON_DOTENV_DISABLED` disables loading. ([#6227])
-
 - **agents:** Run events carry per-LLM-call telemetry: `llm.ai.response` metadata gains
   optional keys for the LangChain run id, caller category (`lead_agent`, `middleware`,
   `subagent`, `fallback`), provider, model, stop reason, provider-reported token counts, and
@@ -787,7 +758,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   summarization middleware emits `middleware:summarize`, flagging when the summarizer output
   is identical to the existing `summary_text`. Observation only: prompts, requests, and token
   accounting are unchanged, and every telemetry helper fails soft. ([#6236])
-
 - **context:** Compaction skips the summarizer LLM call when the exact rendered
   summary prompt previously produced the existing summary unchanged. A bounded
   cache keyed on the rendered prompt plus the ordered model candidates stores
@@ -797,9 +767,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   previous summary to equal the cached output, and cache errors fall back to
   normal generation. The `middleware:summarize` journal event gains
   `llm_call_skipped` and `skip_count`. ([#6318])
-
-#### Memory
-
 - **memory:** Cross-session memory gains `user.cognitiveStyle` for stable
   collaboration preferences (response structure, depth, correction style),
   stored and injected separately from `personalContext` and task skills so a
@@ -837,7 +804,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   validate/run/report workflow exercises lifecycle durability, concurrent
   corrections, and isolation across agent and user memory scopes, and changes
   no runtime memory behavior. ([#5564])
-
 - **memory:** The memory management API — read, reload, status, import/export,
   clear, and single-fact CRUD — accepts an optional `agent_name` and then operates
   only on that agent's bucket, so each custom agent's memories can be inspected
@@ -849,7 +815,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   caller's spelling because Mem0 treats the agent name as a case-sensitive
   storage identity, while DeerMem keeps its own lowercase canonicalization.
   ([#5565])
-
 - **memory:** Memory extraction gains an opt-in Jev (TypeSafe) pre-screen and
   signal classification, both off by default. `memory.prescreen` (`off` /
   `shadow` / `enforce`) classifies each conversation batch before the extraction
@@ -869,26 +834,20 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   shadow evaluation — exact Clopper–Pearson miss bound, per-stratum checks —
   that must pass before `enforce`; missing evidence reports `INSUFFICIENT`.
   ([#5906])
-
-#### Knowledge & retrieval
-
 - **knowledge:** Add an independently installable, read-only WeKnora extension
   using the shared catalog, scope, retrieval and citation pipeline. Explicit
   endpoint/tenant and DeerFlow-user bindings constrain access; verified
   evidence and document/base validation preserve attribution. Supports
   WeKnora v0.8.3 without impersonating individual upstream users. ([#6950])
-
 - **knowledge:** Decouple read-only provider catalogs and scope selection from
   RAGFlow through extension API 0.2.7 provider registration, capability checks
   and immutable run snapshots. Registered providers use the stable
   `knowledge_search` interface and shared source artifacts. ([#6904])
-
 - **knowledge:** Introduce provider-independent read-only retrieval results,
   capabilities and shared source evidence. LightRAG and RAGFlow can use unified
   citations while complete native RAGFlow snapshots remain compatible;
   attribution survives budgets, delegation and replay, and caller-forged source
   keys are stripped at Gateway boundaries. ([#6716])
-
 - **knowledge:** Custom-agent chats can scope RAGFlow retrieval per message. An
   opt-in Knowledge selector picks all operator-approved datasets, specific
   datasets/files, or no retrieval for one turn; the choice is stored as a
@@ -917,22 +876,17 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   values follow `ddgs` (`color`: `Monochrome` through `White`; `license_image`:
   `any`, `Public`, `Share`, `ShareCommercially`, `Modify`, `ModifyCommercially`);
   unset filters produce exactly the same request as before. ([#5723])
-
 - **search:** Serper `web_search` accepts the optional model argument
   `time_range` of `day`, `week`, `month`, or `year`, mapped to Serper's
   `tbs` parameter (`qdr:d|w|m|y`); omitting it or passing `null` keeps the
   unrestricted request, invalid values are rejected before any HTTP call, and
   Serper `image_search` is unchanged. ([#6113])
-
 - **fetch:** Jina `web_fetch` supports opt-in bounded retries through
   `max_retries` (default `0`, off) and `retry_budget_seconds` (default `30`)
   on its `tools` entry. Only HTTP 502/503/504 and connection-establishment
   errors retry; backoff waits are randomized inside a shared budget that caps
   every attempt, and enabling retries can send up to `1 + max_retries`
   upstream requests at additional cost. ([#6143])
-
-#### Skills
-
 - **skills:** Show which skills an answer loaded, with inspectable snapshots.
   Successful configured `SKILL.md` reads and explicit slash activations now record
   a bounded, read-only snapshot, and the answer toolbar gains a Skills menu listing
@@ -942,29 +896,22 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   copy returning the original Markdown. The run journal persists a first-load-order
   aggregate on the terminal answer so paginated history keeps the evidence, and the
   entry is hidden when no load evidence exists. ([#5758])
-
-#### Models & integrations
-
 - **decisions:** Add an opt-in OpenAI Decisions backend for the existing tool
   risk gate, memory pre-screen and signal-classification slots. Configure the
   adapters through their existing `use:` paths with an explicit model; they
   retain the current thresholds, failure policies, audit and bounded transport
   behavior. ([#7127])
-
 - **wizard:** Add an opt-in API Route gateway preset at
   `https://global.api-route.com/v1`, using `API_ROUTE_API_KEY` and the existing
   ChatOpenAI integration with a `gpt-6.1-sol` default. ([#6579])
-
 - **models:** Register admin-managed models through provider presets, model
   IDs and API keys, with optional custom endpoints and advanced capabilities.
   Preserve encrypted credentials, config-defined names and optimistic revision
   checks, and refresh chat and Agent pickers after changes. ([#6757])
-
 - **serper:** Support `SERPER_BASE_URL` for compatible web and image search
   endpoints, appending the original routes to the configured base and keeping
   `SERPER_API_KEY`, payloads and result parsing unchanged. An unset or empty
   override retains the existing endpoints. ([#6483])
-
 - **community:** New Unbrowse `web_fetch` provider - returns a page as
   markdown over plain HTTP, or through Unbrowse's hosted cloud browser for
   JavaScript-heavy pages (`render: auto|never|always`). One JSON-RPC POST per
@@ -992,7 +939,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   for required-thinking models, and `PATCH /api/v1/auth/preferences` accepts
   provider-specific effort tokens. Profiles without the block keep the unchanged
   legacy path. ([#5780])
-
 - **community:** The InfoQuest tools no longer block the agent event loop.
   `InfoQuestClient.fetch`/`web_search_raw_results`/`image_search_raw_results`
   used blocking `requests.post(..., timeout=30)`, so with the community tools
@@ -1002,7 +948,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   via `asyncio.to_thread` — matching the earlier `jina_ai` migration. Return
   values, error strings, and the 30-second transport timeout are unchanged.
   ([#5782])
-
 - **community:** The Tavily `web_search`/`web_fetch` tools stop blocking the
   event loop: `_get_tavily_client()` now returns `AsyncTavilyClient`, and
   `web_search_tool`/`web_fetch_tool` are coroutines that await
@@ -1010,13 +955,11 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   outcome. Credentials handling is unchanged — with no key in the tool config
   the client is still built with `api_key=None`, so the SDK keeps reading
   `TAVILY_API_KEY` from the environment. ([#5784])
-
 - **community:** The Firecrawl `web_search`/`web_fetch` tools become coroutine
   tools: `_get_firecrawl_client()` returns `AsyncFirecrawlApp` and the tools
   await `search()`/`scrape()` instead of the previously blocking sync calls.
   Result normalization, error handling, API key handling, and the custom
   `api_url` behavior are unchanged. ([#5786])
-
 - **community:** The image-search tool no longer runs DuckDuckGo search on the
   event loop. `image_search_tool` is now a coroutine that offloads both config
   resolution and the blocking `DDGS` call to a worker via `asyncio.to_thread`
@@ -1025,9 +968,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   error handling are unchanged; an already-started request cannot be cancelled
   and may keep a bounded worker alive until the existing 30-second timeout.
   ([#5788])
-
-#### Channels
-
 - **channels:** Generalize explicit proactive group targets to Feishu, QQ and
   WeCom, and add opt-in IM notices for ordinary web/background run completion,
   terminal failure and human-input waits. Reuse owner preferences, bindings
@@ -1035,22 +975,18 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   completion requires a satisfied verdict, and already-answered prompts are
   dropped before sending. Personal WeChat delivery stays personal-only.
   ([#6903])
-
 - **channels:** Add shared notification preferences for connected Feishu,
   WeCom, WeChat and QQ, plus proactive private WeChat/QQ delivery. Muting
   cancels pending/retrying outbox rows atomically, and re-enabling does not
   release the old backlog. WeChat requires valid owner/bot conversation context;
   QQ delivery requires a non-empty platform message-ID acknowledgment. ([#6850])
-
 - **feishu:** Let scheduled tasks explicitly select one additional bound group
   for notifications through the existing outbox. Omitted destinations preserve
   the selection, `null` clears it, and send-time ownership/binding checks do
   not fall back to another group. ([#6762])
-
 - **feishu:** Deliver scheduled results and lifecycle notices to bound users
   as Markdown cards. Verified private-chat bindings supply the destination;
   group or legacy chat IDs are not guessed into private recipients. ([#6753])
-
 - **channels:** IM channels can run on several Gateway instances. With
   `channels.leader_lease` active (`auto`, the default, follows the
   multi-process signal), each provider's platform connection belongs to the
@@ -1071,7 +1007,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   false`, and refuses an explicit `enabled: true` without a SQL database.
   Credentials saved from the web UI still reach the holder only when it next
   starts the channel, and a failover cancels the IM replies in flight. ([#6843])
-
 - **channels:** New `channels.leader_lease` section (`enabled: auto|true|false`,
   `lease_seconds`, `grace_seconds`; startup-only), reserved for the per-provider
   leader lease that will give one Gateway instance each IM platform connection
@@ -1087,7 +1022,6 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   the Helm chart and docs keep the "keep 1 replica while channels are enabled"
   guidance but no longer rely on that comment alone: the gate now enforces the
   disabled-lease case. ([#6746])
-
 - **channels:** WeChat can be connected by scanning a QR code from the web UI.
   The connection dialog in the sidebar and Settings gains QR login with
   progress, pairing-code input, expiry and retry states, and a "Scan again"
@@ -1100,16 +1034,12 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   is true and a channel service is running; manual triggers and interrupts stay
   silent, and a target disconnected while its delivery waited is dropped. WeCom implements proactive `send_notification`; other providers fail
   visibly in the outbox until they grow a push path. (issue #4254, [#4843], [#6135])
-
 - **channels:** A QQ channel connects over Tencent's official QQ Open Platform
   WebSocket gateway — no public callback URL needed. It answers text C2C
   messages and group @mentions with text replies while respecting QQ's passive
   reply budgets (four C2C per 60 minutes, five group per 5 minutes per source),
   and supports `allowed_users`, `channel_connections` one-time `/connect
   <code>` binding, and per-sender group topics. ([#6081])
-
-#### Auth & guardrails
-
 - **authz:** Make the `skills` policy key govern visibility on the user-facing skill
   listing surfaces. A role whose policy denied skills still saw every skill in the
   slash-command autocomplete, `GET /api/skills`, `GET /api/skills/custom`, and
@@ -1160,15 +1090,11 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   `source: "plugin:<namespace>"`. Enforcement stays off until
   `authorization.enabled: true`; extension-api contract 0.2.4 and
   `config_version` 49. ([#5842])
-
-#### Extensions & plugins
-
 - **workflows:** Add explicit, authenticated restart recovery for compatible
   single-Gateway workflows. A persisted bridge journal replays confirmed
   requests and results, rechecks session permissions and compatibility, and
   requires reconciliation for uncertain child admissions instead of silently
   dispatching them again. Recovery does not approve pending human output. ([#7075])
-
 - **skills:** Add guarded evolution host APIs for trusted learning extensions,
   including bounded completed-run evidence and source-bound skill mutation
   capabilities in extension API 0.2.7. Explicit operator grants enable immutable
@@ -1176,30 +1102,25 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   for the body/description of existing enabled custom skills. Automatic
   publication supports POSIX single-host local storage only; no learning
   plugin or review UI is included. ([#5645])
-
 - **workflows:** Add immutable named definitions, persisted owner approvals,
   live-process human checkpoints and versioned artifact byte snapshots.
   Preview, approval and downstream reads use the reviewed bytes, while
   run-bound configuration evidence records actual Agent assembly without
   exposing credentials or raw prompts. ([#6920])
-
 - **workflows:** Add the default-disabled Script workflows extension for
   sequencing, branching and bounded parallel Agent runs. A capability-restricted
   QuickJS subprocess has no ambient credentials, filesystem or network access;
   owner-scoped records and launch/inspect/cancel tools support the localized
   workflow page and explicit reconciliation of uncertain admissions. ([#6858])
-
 - **extensions:** Let ModelTool plugins opt into
   `response_format="content_and_artifact"` with `PluginToolResult`, preserving
   structured evidence separately from model-visible text. Validate and snapshot
   content/artifact within one 64 KiB UTF-8 JSON limit while retaining default
   JSON-return compatibility and host-bound identity. ([#6861])
-
 - **extensions:** Add Agent Teams history pages, finished-result search and
   bounded result reads that remain available after message rotation or service
   restart. Owner-scoped, query-bound cursors and truncation provenance support
   retrieval without admitting another Agent run. ([#6793])
-
 - **plugins:** Full-stack plugin APIs and a bookmark example package. A
   deployment-installed Python extension can now ship its own browser page,
   conversation actions and model tools: `registry.plugin(PluginContribution(...))`
@@ -1389,6 +1310,18 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
 
 ### Changed
 
+- **workspace branding:** Keep the native window title to the app name and restore the configurable assistant name in the workspace sidebar heading.
+
+- **workspace navigation:** Updated the sidebar button label to show “{assistant name} Settings”, falling back to “A-Team Agent Settings” when no assistant name is configured.
+
+- **landing page:** Removed the top-right Open A-Team Agent button.
+- **workspace navigation:** Renamed “Settings and more” to the configured assistant name, falling back to “A-Team Agent” when the name setting is blank. Updated Official Website, GitHub, Report an Issue, and Contact Us links to the A-Team Agent website, repository, issue tracker, and Telegram.
+
+- **landing page:** Renamed Docs to Documentation, removed Blog from desktop and mobile navigation, set the header action to Open A-Team Agent, renamed the hero action to use `Get Started With v{APP_VERSION}`, linked the community buttons to the A-Team GitHub and Telegram destinations, and centered the Case Studies cards without changing the section heading.
+- **settings:** Moved the close control into the settings pane's top-right, kept the responsive scrolling/viewport layout, and raised dropdown menus above the settings overlay.
+- **about:** Removed the development-version suffix from the About page.
+- **runtime identity and app shell:** Updated the default assistant identity and visible app shell to A-Team Agent while retaining runtime compatibility identifiers where required.
+
 - **skills:** Treat `allowed-tools` as non-enforced compatibility metadata.
   Activating a skill no longer hides or blocks tools that Agent configuration
   and host authorization already permit, including when the declaration is
@@ -1397,20 +1330,8 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
 
 ### Fixed
 
-- **examples:** The extension example's package tests pass again. Its test
-  registry lacked `knowledge_provider()`, so it no longer matched the
-  `ExtensionRegistry` protocol and the README's `pytest` run failed. Extension
-  Package Check now also runs the tests of bundled examples that ship them,
-  so a contract change that breaks them fails its pull request. ([#7364])
-  
-- **gateway:** Run requests with a malformed body now get a client error
-  instead of `500 Internal Server Error`. A `config.configurable` or
-  `config.context` that is not an object, an invalid `assistant_id`, a
-  non-string `agent_name`, or an AI message whose `tool_calls` is not a list of
-  objects used to fail run admission unhandled. They now return `422` (`400`
-  for the message) before a run is created. On thread routes, a
-  `config.configurable` of `[]`, `""`, `0`, `false` or a list of key/value
-  pairs used to be accepted and is now rejected with `422` too. ([#7362])
+- **settings and startup:** Fixed the settings dialog viewport centering and scroll container, moved its close action into the pane, and corrected the stacking order for dropdown overlays. Added the opt-in skip-landing-page preference so the next app open can go directly to chat.
+- **frontend build:** Fixed the shared i18n server module import pattern that caused `next/headers` to be pulled into the Pages Router.
 
 - **tui:** Quitting after `Ctrl+C` interrupted a run no longer hangs on the
   step that run is still finishing. The run thread was joined on exit, so the
@@ -2559,7 +2480,8 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
 - **sandbox:** Remote sandbox providers number `read_file` line ranges the
   same way `LocalSandbox` does. The E2B, BoxLite, Tenki and OpenSandbox
   providers sliced ranged reads with `str.splitlines()`, which also ends
-  lines at a bare `\r`, `\f`, `\v`, `\x85`, ` `/` ` and other
+  lines at a bare `\r`, `\f`, `\v`, `\x85`, ` `/` (
+` and other
   control separators, so line N was a different line than on the local
   sandbox: a progress log whose updates end in a bare `\r` reads
   truncated with a marker naming `start_line=30`, and
@@ -7812,7 +7734,7 @@ As of 2026-10-21, the milestone includes **829 merged pull requests**.
   undecodable byte could kill the reader thread and leave `stdout` as `None`,
   reporting a healthy CLI as unavailable. ([#6590])
 
-## [2.1.0] — 2026-09-24
+## v2.1.0 — 2026-09-24
 
 This section accumulates work toward the **2.1.0** milestone
 ([2.1.0](https://github.com/bytedance/deer-flow/milestone/2)).
@@ -10884,7 +10806,7 @@ This release closes that milestone with **772 merged pull requests**.
   changed; all four `useSkills()` consumers were audited and already
   degrade gracefully. ([#5490])
 
-## [2.0.0] — 2026-06-15
+## v2.0.0 — 2026-06-15
 
 DeerFlow 2.0 is a ground-up rewrite around a "super agent" harness with
 sub-agents, persistent memory, sandbox execution, and an extensible
@@ -13050,5 +12972,3 @@ with **180 merged pull requests** since the first 2.0 milestone tag.
 [#7277]: https://github.com/bytedance/deer-flow/pull/7277
 [#7325]: https://github.com/bytedance/deer-flow/pull/7325
 [#7326]: https://github.com/bytedance/deer-flow/pull/7326
-[#7362]: https://github.com/bytedance/deer-flow/pull/7362
-[#7364]: https://github.com/bytedance/deer-flow/pull/7364
