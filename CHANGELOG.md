@@ -1,8 +1,32 @@
 ## Changelog
 All notable changes to A-Team Agent are documented in this file.
 
+## v2.4
+- **UI:** Moved the Reasoning Effort selector inline beside the Reasoning selector in the chat composer, preserving existing functionality and other layout elements.
+- **Chat composer layout:** Kept the Reasoning mode selector in its original left-side position and placed Reasoning Effort immediately to its right.
+- **Default chat mode:** New chats now default to Reasoning when the selected model supports it, unless the user has already selected a mode.
+- **Chat steps:** Confirmed “Always expand chat steps” defaults to unchecked.
+- **Startup behavior:** Confirmed “Skip landing page on startup” defaults to unchecked.
+- **Wallpaper default:** Confirmed the wallpaper effect defaults to None.
+- **About page:** Matched the “About A-Team Agent” heading size to the section headings, changed “What it does” to “What It Does”, and moved the bold “A-Team Agent Is SI/AI & Can Make Mistakes” notice below the build-description paragraph.
+- **Appearance labels:** Capitalized “Assistant Name”, “Startup Landing Page”, “Odysseus Color Themes”, and “Animated Wallpapers”.
+- **Sidebar labels:** Changed “New chat” to “New Chat” and “Scheduled tasks” to “Scheduled Tasks”.
+- **Welcome greeting:** Updated the welcome description to the requested first-person wording.
+- **Connection profiles:** Added `connection.yaml` with a backward-compatible `local` default and an editable `remote` profile for LAN/reverse-proxy access. The launcher and `serve.sh` load profile settings for Ollama, Nginx binding, Next.js development origins, and Gateway auth-origin allowlisting; environment overrides remain supported.
+- **Ollama lifecycle:** The launcher now leaves an Ollama server running when it was already running before launch, and only stops the Ollama process it started itself.
+- **Authentication and remote access:** Wired the existing explicit `GATEWAY_CORS_ORIGINS` auth-origin allowlist to the selected profile while keeping CSRF enabled and Gateway/frontend listeners on loopback. Added profile documentation and loader tests.
+- **Model endpoint configuration:** Active Ollama model entries now read `OLLAMA_MODEL_BASE_URL`, so the selected connection profile can switch endpoints without changing the model definitions. The local profile preserves the original `127.0.0.1` launcher health check and `localhost` model endpoint.
+- **Run diagnostics:** Graph recursion-limit failures now produce an actionable run error explaining that the workflow exceeded its safety step limit; the original exception remains in backend logs.
+- **Run diagnostics:** Publish the readable recursion-limit error to the run error stream when the run can no longer be updated normally.
+- **Updater UI:** Renamed the update action to “Download & Install Update”.
+- **About page:** Matched the “About A-Team Agent” heading styling to the “What it does” and “Open source” section hierarchy.
+- **Chat Settings:** Added an Appearance option to keep chat execution steps expanded.
+- **Updater:** Updated the app release label to 2.4 and updater sequence to 3.
+- **Projects:** Group chats by project by default for new/default settings.
+- **Workspace:** Updated the configured agent working directory guidance to use the runtime workspace mapped to `~/A-Team-Agent_Workspace`.
+- **Releases:** Release v2.4
+
 ## v2.3
-- **New Project dialog:** Integrated the supplied anchored-dialog fix for reliable placement above the welcome greeting.
 - **Projects dialog:** Explicitly moved both New Project dialogs 140px above viewport center after previous positioning changes had no visible effect.
 - **Script permissions:** Restored executable permissions for shell scripts.
 - **Releases:** Release v2.3
@@ -41,14 +65,13 @@ All notable changes to A-Team Agent are documented in this file.
 - **branding and appearance:** Replaced user-facing DeerFlow brand marks with A-Team branding; added the configurable assistant display name, Odysseus-inspired palettes, and animated wallpaper choices (Aurora, Waves, Vortex, Starfield, and None), with browser-persisted preferences and reduced-motion support.
 - **workspace:** Added native `DEER_FLOW_WORKSPACE_DIR` support, defaulting to `~/DeerFlow-Work` in the native launcher path while preserving per-thread behavior when not configured.
 - **developer launcher:** Improved `Run-A-Team_Agent.sh` environment loading and terminal startup behavior, and retained the provided runtime configuration in the source bundle.
+- **Releases:** Release v2.2
 
 ## Pre v2.2
 This section accumulates work toward the **2.2.0** milestone
 ([2.2.0](https://github.com/bytedance/deer-flow/milestone/3)).
 As of 2026-10-21, the milestone includes **829 merged pull requests**.
-
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - **mcp:** Cache fully wrapped tools per unchanged server, selectively
@@ -1185,6 +1208,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from `plugins:`; inert until its `config.enabled` is set, provider failures
   and timeouts pass the result through, and runs without a task store screen
   nothing. ([#5833])
+
 - **mcp:** The admin cache reset (`POST /api/mcp/cache/reset`) now publishes a
   durable generation marker beside `extensions_config.json`, so every Gateway
   worker sharing that directory retires its cached tools and pooled sessions
@@ -1193,6 +1217,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for a shared-directory reset and `scope: process` when no config path
   resolves; replicas with independent filesystems are not implicitly
   covered. ([#6126])
+
 - **extensions:** The Capability Center's extension gallery shows the
   repository's bundled extension catalog by default — **Behavior change:** a
   deployment without registered plugins now sees five example packages with
@@ -1202,6 +1227,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entries are discovery metadata: they claim no installation or activation
   state, never enter the module loader, and stay visible while runtime
   discovery is pending or unavailable. ([#6188])
+
 - **extensions:** Full-stack plugins can contribute candidates to the
   composer's `@` mention picker. A browser module's optional
   `mentionProviders` entries are searched alongside built-in skills, files,
@@ -1213,6 +1239,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   provider cannot remove healthy candidates. The metadata is user input, not
   authorization — plugins must revalidate referenced objects and viewer
   permissions. ([#6189])
+
 - **extensions:** Packaged extensions gain host-bound control of full Agent
   runs (extension-api 0.2.5). Plugin backend actions and model tools receive
   `context.agent_runs` — contributed routes can call
@@ -1224,6 +1251,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   credentials (PAT and internal/channel callers get none), idempotency keys
   are scoped to the plugin namespace, and handles cannot be serialized or
   survive a restart. ([#6190])
+
 - **extensions:** A new agent-teams example plugin lets existing full Custom
   Agents collaborate as a team: each member keeps its own persistent
   conversation bound to its agent, members delegate work through native `@`
@@ -1232,6 +1260,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   opt-in via `plugins:` in `config.yaml`; Capability Center lists the example
   with localized installation information even before it is installed.
   ([#6243])
+
+#### Persistence
+
 - **persistence:** Add a checkpoint retention service implementing the deletion
   side of #4189 item 3 on the #5255 contract. Trailing duration-only leaves are
   pruned by default (each materializes its parent's payload, so removal reclaims
@@ -1248,6 +1279,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   defaults to `false` and no producer is migrated yet (viewed images and
   externalized tool results are the named follow-ups), so unset deployments
   behave exactly as today. ([#5361])
+
 - **persistence:** With blob storage enabled, oversized tool results externalized
   to a virtual `read_file` path are also persisted to the shared blob store, and
   the Gateway handling the next model call restores the exact digest-verified
@@ -1255,6 +1287,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the tool, so a load-balanced follow-up read hit a broken path. Blob write
   failures and outputs above the 64 MiB producer cap fall back inline instead of
   advertising a non-durable path; blob storage stays disabled by default. ([#6159])
+
 - **persistence:** With blob storage enabled, images viewed through `view_image` are
   persisted to the shared blob store alongside their local path, so a later model
   call landing on another Gateway rebuilds the image context from the validated
@@ -1262,6 +1295,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   write failures return a generic tool error instead of checkpointing state that
   falsely claims cross-instance durability; blob storage stays disabled by
   default. ([#6160])
+
+#### Frontend
+
 - **frontend:** Unify the Capability Center into a searchable catalog with plugin
   configuration and custom-agent selection. Catalog entries over the existing MCP, Lark
   CLI, and skill services carry localized metadata, categories, icons, and editable
@@ -1274,17 +1310,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   batch delegation without changing the shared MCP cache or granting authorization.
   Bundles DingTalk/WeCom group notification and HubSpot CRM tools; existing MCP and Lark
   workflows are preserved and nothing is enabled automatically. ([#5497])
+
 - **frontend:** The composer supports inline `@` references: `@` at the cursor
   or the `@` button opens a grouped picker that searches enabled skills,
   current-project documents, and other conversations, inserting atomic tokens
   that normal editing removes. Multiple skills can be selected in one message
   (up to 16 unique skills), each validated against the user registry and agent
   allowlist before activation. ([#6063])
+
 - **frontend:** The composer's `/` menu now lists only the built-in `/goal` and
   `/compact` commands. **Behavior change:** the web slash picker no longer selects
   skills — select skills as inline `@` references instead; the legacy selected-skill
   chip is removed, older drafts restore their skill selection as an inline reference,
   and manually typed legacy slash text still submits as a normal message. ([#6154])
+
 - **frontend:** The goal bar above the composer now says what an active
   `/goal` is doing and why it stopped. It shows "In progress" while a run works
   on the goal, and after auto-continue stands down "Stopped", "Waiting for
@@ -1297,36 +1336,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   latest turn's edit pencil is shown disabled with a tooltip instead of hidden,
   and the message toolbar also appears on keyboard focus. A `/goal` refused
   because a run is still going keeps the draft and says so. ([#6556])
+
+### Changed
+
 - **workspace branding:** Keep the native window title to the app name and restore the configurable assistant name in the workspace sidebar heading.
+
 - **workspace navigation:** Updated the sidebar button label to show “{assistant name} Settings”, falling back to “A-Team Agent Settings” when no assistant name is configured.
+
 - **landing page:** Removed the top-right Open A-Team Agent button.
 - **workspace navigation:** Renamed “Settings and more” to the configured assistant name, falling back to “A-Team Agent” when the name setting is blank. Updated Official Website, GitHub, Report an Issue, and Contact Us links to the A-Team Agent website, repository, issue tracker, and Telegram.
+
 - **landing page:** Renamed Docs to Documentation, removed Blog from desktop and mobile navigation, set the header action to Open A-Team Agent, renamed the hero action to use `Get Started With v{APP_VERSION}`, linked the community buttons to the A-Team GitHub and Telegram destinations, and centered the Case Studies cards without changing the section heading.
 - **settings:** Moved the close control into the settings pane's top-right, kept the responsive scrolling/viewport layout, and raised dropdown menus above the settings overlay.
 - **about:** Removed the development-version suffix from the About page.
 - **runtime identity and app shell:** Updated the default assistant identity and visible app shell to A-Team Agent while retaining runtime compatibility identifiers where required.
+
 - **skills:** Treat `allowed-tools` as non-enforced compatibility metadata.
   Activating a skill no longer hides or blocks tools that Agent configuration
   and host authorization already permit, including when the declaration is
   empty. Parsing, validation, export, skill-activation permissions and the
   existing secret and user isolation boundaries are retained. ([#6935])
+
+### Fixed
+
 - **settings and startup:** Fixed the settings dialog viewport centering and scroll container, moved its close action into the pane, and corrected the stacking order for dropdown overlays. Added the opt-in skip-landing-page preference so the next app open can go directly to chat.
 - **frontend build:** Fixed the shared i18n server module import pattern that caused `next/headers` to be pulled into the Pages Router.
+
 - **tui:** Quitting after `Ctrl+C` interrupted a run no longer hangs on the
   step that run is still finishing. The run thread was joined on exit, so the
   TUI closed but the shell prompt stayed blocked until a long tool call or model
   request returned, and further `Ctrl+C` only printed a traceback. Quitting now
   says it is waiting for that step and closes when it finishes; press `Ctrl+C`
   again to quit at once. ([#7326])
+  
 - **tui:** The streamed transcript no longer drops tokens that repeat or extend
   the text already shown. Deltas were merged by prefix, so `ha` + `ha` rendered
   as `ha`, `1` + `10` as `10`, and an answer that opened with a Markdown marker
   lost every later standalone copy of it (closing `**`, list bullets, table
   pipes, closing code fences). Each delta is now appended as sent. ([#7325])
+
 - **sandbox:** Release an E2B VM's ownership lease when acquire finds it gone
   (a dead cached client or a warm-pool VM reaped while parked). The lease was
   kept and renewed until Gateway shutdown, so every reaped VM left a tracked
   ID and a renewed ownership key behind. ([#7277])
+  
 - **auth:** SSO login and callback no longer fail with a `500` when the OIDC
   provider answers `200` with a body that is not the expected JSON object, such
   as a maintenance HTML page. Discovery, token, JWKS and UserInfo bodies, a
@@ -1335,6 +1388,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   discovery document is no longer cached. A malformed UserInfo body is skipped
   like a failed UserInfo request instead of aborting a login whose ID token is
   valid. ([#7258])
+
 - **mcp:** MCP servers using the OAuth `refresh_token` grant keep working
   across Gateway restarts, tool-cache resets, repeated personal-connection runs
   and multiple Gateway instances when the provider rotates refresh tokens
@@ -1357,258 +1411,336 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   every instance needs the same key). A declared multi-instance deployment with
   an enabled `refresh_token` OAuth server now refuses to start without
   `DEER_FLOW_CREDENTIALS_KEY`. ([#7207])
+
 - **community:** Reject booleans in numeric LightRAG and RAGFlow
   `knowledge_search` settings instead of silently treating `true` as a
   one-second timeout, one result or one character of output. Invalid settings
   return the existing configuration error. ([#7042])
+
 - **uploads:** Keep filesystem operations and resource ownership together
   across request cancellation. Staging, conversion, publication and remote
   sync finish or reclaim their own resources before releasing the sandbox
   lease, preventing orphaned files and cleanup races. ([#7170])
+
 - **checkpoints:** Run conservative retention after successful completion,
   before releasing the thread's finalizing barrier. Under the checkpoint
   writer lock, remove at most one trailing duration-only leaf while preserving
   ancestors, sibling branches and pending writes. ([#6051])
+
 - **sandbox:** Measure warm-pool idle age with a monotonic clock across AIO,
   BoxLite, E2B, OpenSandbox, Tenki and the shared lifecycle, including reset
   paths, so wall-clock corrections neither reap fresh sandboxes nor retain
   expired ones. Absolute creation timestamps remain wall-clock based. ([#7035])
+
 - **goal:** Stop automatic continuations after a `loop_capped` hard stop,
   preserving the active goal for a later user turn. The goal bar, scheduled
   history and IM notices recognize the stop reason. ([#7167])
+
 - **channels:** Make staged-file close, unlink and warning logging independent
   best-effort cleanup steps in channel state, runtime credentials and WeChat
   persistence. Cleanup failures no longer replace the original save error or
   skip the remaining cleanup. ([#7106])
+
 - **uploads:** Preserve separate bold spans in document-outline titles such
   as `**Revenue** and **Profit**`, instead of mistaking them for a single
   whole-title wrapper and leaving broken Markdown. ([#7150])
+
 - **skills:** Escape backslashes, pipes and line breaks consistently in both
   headers and values of data-analysis Markdown tables. CSV and JSON exports
   retain their existing behavior. ([#7163])
+
 - **helm:** Forward Live Browser WebSocket upgrades through a dedicated nginx
   browser-stream location before the generic threads route, preserving
   `Upgrade`/`Connection` headers and the long-running read timeout. ([#7148])
+
 - **projects:** Preserve oversized-upload responses, publication errors and
   recovery of already-committed shelf documents even when staging cleanup or
   warning logging also fails. ([#7141])
+
 - **memory:** Quarantine unreadable UTF-8 memory summaries before returning
   from the read-error path, so a subsequent save cannot overwrite the only
   copy of the original bytes. ([#7076])
+
 - **tui:** Accept tabs and newlines between slash commands and their arguments.
   Pasted skill tasks preserve their original indentation and line breaks,
   while builtin precedence and reserved names are unchanged. ([#7117])
+
 - **models:** Continue credential lookup after an unusable source. Blank
   Claude environment tokens no longer hide valid file credentials, and an
   invalid Codex token field no longer masks a usable alternate layout. ([#7140])
+
 - **memory:** Preserve consecutive emergency pre-compaction snapshots in
   arrival order while extraction is busy, instead of overwriting earlier
   pending messages. Normal cumulative updates still coalesce. ([#7152])
+
 - **codex:** Honor valid `retry-after-ms` and `Retry-After` hints in provider
   retries. Invalid, non-finite or over-24-hour hints fall back to the existing
   exponential schedule; retry statuses and attempt limits are unchanged. ([#7151])
+
 - **frontend:** Restore thinking-only Anthropic steps behind their user
   message after reconnect. Completed-answer boundaries now depend on visible
   content rather than a non-empty content array. ([#7144])
+
 - **storage:** Accept single-module `module:Class` custom blob-backend
   selectors through the existing importer and subclass validation, matching
   the already-supported dotted form. ([#7017])
+
 - **docker:** Make the development Kubernetes provisioner opt-in through the
   `provisioner` Compose profile. Docker wrappers enable it only for provisioner
   sandbox mode and still remove it on stop. ([#6948])
+
 - **skill-creator:** Validate optional timing documents and each token/duration
   field independently. Malformed measurements warn and use existing fallbacks
   without aborting a benchmark or discarding valid sibling measurements. ([#7078])
+
 - **memory:** Read canonical fact Markdown with UTF-8 BOM support, so valid
   hand-edited facts are not rejected as missing YAML front matter. ([#7116])
+
 - **subagents:** Publish `TIMED_OUT` at the configured execution deadline even
   when stream teardown resists cancellation. Keep cleanup supervised and
   retain resource/capacity fences until teardown settles, while collecting
   late token usage within the bounded tail window. ([#7053])
+
 - **frontend:** Reject upload responses carrying `success: false` even when
   HTTP status is 200. Chat sends stop and retain the draft and attachments
   for retry instead of starting a run without the rejected file. ([#7122])
+
 - **models:** Derive saved-key reuse from the current provider and endpoint,
   so reverting a connection edit no longer sends an empty key or removes
   stored credentials. Explicit key removal remains available. ([#6813])
+
 - **browser:** Preserve the original capture publication error or interruption
   when descriptor close, temporary-file removal or diagnostic logging also
   fails. Cleanup steps remain independent and best-effort. ([#6871])
+
 - **runtime:** Recover Redis SSE and `/wait` consumers after a producer dies
   between durable terminal persistence and stream completion. Token-fenced
   producer leases and a second empty heartbeat protect late tail frames.
   Recovery is disabled by default behind the restart-required
   `stream_bridge.producer_lease_recovery_enabled` gate; drain old writers and
   pre-feature runs before enabling it across Gateways. ([#7093])
+
 - **config:** Accept a leading UTF-8 BOM in operator-authored environment and
   secret files, preserving valid variables and credentials without rewriting
   the files or relaxing malformed-secret checks. ([#7112])
+
 - **managed-models:** Map the generic `minimal` reasoning effort to `low` for
   official DeepSeek endpoints and advertise their explicit supported efforts.
   Third-party endpoint contracts retain their existing behavior. ([#6717])
+
 - **streaming:** Replay retained successors when a Memory cursor is exactly
   the known last-evicted event, avoiding a false replay gap. Unverifiable
   cursors and genuinely missing successors still require gap recovery. ([#6812])
+
 - **runtime:** Require attributable terminal-write acknowledgments before
   publishing completion metadata, fence expired owners and isolate lease
   renewal work per run. Blocked Store I/O can no longer starve other runs,
   and late results cannot revive lost ownership. ([#6919])
+
 - **memory:** Accept UTF-8 BOM-prefixed DeerMem summaries in both storage
   implementations instead of reporting corruption or quarantining otherwise
   valid JSON. Genuinely malformed summaries keep their existing handling. ([#7084])
+
 - **github-research:** Resolve repository trees against `HEAD`, letting GitHub
   select the actual default branch instead of falling back from `main` to a
   potentially stale `master`. ([#7074])
+
 - **frontend:** Cancel stale memory queries before caching successful create,
   update, import, delete or clear results, preventing an older background
   response from visually undoing a confirmed mutation. ([#6959])
+
 - **mcp:** Treat a durable task's removed, disabled or otherwise unresolvable
   server connection as a permanent failure, rather than indefinitely retrying
   polling and cancellation against a connection that no longer exists. ([#7058])
+
 - **frontend:** Retry failed Custom Agent setup saves and report creation
   success only after a confirmed save and read-back. Exhausted retries restore
   the idle Save state with localized error feedback. ([#6628])
+
 - **skills:** Preserve data-analysis source identities across duplicate file
   and sheet names, quoted paths, SQL rewriting and cached lookups. Valid SQL
   literals, CTEs and aliases retain their meaning instead of being rewritten
   as source-name substitutions. ([#6739])
+
 - **workspace:** Skip files that disappear while being hashed and continue
   the snapshot, retaining file-change recording and produced-output checks.
   Permission and other I/O failures remain errors. ([#7057])
+
 - **frontend:** Stop subtask-history pagination when a full page does not
   advance the cursor, discarding that page while returning the valid prefix
   already fetched instead of retrying or losing earlier steps. ([#6729])
+
 - **frontend:** Keep Escape and Ctrl/Cmd+Enter with the IME during message-edit
   composition, preventing accidental cancellation or submission. ([#6768])
+
 - **crawl4ai:** Return a stable response-format error for non-object HTTP-200
   payloads and non-string Markdown fields instead of exposing raw Python
   attribute errors. ([#7065])
+
 - **skills:** Strip a leading UTF-8 BOM when reading `SKILL.md` for activation,
   custom-skill read-back and assembly hashing, keeping model-visible content
   and content fingerprints consistent with the parser. ([#6984])
+
 - **memory:** Apply Honcho category filtering before the result limit instead
   of labeling unfiltered hits with the requested category. ([#6981])
+
 - **agents:** Strip a leading UTF-8 BOM from default and named-agent `SOUL.md`
   files before inserting their contents into the system prompt. ([#7061])
+
 - **memory:** Drop extracted facts with confidence outside `[0, 1]` at the
   per-item normalization boundary, so one invalid score no longer fails the
   complete update and repeatedly re-extracts the same messages. ([#6971])
+
 - **sandbox:** Search long lines for literal `grep` patterns instead of
   inheriting the regex long-line guard and returning false negatives. Existing
   file, binary, symlink, summary and result limits still apply. ([#6969])
+
 - **skill-creator:** Preserve recorded token counts, including zero, even
   when grading already supplied a duration. Only missing or null token
   measurements use the output-character fallback. ([#7033])
+
 - **models:** Tolerate non-mapping `when_thinking_enabled.extra_body` values
   on the reasoning-contract path instead of crashing every model construction
   with an attribute error. ([#7039])
+
 - **artifacts:** Preserve balanced ASCII `()`, `[]` and `{}` delimiters inside
   captured paths and URLs while continuing to strip unmatched prose closers,
   so persistent handles resolve to the original reference. ([#6967])
+
 - **searxng:** Contain malformed HTTP-200 search payloads as format errors,
   rather than raw Python exceptions or misleading empty-result responses.
   Valid search results remain usable. ([#6931])
+
 - **harness:** Scope deferred MCP schema promotion to the current genuine user
   turn. A new turn re-defers earlier schemas while same-turn discovery,
   execution, concurrent promotion merging and auditing remain consistent. ([#6977])
+
 - **agents:** Clear an inherited `knowledge_scope` when a real tool-group
   update removes knowledge access, preventing the next run from failing with
   422. Explicit API scope values and unrelated updates keep precedence. ([#6995])
+
 - **runtime:** Persist the effective resolved model name for every run,
   including default selections and fallbacks, and write only when the stored
   name changes. Run history no longer retains a missing or merely requested
   model name. ([#6980])
+
 - **tencent-wsa:** Fall back to the default result count when a digit-like
   configured string cannot be converted to an integer, while retaining valid
   non-ASCII decimal counts. ([#6973])
+
 - **scheduler:** Recheck lease liveness under the parent and occurrence locks
   during expired-launch recovery. A fresh claim keeps its execution slot and
   row state even if an earlier recovery scan observed it as expired. ([#6975])
+
 - **sandbox:** Surface local `grep` sampling, open and read failures instead
   of reporting unreadable text as no matches. Expected file disappearance
   remains skippable; permission and other I/O failures become tool errors. ([#7004])
+
 - **checkpoints:** Skip unserializable Redis history-cache entries individually
   and continue writing valid neighbors. Optional caching no longer interrupts
   authoritative history operations, and logs omit serializer exception text.
   ([#7014])
+
 - **frontend:** Preserve sanitized submitted input when the initial run stream
   encounters a replay gap before its first durable checkpoint, merging it
   with reloaded state through existing message-ID deduplication. ([#6800])
+
 - **sandbox:** Retain generation-bound metadata and quarantine fences after
   failed AIO teardown, confirm runtime absence before retiring records, and
   preserve failed shutdown targets for retry instead of falsely reporting
   successful destruction. Other resources still receive cleanup attempts. ([#7001])
+
 - **streaming:** Retire Memory stream generations under their condition lock,
   release retained payloads and wake unfinished readers with a replay-gap
   signal. Cleanup no longer strands subscribers on detached buffers or lets
   them follow a newly created generation. ([#6992])
+
 - **runtime:** Bound force-close settlement of RunJournal progress snapshots
   alongside event writes. Cancellation-resistant persistence remains
   supervised without indefinitely blocking resource release or shutdown;
   normal flushing retains its durability semantics. ([#6990])
+
 - **skills:** Allow concurrent `skill_manage` callers on different event loops
   to wake and serialize correctly, preventing sync-client and TUI hangs.
   Waiting does not occupy executor workers, and cancelled waiters do not
   leak ownership. ([#7020])
+
 - **streaming:** Validate numeric reconnect cursors before subscription,
   including integer-conversion failures and Redis's ASCII unsigned 64-bit
   components. Oversized or invalid values follow the malformed-cursor policy
   instead of terminating the subscription. ([#6690])
+
 - **mcp:** Consume resolved or missing durable-task notification snapshots
   before dispatch, so a recovered tracking condition no longer launches an
   empty notification run or retries empty events until dead-lettering. ([#6693])
+
 - **sandbox:** Translate every entry in colon-joined virtual path lists when
   writing local files or shell commands, preserving usable PATH, PYTHONPATH
   and custom-mount lists instead of translating only the first entry. ([#7002])
+
 - **scripts:** Honor `DEER_FLOW_PROJECT_ROOT/config.yaml` when detecting
   optional dependencies and admitting local startup, after an explicit
   `DEER_FLOW_CONFIG_PATH`. External-project settings no longer lose required
   extras or fail because the checkout lacks its own config. ([#6934])
+
 - **github-research:** Encode raw repository-relative file paths once for
   Contents API requests, preserving directory separators, percent signs,
   query/fragment characters, spaces and Unicode with either HTTP backend. ([#7018])
+
 - **uploads:** Offload document conversion for every source size instead of
   using a compressed-size cutoff that lets small but expensive files block
   the event loop. Conversion remains opt-in and cancellation still waits
   for worker cleanup. ([#6924])
+
 - **sandbox:** Preserve a concurrently written quarantine fence when retiring
   an absent generation. A newly non-empty directory no longer aborts teardown
   or removes another worker's protection. ([#6961])
+
 - **tui:** Request cancellation of pending persistence work when the bridge
   deadline expires, preventing an abandoned title update from continuing
   unchecked. Cancellation remains cooperative and does not undo committed
   writes. ([#6927])
+
 - **infoquest:** Validate search response envelopes and result containers,
   reporting malformed HTTP-200 payloads as format errors instead of Python
   exceptions or an apparently successful empty search. ([#6932])
+
 - **mcp:** Preserve remote URL bytes, including signed query strings and
   fragments, during local-file result rewriting. Actual local paths and
   `file:` references still translate under existing thread-root checks. ([#6878])
+
 - **agents:** Preserve saved thinking and reasoning defaults when the model
   catalog is loading, unavailable or missing the effective model, so an
   unrelated settings edit cannot silently clear those overrides. ([#6907])
+
 - **acceptance:** Recognize complete native Node TAP/spec summaries, requiring
   an actual pass and prioritizing failures and cancellations. Empty,
   all-skipped, all-todo and incomplete records remain unverified, including
   colored Node 24 output. ([#6953])
+
 - **streaming:** Signal a replay gap when an observed Redis stream disappears,
   allowing SSE to reload durable state instead of heartbeating forever.
   `/wait` refreshes persisted state before deciding that the run is complete.
   ([#6951])
+
 - **docker:** Treat omitted, blank, empty-quoted and YAML-null AIO provisioner
   URLs consistently in both launchers, selecting local AIO and its socket
   overlay instead of incorrectly starting the Kubernetes provisioner. ([#6945])
+
 - **frontend:** Recognize a tab after a level-1 Markdown heading in fetched
   content, displaying the document title instead of falling back to its URL.
   Existing indentation and heading-level restrictions remain in place. ([#6923])
+
 - **client:** Accumulate incremental streaming token usage per message and
   reconcile completed snapshots without double counting. Terminal usage and
   the TUI now match Gemini/vLLM usage-only chunks and input corrections. ([#6939])
+
 - **summarization:** Consume all selected history from oldest to newest in
   bounded chunks before compaction replaces it, including contiguous fragments
   of oversized messages. Only generated summary carry may be shortened;
   failed chunks, impossible budgets or the 64-chunk limit leave history intact.
   ([#6918])
+
 - **harness:** Apply the length-cap policy to Responses API
   `incomplete`/`max_output_tokens` termination, including SSE. Suppress parsed
   and native tool-call blocks while retaining text and reasoning, preventing
@@ -2377,9 +2509,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **sandbox:** Remote sandbox providers number `read_file` line ranges the
   same way `LocalSandbox` does. The E2B, BoxLite, Tenki and OpenSandbox
   providers sliced ranged reads with `str.splitlines()`, which also ends
-  lines at a bare `\r`, `\f`, `\v`, `\x85`, ` `/`\00(
-` and other
-  control separators, so line N was a different line than on the local
+  lines  bare and othercontrol 
+  separators, so line N was a different line than on the local
   sandbox: a progress log whose updates end in a bare `\r` reads
   truncated with a marker naming `start_line=30`, and
   `read_file(start_line=30)` on those providers returned line 15's second
@@ -2388,7 +2519,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   trailing `\r` like `LocalSandbox`, so it always agrees with
   `count_file_lines`, and the four providers slice with it while clamping
   and joining are unchanged. ([#6585])
-
 - **agents:** Artifact text detection no longer truncates remote file
   URLs whose query string or fragment contains a file-like extension.
   Detection cut the URL at the extension, so the artifact handle supplied
@@ -2400,7 +2530,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   path. Common CJK closing punctuation is stripped only from free-text
   scans, and suffix matching is case-insensitive while preserving the
   original URL. ([#6574])
-
 - **e2b:** E2B grep results preserve colons in filenames, and both E2B
   `grep` and `glob` split returned records only on LF. The grep parser
   split `filename:line:text` at the first two colons, so a timestamped
@@ -2414,7 +2543,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the line number and content only after that delimiter, so colons in
   matched text, glob filtering and existing result limits keep their
   semantics. ([#6573])
-
 - **runtime:** Keyed-resume admission fails closed when a custom
   `RunStore` override accepts the request identity only through ambiguous
   `**kwargs`. The #6499 compatibility gate treated a `VAR_KEYWORD`
@@ -2430,7 +2558,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   an explicit `idempotency_request` parameter remains a capability
   declaration, and ambiguous stores return the existing 503 capability
   error before any durable admission. ([#6571])
-
 - **runtime:** `RunJournal.flush()` yields to the event loop once before
   draining, so the last cross-thread middleware event of a run is no
   longer lost on Python 3.13+. CPython gh-105836 (backported to 3.13) made
@@ -2443,7 +2570,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `_detach_runtime_dependencies()`. The extra yield is a no-op on 3.12,
   and events already handed to the owner loop commit on every supported
   Python version. ([#6565])
-
 - **subagents:** Durable subagent batch shutdown keeps its cleanup alive
   across caller cancellation. The batch stop added by #6517 directly
   awaited the poller and item tasks after cancelling them, and the
@@ -2459,7 +2585,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   cleanup completes, and cleanup failures remain visible to later
   lifecycle calls. The Gateway's five-second shutdown hook still returns
   on time while the service-owned cleanup continues underneath. ([#6552])
-
 - **brave:** Brave web search contains malformed response payloads instead
   of failing the tool call. Validation covered only the top-level response
   and assumed `web` is an object and `results` a list of objects, so a
@@ -2472,7 +2597,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   non-empty list with no usable objects returns the format error, and
   missing, null or empty containers still return `No results found`.
   ([#6550])
-
 - **sandbox:** The local sandbox decodes Git Bash/MSYS command output as
   UTF-8, so CJK and other non-ASCII tool output is not garbled on
   Windows. Git Bash always writes UTF-8 to its pipes, but the decoder used
@@ -2482,7 +2606,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   The PowerShell branch already pinned UTF-8 (#5440); `cmd.exe` and other
   shells keep the locale-based decoding, and POSIX behavior is untouched.
   ([#6548])
-
 - **sandbox:** The E2B provider releases a sandbox's local capacity slot
   when a reconnect confirms the VM is gone, instead of leaking it until
   restart. When `Sandbox.connect()` raised a trusted "sandbox not found"
@@ -2502,7 +2625,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `SandboxCapacityExceededError` also carries a `transitioning` count in
   its attribute, details and wait-timeout message, so a full-capacity
   report with nothing active is self-explanatory. ([#6547])
-
 - **events:** The JSONL event store preserves a thread's sequence floor
   when a run is deleted, so sequence recovery cannot reuse a deleted
   sequence after a restart. Recovery saw only the surviving files, and a
@@ -2515,7 +2637,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   floor, failed watermark publication leaves the run intact, and corrupt
   watermarks fail closed. The DB backend already retained its floor
   through run deletion. ([#6546])
-
 - **models:** The Claude adapter no longer retries inside a single request
   admission. With Claude request admission enabled the factory disabled
   SDK retries, but the adapter's own retry loop still sent additional
@@ -2526,7 +2647,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   attempt is admitted, and neither config nor caller retry settings can
   re-enable it; models without admission and unrelated custom rate
   limiters keep their existing retry policy. ([#6545])
-
 - **storage:** A successful filesystem blob put stays successful when
   allocating its metadata sidecar fails. The blob store treats the JSON
   sidecar as advisory, but the sidecar's temporary file was allocated
@@ -2537,7 +2657,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   existing warning, the temporary file is cleaned up only if one was
   allocated, and content allocation or publication failures still raise
   `BlobWriteError`. ([#6538])
-
 - **support-bundle:** Support-bundle collection keeps thread diagnostics
   when the checkout `.env` cannot be read or is not valid UTF-8.
   `PermissionError` and `UnicodeDecodeError` escaped `_thread_data_roots`,
@@ -2547,7 +2666,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   settings and the default storage layouts; no partial dotenv assignments
   are applied, no secrets are exported, and valid-file parsing and
   launcher precedence are unchanged. ([#6536])
-
 - **llm-text:** Reasoning-tag cleanup locates the opening delimiter
   outside quoted attributes, so an empty tag like `<think note=">"/>` no
   longer swallows the answer that follows it. Both cleanup functions took
@@ -2558,7 +2676,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   tags with such attributes preserve the following answer, and the shared
   forward scanner keeps its existing tag-name boundaries and
   dangling-block behavior. ([#6535])
-
 - **uploads:** The upload listing skips a file that vanishes between the
   directory sweep and its stat call instead of failing the whole request.
   `list_files_in_dir` took one `os.scandir` sweep and then stats each
@@ -2570,7 +2687,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   matching the replacement-race policy the chmod path already uses;
   operational errors like `EACCES` still propagate so real permission
   problems stay visible. ([#6533])
-
 - **frontend:** Conversation export downloads the complete persisted
   history, not just the turns currently loaded in the view. The chat
   header exported only `thread.messages` (the loaded history window) and
@@ -2588,7 +2704,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   reading (the chat-header control also waits for streaming to finish),
   and public/static demos keep their local fixture export path.
   ([#6530])
-
 - **e2b:** E2B grep filename filters reach the shell as one unchanged
   argument. The `--include` argument was built unquoted from the caller's
   `glob` filter, so a search restricted to `release *.txt` failed on a
@@ -2597,7 +2712,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Filters are now quoted with `shlex.quote`, matching OpenSandbox's
   existing handling; wildcard matching and root-relative directory
   scoping are unchanged. ([#6529])
-
 - **channels:** A stale `ChannelService.start()` can no longer resurrect the
   service after shutdown has completed. `start()` checked `_stopping` only
   before awaiting `manager.start()` and then unconditionally set
@@ -2608,7 +2722,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   as it begins, rejects a stale startup after `manager.start()` even when
   `_stopping` was already cleared, and drains the just-started manager via
   `manager.stop()` instead of marking the service running. ([#6521])
-
 - **subagents:** A concurrent `start()` can no longer spawn a replacement
   batch poller while `SubagentBatchService.stop()` is still draining. `stop()`
   cleared `self._poller` before awaiting the old poller's teardown, so a
@@ -2618,7 +2731,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   drain completes, `start()` during a stop raises an explicit lifecycle
   error, and the fence survives a cancelled or failed stop so a later
   `stop()` can retry cleanup. ([#6517])
-
 - **runtime:** Cancelling a just-started run with rollback no longer deletes
   the thread's checkpoints. `cancel?action=rollback` (or
   `multitask_strategy="rollback"`) landing after the run left `pending` but
@@ -2632,7 +2744,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (checkpoints preserved) and the run still terminalizes as `error` /
   "Rolled back by user". A completed capture returning `None` keeps the
   documented reset-to-empty semantics. ([#6513])
-
 - **agents:** Async file-gate waiters no longer starve the default executor.
   Concurrent file calls could fill the executor with callers waiting on the
   same read-before-write gate while the gate holder itself needed that
@@ -2644,7 +2755,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   already-dispatched inspection and read-mark work still drains before
   unlocking. Read-before-write policy and tool results are unchanged.
   ([#6511])
-
 - **scanner:** The file scanner's decoded-text preview cache is published
   atomically. `_cache_text_file` wrote the entry in place under its
   `sha256(virtual_path)` key and the caller serves that path as the file
@@ -2653,7 +2763,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   publish now goes through a temporary file plus `os.replace`, the pattern
   the repository already uses for files a failure would otherwise corrupt;
   a failed publish keeps the previous entry. ([#6510])
-
 - **llm:** Reasoning-tag cleanup no longer truncates unrelated tags whose
   names merely begin with "think". The `<think\b` boundary matched
   punctuation inside longer tag names, so the valid suggestions payload
@@ -2664,7 +2773,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   end-of-input after the exact `think` name; attribute handling,
   case-insensitive cleanup, unfinished leading-summary suppression and the
   forward scanner are unchanged. ([#6505])
-
 - **channels:** A channel restart can no longer publish a fresh instance
   while `ChannelService.stop()` is shutting the service down. `stop()` marked
   the service stopped and then awaited manager/channel teardown, while
@@ -2676,7 +2784,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `_start_channel()` both before setup and immediately before publishing
   a new instance, and `start()` is rejected while a prior shutdown is
   incomplete. ([#6503])
-
 - **channels:** An outbound message is delivered only to the listener set
   admitted when its dispatch begins. `MessageBus.publish_outbound()`
   iterated the live listener list while awaiting each callback, and every
@@ -2684,7 +2791,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   received a message whose dispatch predated its subscription. Each dispatch
   now works from a snapshot taken at the start of the call, used for both
   listener-count logging and callback delivery. ([#6502])
-
 - **gateway:** Keyed resume retries are idempotent. Run execution gives
   `command.resume` precedence over `input`, but idempotent reuse compared
   only the stored and retried `input`, so two different resume decisions
@@ -2701,7 +2807,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   so mixed-version rolling upgrades expose no digest or synthetic input; and
   a legacy custom `RunStore` that cannot persist the identity fails closed
   with a 503 before durable admission. ([#6499])
-
 - **models:** MindIE synchronous streams now follow the provider's async
   compatibility contract. The public synchronous stream inherited the
   generic path and bypassed MindIE's message normalization, XML tool parsing
@@ -2712,7 +2817,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   explicitly request non-streaming backend generation and reuse the
   existing simulated chunker, preserving tool calls and terminal usage.
   ([#6497])
-
 - **vllm:** The legacy `thinking` normalizer no longer mutates caller-owned
   `extra_body`. Reusing one request dictionary and switching `thinking` from
   `true` to `false` still sent `enable_thinking=true` on the second request,
@@ -2720,7 +2824,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Normalization now runs on a request-owned copy; explicit
   `enable_thinking` keeps precedence and unrelated fields are preserved.
   ([#6496])
-
 - **deploy:** `scripts/deploy.sh` fails fast with an actionable message when
   `$DEER_FLOW_HOME` is not writable. The dev stack (`make docker-start`) can
   create `backend/.deer-flow` as root, and a later `make up` then aborted
@@ -2729,7 +2832,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `mkdir -p "$DEER_FLOW_HOME"` exits 1 naming the owner mismatch and the
   `chown -R 1000:1000` recovery; `down` is exempt so tearing a stack down is
   never blocked by permissions. ([#6488])
-
 - **mcp:** An effective MCP configuration change now retires only the
   affected deployment stdio sessions instead of the whole session pool.
   Automatic invalidation of `extensions_config.json` tore down every
@@ -2749,7 +2851,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   receives retired-pool cleanup before waiting on an in-flight discovery.
   Skills-only changes and equivalent configuration, path and transport
   spellings still do not trigger retirement. ([#6487])
-
 - **support-bundle:** Thread manifests now locate threads in the configured
   runtime home. Support-bundle collection searched only checkout-local
   `.deer-flow` directories while the runtime honors `DEER_FLOW_HOME`, so
@@ -2762,7 +2863,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   precedence, and `DEER_FLOW_PROJECT_ROOT` is honored when home is unset),
   and an external home displays as the `{DEER_FLOW_HOME}` marker instead of
   its absolute host path. ([#6486])
-
 - **check:** `make check` dependency diagnostics survive Unicode output on
   non-UTF-8 hosts. The script decoded tool and pnpm output with the locale
   encoding, so a Unicode pnpm failure diagnostic crashed the checker instead
@@ -2772,7 +2872,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   bytes, and the Python runner pins its output encoding to
   `utf-8:backslashreplace` while preserving the rest of the environment.
   ([#6485])
-
 - **models:** MindIE's no-tool native streaming keeps escaped newlines
   inside fenced code. `_astream` applied
   `_decode_escaped_newlines_outside_fences` to each chunk independently,
@@ -2785,7 +2884,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fences, holding back a trailing partial ``` or `\` split across a chunk
   boundary until the next chunk decides; a reply ending inside an unclosed
   fence keeps its escapes. ([#6478])
-
 - **events:** The DB run-event store no longer reissues sequence numbers
   after a run is deleted. `DbRunEventStore` computed the next `seq` from the
   maximum among surviving rows, so after `delete_by_run()` the next write
@@ -2797,7 +2895,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   preserves the watermark, and full-thread deletion (`delete_by_thread` with
   `user_id=None`) removes it so a recreated thread restarts at seq 1,
   matching the memory and JSONL backends. ([#6477])
-
 - **channels:** Concurrent IM attachment uploads no longer overwrite each
   other. Inbound ingestion scanned existing filenames before downloading an
   attachment, so another upload taking the same name during the download
@@ -2809,7 +2906,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   publications, and a regular file with Gateway's temporary conversion link
   counts as a collision. Other callers keep the shared writer's default
   replacement behavior, which still rejects hardlinks. ([#6476])
-
 - **mcp:** A token response carrying an unusable `expires_in` falls back to
   the documented one-hour default instead of failing token acquisition.
   `OAuthTokenManager._fetch_token()` guarded only `TypeError`/`ValueError`,
@@ -2820,7 +2916,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `OverflowError` now joins the conversion guard, and a lifetime beyond
   `timedelta`'s range is treated as unusable; valid values are unaffected.
   ([#6473])
-
 - **uploads:** Uploaded-document outlines skip root-level HTML comment
   blocks. Comment contents became outline entries, a code fence inside a
   comment could suppress real headings after the comment, and hidden
@@ -2829,7 +2924,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fenced-code state, comment markers inside fenced code do not start a
   comment block, and heading styles, physical line numbers, file bytes and
   outline limits are preserved. ([#6470])
-
 - **projects:** Document storage works beyond `MAX_PATH` on native Windows
   with `LongPathsEnabled=0`. The content-addressed document layout exceeded
   `MAX_PATH` in deep workspaces or with long filenames, so staging,
@@ -2843,7 +2937,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `\\?\` extended namespaces pass through unchanged, symlink confinement
   is preserved, and the 12 MAX_PATH blocking-I/O anchors skipped on Windows
   run again. ([#6467])
-
 - **uploads:** Case-variant upload filenames no longer collide on
   case-insensitive filesystems. The filename claim helper compared names
   case-sensitively, so on a case-insensitive host `Report.txt` followed by
@@ -2852,7 +2945,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   treated as collisions — a second `report.txt` becomes `report_1.txt` —
   and an inbound-attachment regression verifies both payloads remain
   available under their reported names. ([#6466])
-
 - **sandbox:** `sandbox.environment` now reaches sandboxes on the default
   local provider. The field (`$VAR` refs resolved from the host env) was
   consumed only by the AIO provider, so on `LocalSandboxProvider` the
@@ -2867,7 +2959,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `os.environ` still never leak, and a request-scoped value wins on key
   collision. Unset config keeps the previous pure-scrubbing behavior.
   ([#6463])
-
 - **middleware:** A non-finite `Retry-After` hint no longer kills the whole
   run. The numeric branch of `_extract_retry_after_ms` guarded only
   `TypeError`/`ValueError`, so a numeric-but-non-finite hint such as `1e999`
@@ -2878,7 +2969,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   branch now also catches `OverflowError`, treating the hint as unusable
   like other malformed hints; the date-parsing fallback in the same helper
   already guarded it. ([#6455])
-
 - **mcp:** Superseded stdio server bindings are fenced at the session-pool
   boundary. A stdio tool wrapper could outlive the configuration epoch that
   created it: an old wrapper could target a server after its connection
@@ -2897,7 +2987,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   couples its generation claim to a specific pool, so a superseded
   initializer cannot seed the replacement pool with a stale fingerprint.
   ([#6435])
-
 - **scheduler:** The notification delivery worker's lifecycle is
   serialized. `stop()` snapshotted the poller and cleared `self._task`
   before that poller had actually exited, so a concurrent `start()` could
@@ -2909,7 +2998,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   poller until that exact poller has completed or been cancelled, and
   ownership is cleared only when the task being stopped is still the owned
   generation. ([#6433])
-
 - **voice-input:** Dictation segments stay separated for providers that
   trim final results. Adjacent finalized results were concatenated without
   a separator, so `hello world` + `today is` became `hello worldtoday is`
@@ -2920,7 +3008,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `done, maybe`, `up to 50` + `%` → `up to 50%`), while spaces remain after
   sentence punctuation and around quoted phrases (`Done.` + `Next` →
   `Done. Next`). ([#6432])
-
 - **skillscan:** Command-position `env` is classified instead of always
   reading as an environment dump. Every `env` raised a MEDIUM
   `shell-env-dump` finding, so the ordinary `env VAR=value COMMAND` launcher
@@ -2935,7 +3022,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   tokenizer drives both rules so they cannot disagree, covering GNU/BSD
   value-taking short and long forms, clusters and attached values,
   `-S`/`--split-string`, and adversarial long operand chains. ([#6428])
-
 - **sandbox:** Port allocation stops at the TCP port limit. A valid AIO
   starting port near 65535 could exhaust the remaining ports, and
   `PortAllocator` then tried 65536 and raised an uncaught `OverflowError`
@@ -2943,7 +3029,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   is now capped at 65536, so an exhausted search raises `RuntimeError`;
   last-port allocation, reservations, release and the `max_range` limit are
   unchanged. ([#6424])
-
 - **agents:** Structured tool-output previews are bounded. A JSON result
   with one 20,000-character field name grew from 20,007 to 62,020
   characters when rendered as a preview, because the key repeated across
@@ -2958,7 +3043,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   body, the raw head/tail sampling contract and externalized file are
   unchanged, and the original reproduction now emits 2,263 characters.
   ([#6422])
-
 - **runtime:** Derived run summaries omit leading reasoning. A reply with
   leading inline `<think>` reasoning showed the thought instead of the
   answer in run previews and scheduled-task notices, and with a long
@@ -2970,7 +3054,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Regeneration's existing content-match fallback accepts both historical
   raw and new visible summaries, with event-based lookup still first.
   ([#6419])
-
 - **harness:** Retrying one failed item no longer resumes a paused batch.
   The pause barrier is a scheduling contract — operators pause a batch to
   stop new work from being claimed — but `retry_item` unconditionally
@@ -2981,7 +3064,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   pause survives a restart, and nothing new is scheduled until an explicit
   resume. Retrying in a non-paused batch behaves exactly as before.
   ([#6417])
-
 - **gateway:** Scheduled-task shutdown is bounded like the other lifecycle
   hooks. `ScheduledTaskService.stop()` was awaited without a deadline, so a
   hanging poll or dispatch teardown could block the Gateway lifespan
@@ -2989,7 +3071,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   goes through the same bounded shutdown policy used by other Gateway
   services and logs and continues teardown when the hook exceeds the grace
   period. ([#6409])
-
 - **integrations:** A Lark integration install is drained across
   cancellation. The installer performs its persistent skill-pack write in a
   worker thread and refreshes the skills system-prompt cache only after
@@ -3000,7 +3081,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   cancellation-owned operation, drained before cancellation propagates so
   the persisted state and the in-process skills cache cannot diverge.
   ([#6408])
-
 - **support-bundle:** Subprocess diagnostics survive non-UTF-8 output.
   Reader threads decoded command output with the platform default, so under
   an ASCII/GBK locale a UTF-8 diagnostic line raised a decoding error that
@@ -3013,7 +3093,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   environment sets UTF-8 Python stdio while the parent environment is
   unchanged; existing redaction, `cwd`, timeout and missing-command
   handling are preserved. ([#6391])
-
 - **channels:** A cancelled config reload can no longer publish stale
   channel config. `ChannelService` reloads provider config off the event
   loop with `asyncio.to_thread(self._load_channel_config, name)`, and the
@@ -3026,7 +3105,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   respect to shared state, and a loaded snapshot is published only after
   the worker rejoins `_restart_channel_locked()`, while the per-channel
   lifecycle lock is still owned. ([#6390])
-
 - **wechat:** Poll-state persistence is drained across cancellation. The
   long-poll cursor advanced in memory and was persisted from `_poll_loop()`
   through `asyncio.to_thread(self._save_state)`; cancelling the poll task
@@ -3037,7 +3115,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   drain through the repository's existing cancellation-safe
   `await_drained()`, and the expired-auth path reuses the existing
   `_save_auth_state_drained()` helper. ([#6389])
-
 - **memory:** Invalid and raw assistant tool calls are excluded from memory
   capture. DeerMem and mem0 filtered only parsed `tool_calls`, but a real
   OpenAI response with malformed function arguments becomes an `AIMessage`
@@ -3050,7 +3127,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   are now omitted by both backends; empty call views remain ordinary
   replies, and user inputs, valid clarification answers, upload handling
   and the existing user/agent/thread scope are unchanged. ([#6379])
-
 - **tool-output:** CSV/TSV table synopses count logical records, not
   physical lines. Valid quoted fields can contain newlines, and the
   synopsis counted nonempty physical lines, so a table of six three-column
@@ -3062,7 +3138,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sample, header and consistent-row checks, first-row rendering, all-blank
   record filtering, global CSV field limit, raw preview/recovery references
   and the 5,000,000-byte input guard are preserved. ([#6369])
-
 - **extensions:** A failed extension operation restores `pyproject.toml`,
   `uv.lock` and, when needed, `config.yaml` through a temporary file and
   `os.replace`, so an interrupted rollback or failed publication no longer
@@ -3073,7 +3148,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the temporary file before publication, and a write, `chmod` or
   publication failure leaves the current destination untouched and cleans
   up the temporary file. ([#6366])
-
 - **agents:** Read marks in `ReadBeforeWriteMiddleware` bind to the tool
   call that performed the read. An Agent tool can return a LangGraph
   `Command` carrying its own result plus updates to other messages, and the
@@ -3088,7 +3162,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   checks stay authoritative. Unrelated metadata, Command state and routing,
   caller history and the existing version, locking, authorization,
   cancellation and fail-open policies are preserved. ([#6363])
-
 - **models:** Codex function tools keep the `strict` value the caller set.
   `CodexChatModel` silently removed the field before sending the Responses
   request, and wrapped dictionaries lost it in `bind_tools`, erasing the
@@ -3100,7 +3173,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   dictionaries and converted `BaseTool` schemas share one converter, caller
   schemas and definitions are not mutated, and the contract is documented
   in the README and the models guide. ([#6360])
-
 - **extensions:** Gateway shutdown drains already-submitted extension
   notifications before resetting the notify loop. Fire-and-forget
   observations submitted from worker threads are tracked in
@@ -3109,7 +3181,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   started tearing down extension resources. Shutdown now awaits a drain of
   the pending futures through the cancellation-safe `await_drained()`
   helper before resetting the process-wide notify-loop binding. ([#6357])
-
 - **discord:** Discord thread-mapping persistence survives cancellation.
   The channel-to-thread mapping was written with a bare
   `asyncio.to_thread(self._persist_thread_mappings)` after thread creation
@@ -3119,7 +3190,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   shutdown could be retried while the first write was still live. Every
   async mapping write, including the shutdown flush, now drains through the
   cancellation-safe `await_drained()` helper. ([#6356])
-
 - **persistence:** The PostgreSQL startup-recovery retry path drains its
   engine dispose across cancellation. When `init_engine()` handles a
   missing database it creates the database and then disposes the first
@@ -3129,7 +3199,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   process-global engine was incomplete, even though the temporary
   maintenance engine and normal shutdown already drain. The dispose now
   runs through the existing `await_drained()` helper. ([#6349])
-
 - **sandbox:** Direct sandbox provider releases are drained across
   cancellation. Two teardown paths released a provider directly with
   `asyncio.to_thread(provider.release, sandbox_id)` when no lease owner was
@@ -3139,7 +3208,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `SandboxMiddleware._release_sandbox_async()` and the direct-release
   rollback in sandbox tools now drain through the existing
   cancellation-safe `await_drained()` helper. ([#6348])
-
 - **mcp:** Rotating OAuth refresh tokens are shared between tool discovery
   and durable MCP task calls. The two paths parsed separate copies of the
   deployment configuration, so with rotation enabled discovery could
@@ -3156,7 +3224,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   independent of deployment state even when runtime server names collide,
   and the sharing is process-local — rotated credentials are not written to
   disk. ([#6342])
-
 - **models:** Claude prompt caching no longer places cache breakpoints on
   thinking blocks. With prompt caching enabled, `ClaudeChatModel` treated
   every recent message dictionary as a breakpoint candidate, so a
@@ -3168,7 +3235,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   data and order intact; text, image/document, tool and system caching keep
   the existing policy and four-breakpoint limit, and existing cleanup still
   removes stale markers before selection. ([#6339])
-
 - **models:** MindIE XML tool-call parsing keeps JSON arguments' original
   escapes. The escaped-newline compatibility conversion ran over the entire
   response before XML tool-call extraction, so a JSON argument such as
@@ -3182,7 +3248,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   between intended literal escapes and gateway-escaped newlines is
   documented. Native tool calls, mixed calls, unparseable-XML content and
   the numeric overflow/underflow protections are preserved. ([#6334])
-
 - **skills:** Custom-skill history records the content that was actually
   overwritten. `update_custom_skill` and `rollback_custom_skill` captured
   `prev_content` on the event loop right after the security scans but
@@ -3204,7 +3269,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   in its own `with` block so a cancelled caller cannot strand it. Status
   codes, cancellation-draining behavior and prompt-cache refresh order are
   unchanged. ([#6153])
-
 - **mcp:** Pooled stdio MCP sessions are isolated by ownership domain.
   Deployment and personal stdio connections shared one process-wide session
   pool keyed only by server name, thread scope and owning loop, so once
@@ -3219,7 +3283,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   thread/scope/global teardown stays cross-domain because those operations
   own the whole thread or process lifecycle. Deployment calls keep their
   existing default call shape. ([#6133])
-
 - **middleware:** Externalized tool-output filenames derive from the tool
   call id. `_build_externalized_filename`, which the host-disk and sandbox
   externalization paths share so both produce identical names, ignored
@@ -3230,7 +3293,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   model or provider and must not carry separators or traversal components —
   a `tool_call_id` of `../../etc/passwd` cannot escape the output
   directory. ([#6107])
-
 - **frontend:** A cold-recovered Agent run stays remotely cancellable when
   unrelated history reads fail. Active-run recovery retried on any SDK
   error, so a metadata-less history failure or a stale error from another
@@ -3239,14 +3301,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exactly matches the recovered thread and run, preserving the cancellation
   target for non-matching failures while keeping the bounded retries for
   genuine join failures. ([#6075])
-
 - **models:** MiniMax `reasoning_content` responses are preserved. MiniMax
   can return reasoning in that field and the adapter dropped it, in both
   full responses and streaming deltas. The field now survives both paths,
   `reasoning_details` precedence and inline `<think>` handling are
   unchanged, and whitespace-only streaming deltas are preserved with
   blank-field fallback covered. ([#6071])
-
 - **models:** Claude extended-thinking budgets are validated against the
   real constraints instead of rejecting valid requests. The automatic 80%
   thinking budget could fall below Anthropic's 1024-token minimum, ordinary
@@ -3259,7 +3319,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   stand. Copied automatic budgets, null-as-unset behavior, strict integer
   validation and the manual opt-out are unchanged, and validation applies
   only when `auto_thinking_budget=True` (the default). ([#6060])
-
 - **models:** MindIE XML tool arguments parse JSON numeric syntax. Signed,
   fractional and exponent numbers (`-3`, `3.14`, `1e-3`) previously stayed
   strings, and the numeric hardening retried JSON conversion failures with
@@ -3270,7 +3329,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   including nested JSON lists and objects, and the Python-literal fallback
   runs only for JSON syntax errors, never for numeric conversion failures.
   ([#6030])
-
 - **persistence:** Integer metadata filters match without overflowing
   stored values. Stored JSON metadata can hold integers beyond the signed
   64-bit filter-input contract, and those values made otherwise valid
@@ -3287,7 +3345,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   spellings, and the overflow guarantee covers integer filters only — the
   PostgreSQL float path still casts stored numeric text to
   `DOUBLE PRECISION`. ([#6000])
-
 - **gateway:** Duration-only checkpoints are classified without the marker
   Postgres drops. The duration writer stamps its leaf with
   `metadata["writes"]["runtime_run_duration"]`, which memory and SQLite
@@ -3310,14 +3367,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `stamp_fallback=False` so it keeps widening the class solely through the
   parent-shape check and never sweeps an inherited-stamp title or rollback
   leaf that bumped `channel_versions`. ([#5988])
-
 - **community:** Jina web fetch follows API redirects. `httpx.AsyncClient`
   defaults to `follow_redirects=False`, so a temporary redirect from the
   Jina API surfaced as `Error: Jina API returned status 307` instead of the
   fetched page. Jina requests now follow redirects while retaining the
   existing proxy, environment and timeout settings, and a temporary
   redirect reaches the target with the POST method intact. ([#5808])
-
 - **channels:** IM conversations now keep their DeerFlow thread across Gateway
   replicas. The `ChannelManager` kept its chat-to-thread bindings
   (`channel_name:chat_id[:topic_id]` → `thread_id`) in a per-process JSON file,
@@ -5118,7 +5173,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   did: an ignored name still hides its own descendants, but searching an
   ignored root — or a path below an ignored ancestor — returns its contents.
   ([#5667])
-
 - **sandbox:** The temporary sandbox lease acquired by the HTTP upload route is
   now released. In remote/provisioner deployments,
   `POST /api/threads/{id}/uploads` temporarily acquires the thread sandbox to
@@ -5130,7 +5184,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exits: when the same thread already has an active run sandbox, releasing the
   temporary lease just decrements it instead of parking the sandbox in use.
   ([#3261])
-
 - **frontend:** Stop retrying the initial run-creation request after an
   ambiguous failure. The LangGraph SDK retries failed HTTP requests by
   default, and `POST /runs/stream` is not idempotent: an intermediary could
@@ -5140,7 +5193,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   reads, explicit stream joins, and SSE recovery — the `GET` to the
   server-provided `Location` carrying the `Last-Event-ID` cursor — keep their
   normal retry behavior. ([#4725])
-
 - **gateway:** A stream-bridge failure no longer cancels a healthy run as if
   the client had disconnected. Both creator-side consumers — the SSE
   `POST /runs/stream` response and `POST /wait` — applied the creator's
@@ -5152,7 +5204,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   request-task cancellation); bridge exceptions propagate without cancelling
   the run, and premature subscription exhaustion raises a server error.
   ([#5623])
-
 - **logging:** Redact credential-bearing header values from urllib3's
   "Failed to parse headers" warning. The dump carries the raw header block
   following the first malformed line, and `UrlRedactionFilter` had no pass
@@ -5164,7 +5215,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the exception text runs the same passes via `exc_text`, which
   `JsonTraceFormatter` now honors instead of re-rendering exceptions itself
   (`logging.enhance.format=json` previously kept leaking). ([#5752])
-
 - **uploads:** The link-failure cleanup arm in the upload staging helper
   (`_link_staged_no_overwrite`) no longer removes a staged name its caller
   still owns. The arm did a hard `os.unlink()` tolerating only
@@ -5176,7 +5226,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `_remove_staged_file`, so a removal failure can never mask the link error;
   with `unlink_staged=False` the caller cleans up via `_abort_upload_temp`.
   ([#5763])
-
 - **events:** A cancelled JSONL snapshot no longer releases the per-thread lock while its
   file scan is still running. `find_latest_ai_message_run_ids()` takes the per-thread
   write lock for one complete thread-log read, but the scan ran through a bare
@@ -5185,7 +5234,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   writer could enter mid-snapshot. The scan now drains through the `_await_owned_task()`
   helper (task name `jsonl-snapshot:{thread_id}`); the first caller `CancelledError`
   stays primary and a read failure is chained as its cause. ([#5795])
-
 - **sandbox:** Hold the AIO cross-process flock until its lifecycle worker settles, even
   when the caller is cancelled. `_discover_or_create_with_lock_async()` dispatched
   discovery, registration and creation through bare `asyncio.to_thread()`; cancelling
@@ -5195,7 +5243,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   create runs inside `await_drained()` so a created sandbox still reaches readiness and
   registration, and the flock is retried with cancellable non-blocking attempts so a
   cancelled waiter exits promptly. ([#5820])
-
 - **helm:** The chart now plumbs the optional lark-cli sandbox runtime images into the
   provisioner. The provisioner reads `LARK_CLI_INIT_IMAGE` and `LARK_CLI_BROKER_IMAGE`
   and Compose and the root README document them, but the chart had no corresponding
@@ -5205,7 +5252,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `provisioner.larkCliBrokerImage` (broker supersedes init) render the matching env var
   on the provisioner Deployment only when set; unset, they are omitted entirely so
   existing releases render an unchanged Pod spec. ([#5835])
-
 - **tenki:** A Tenki `sticky` setting supplied through an environment reference
   (e.g. `sandbox.sticky: $TENKI_STICKY` with `TENKI_STICKY=false`) no longer
   enables host pinning. Environment substitution leaves this provider-specific
@@ -5217,7 +5263,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `true`/`1`/`on`/`yes` enable it, omitted or `null` stays disabled, native
   YAML booleans are unchanged, and an invalid value fails provider
   initialization. ([#5849])
-
 - **config:** `stream_bridge.recovered_stream_cleanup_delay_seconds` now
   rejects booleans, non-finite values, and anything above 86400 at load time,
   like its guarded sibling `heartbeat_interval_seconds`. The field only
@@ -5228,7 +5273,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `stream_ttl_seconds` (default 86400) expired it instead of the configured
   grace delay. `0` stays valid ("delete as soon as END is published") and the
   documented default of 60 is unchanged. ([#5850])
-
 - **community:** DDG `web_search` now warns and falls back to the default of
   5 results when `max_results` in `config.yaml` is a boolean or a fractional
   number, as the README already documents and as `image_search` has done
@@ -5237,7 +5281,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   quietly narrowed its result set instead of flagging the invalid value.
   Integral floats such as `4.0` and numeric strings keep their behavior.
   ([#5852])
-
 - **llm:** `strip_think_blocks()` no longer slows quadratically on model text with many
   unclosed `<think>` tags. The helper cleans model text used by goal evaluation,
   suggestions and input polishing, and its complete-block regex retried the remaining
@@ -5246,7 +5289,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   pass, consuming each matched block once and stopping at the first unclosed opening
   tag; case-insensitive matching, opening-tag attributes, whitespace before the closing
   `>`, and both `truncate_unclosed` modes are unchanged. ([#5854])
-
 - **sandbox:** `ls /mnt/skills` no longer fails with "Directory not found" when only
   category mounts exist. In the default skills projection the provider mounts
   `/mnt/skills/public`, `custom`, `legacy` and `integrations` but maps no `/mnt/skills`
@@ -5255,7 +5297,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   list the categories. `list_dir` now treats a missing host path as an empty listing
   when at least one mapping is mounted inside the requested container path; paths with
   nothing mounted inside them still raise `FileNotFoundError`. ([#5857])
-
 - **examples:** The Jev fetched-content screening example no longer lets a misbehaving
   endpoint or an unusual deployment past its fail-open and data-egress guarantees. A
   deeply nested answer body (`RecursionError`) or a huge `noul` integer
@@ -5270,7 +5311,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   while HTTPS endpoints keep proxy settings. The root README also no longer says the
   excerpt is always PII-redacted: it is sanitized, and redacted only when
   `pii_redaction` is enabled. ([#5858])
-
 - **scheduler:** One scheduler's late completion write can no longer clobber another
   scheduler's fresh claim of the same run. `ScheduledTaskRunRepository.update_status`
   guarded `expected_lease_owner` (and the `protect_terminal` backfill) on a plain
@@ -5281,7 +5321,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   lock — the same task → run lock order every other mutating path in this repository
   uses — with `populate_existing=True` so the identity map serves the fresh row;
   Postgres gains a matching `FOR UPDATE` row read. ([#5860])
-
 - **tools:** A synchronous call on a bound `task` or `batch_task` tool now goes
   through the bound runtime's own submitter and execution capacity instead of
   the process-global fallback. `get_available_tools` wraps the shared tool
@@ -5293,7 +5332,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the singleton had never been wrapped. Both binders now rebind `func` through
   the same `make_sync_tool_wrapper` helper, so both invocation paths of a bound
   copy run the bound coroutine. ([#5861])
-
 - **models:** CLI credential files whose token fields are not strings no
   longer load as "successful" credentials. The loaders in
   `credential_loader.py` guarded container fields, `expiresAt`, and the Codex
@@ -5306,7 +5344,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   tokens are now skipped (strings are stripped of padding, blanks count as
   missing), and a non-string `refreshToken` degrades to empty like
   `account_id`. ([#5864])
-
 - **mcp:** Durable MCP task status and cancel calls now authenticate as the
   task's persisted owner on HTTP/SSE servers with `user_auth` enabled. A task
   that submitted fine inside an authenticated Agent turn then failed every
@@ -5319,7 +5356,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   previous context in `finally`; submit, stdio, and calls without `user_auth`
   keep their original context, concurrent owners stay isolated, and background
   calls still never touch `headers_from_context` request secrets. ([#5870])
-
 - **agents:** Loop detection no longer hard-stops paginated or content-varying
   calls to generic tools. The per-call key kept only the first salient
   argument (`path`/`url`/`query`/`command`/...), so an MCP `fetch` resuming
@@ -5329,7 +5365,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   only the UI-narration `description` of `bash`/`ls`/`glob`/`grep` stays
   excluded (rewording it still cannot dodge detection), while `description`
   elsewhere remains keyed because it can be the payload. ([#5872])
-
 - **middleware:** Input sanitization no longer strips message metadata from
   sanitized user messages. `InputSanitizationMiddleware` rebuilt each
   sanitized `HumanMessage` from four selected fields, so anything outside
@@ -5339,7 +5374,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `content` and `additional_kwargs` replaced, so metadata, identity fields,
   and the message subclass survive while the original request message stays
   untouched. ([#5875])
-
 - **community:** InfoQuest timeout options in `config.yaml` are now normalized the way
   the sibling search/fetch providers normalize theirs. `deerflow.community.infoquest.tools`
   handed the five documented numeric options (`timeout`, `fetch_time`,
@@ -5353,7 +5387,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   value, a blank/non-numeric string or `None` falls back to the documented `-1` (that
   filter is disabled) with a warning naming the rejected key. An already-valid integer
   config produces a byte-identical request. ([#5883])
-
 - **sandbox:** Keep AIO acquire serialization until a started acquire worker settles,
   even when the caller is cancelled. Inside the per-`(user_id, thread_id)` serializer
   region, in-process cache reuse and warm-pool reclaim ran as bare `asyncio.to_thread()`
@@ -5362,14 +5395,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a helper that cancels work still queued (the old behavior) but keeps serializer
   ownership and drains a started worker across repeated cancellation; the flock wait,
   readiness polling, and the skills-projection step remain cancellable. ([#5888])
-
 - **skills:** Managed integration skill discovery stops descending at each skill package
   boundary. Unlike the public and custom skill loaders, the integration walk kept going
   after finding a `SKILL.md`, so a nested evaluation fixture carrying its own
   `SKILL.md` could surface as a runtime skill — or, with a matching frontmatter name,
   replace the real public skill. Provider and namespace directories without a
   `SKILL.md` of their own still expose their nested skills. ([#5890])
-
 - **models:** Claude threads no longer die with HTTP 400 after a few turns
   when prompt caching is on. `ClaudeChatModel._apply_prompt_caching` wrote
   its `cache_control` markers into blocks the request shares with the thread
@@ -5381,7 +5412,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   already present, with caching on or off, so a thread whose checkpoint
   carries stale markers works again on its next turn without a migration.
   ([#5892])
-
 - **subagents:** A durable batch no longer stays `running` forever when its
   last active item dies from an expired lease on its final allowed attempt.
   `claim_items` marked such an item `failed` but never refreshed the parent
@@ -5391,7 +5421,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   becomes `failed`, one with partial success becomes `completed`, failed item
   counts stay visible, and an explicit item retry reopens the batch as before.
   ([#5897])
-
 - **agents:** A provider that reuses a `tool_call_id` across runs no longer
   corrupts the durable delegation ledger. Entries were deduplicated by the raw
   ID with the earlier `run_id` carried forward, so a later run's delegation
@@ -5402,7 +5431,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and terminal-status protection; orphan closure on a new user turn is bounded
   by that run's opening message, and a resumed run without a new user message
   keeps an already-answered entry. ([#5898])
-
 - **sandbox:** Sandbox network-policy mutations now drain across caller cancellation.
   The async wrappers for `consume_network_policy_events()`,
   `deny_pending_network_policy_events()` and `decide_network_policy_request()` offloaded
@@ -5411,7 +5439,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   still changing. All three now route through the cancellation-safe
   `run_sync_lifecycle_operation()` helper: the admitted worker settles first, then the
   original `CancelledError` propagates. ([#5899])
-
 - **tracing:** Langfuse traces now carry the model that actually runs. The
   `model:<name>` tag was injected before model resolution, so a default-model
   run could carry no model tag at all, and a fallback run kept the name of the
@@ -5420,7 +5447,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   assembly, and the embedded client resolves its agent before injecting, so
   both tag the selected default or fallback model while caller-provided
   metadata keeps precedence. ([#5902])
-
 - **runtime:** Image-only user input is now journaled once per run.
   `RunJournal` used the optional text summary to decide the input was already
   captured, and a textless message leaves that summary `None`, so every later
@@ -5429,7 +5455,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the latest image-only turn. Capture is now tracked independently of the
   nullable summary, and the batch scan stops once input is recorded; the media
   content and the empty display text are preserved. ([#5903])
-
 - **mcp:** Make MCP task notification recovery rollback-safe ahead of the
   atomic launch reservation. The worker reused the batch scan timestamp after
   asynchronous run lookups and launches, so retry delays started too early and
@@ -5442,7 +5467,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   snapshot and idempotency key — while no production path writes that state
   yet, so an older Gateway stays compatible after a rollback; the frontend keeps
   polling while a notification is `launching`. ([#5908])
-
 - **subagents:** Cancelled or timed-out sub-agent executions keep token usage
   already reported by completed model calls. A model can finish and report
   usage while model middleware is still awaiting, before the graph publishes
@@ -5453,7 +5477,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   now publishes the token collector's final cumulative snapshot before the
   terminal status is chosen; first-terminal-write semantics, cancellation
   propagation, and parent-journal deduplication are unchanged. ([#5910])
-
 - **paths:** IDs with a trailing newline are now rejected by the path
   isolation validators. Python's `$` also matches just before a final newline,
   and `_validate_user_id`, `_validate_project_id`, and
@@ -5462,7 +5485,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   filesystem bucket the strict grammar never intended. All three now require a
   `fullmatch`, so only documented characters through end-of-string are
   accepted. ([#5911])
-
 - **uploads:** An upload filename containing a NUL character no longer fails
   the request with a 500. Normalization let the embedded NUL through to
   `os.lstat()`, which raised an unhandled `ValueError`
@@ -5470,7 +5492,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `normalize_filename` now rejects such names up front; in a multi-file
   request the invalid file is skipped and the remaining valid files are still
   stored. ([#5915])
-
 - **goal:** The agent now sees the active `/goal` on every model call.
   `ThreadState.goal` previously reached only the goal evaluator, so a goal set
   through `PUT /goal`, `DeerFlowClient.set_goal()` or the TUI was ignored, and
@@ -5483,7 +5504,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `active_goal` joins the input sanitizer's tag denylist, so user input and
   remote results cannot forge it; subagents, whose state carries no goal, are
   unaffected. ([#5917])
-
 - **frontend:** A fence line with an info string (`` ```python ``) no longer
   closes the open code block. CommonMark requires a closing fence to be at
   least as long as the opening one and to carry no info string, but of the
@@ -5495,7 +5515,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   export deleted the whole `<project>`/`<documents>` span, losing user text.
   Both scanners now share the `isClosingFence` predicate that moved into
   `core/streamdown/fences.ts`. ([#5919])
-
 - **skills:** Skill discovery no longer rescans the same tree through symlink
   cycles. `load_skills()` followed directory links but never detected a link
   back to an ancestor, so two cyclic links in a namespace repeatedly expanded
@@ -5505,7 +5524,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   is already on the current traversal branch, across local and user-scoped
   public/custom/integration/legacy discovery; independent aliases of an
   external tree remain discoverable. ([#5921])
-
 - **backend:** asyncio subprocesses work again on native Windows. Since
   #3236, a `backend/sitecustomize.py` switched every Python process with
   `backend/` on `sys.path` to `WindowsSelectorEventLoopPolicy`, whose loop
@@ -5517,7 +5535,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   either loop. The file is deleted, restoring Python's default Proactor loop
   on Windows; the postgres benchmark script now sets the selector policy only
   for its own postgres cases. ([#5937])
-
 - **sandbox:** Non-finite OpenSandbox timeouts are rejected at provider construction
   instead of failing the first sandbox acquire. These options are provider-specific
   extras, so YAML `.nan` and `.inf` survived `SandboxConfig` validation and the
@@ -5526,7 +5543,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `request_timeout` and `ready_timeout` must now be finite positive numbers and
   `sandbox_timeout` finite non-negative (`0` still means explicit cleanup);
   `config.example.yaml` documents the requirement. ([#5944])
-
 - **subagents:** Context snapshots no longer drop Anthropic-native `document`
   blocks. With `context_mode="snapshot"` delegation, `document` was missing
   from the recognized media types, so the block was silently discarded and a
@@ -5539,7 +5555,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   hidden snapshot messages skip the input-sanitization middleware; an
   unserializable document falls back to the existing historical-media omission
   notice. ([#5948])
-
 - **sandbox:** The middleware path that applies a network-approval response now drains
   across cancellation. `SandboxMiddleware.abefore_agent()` offloaded
   `_apply_network_policy_response()` with bare `asyncio.to_thread()`, so cancelling the
@@ -5548,7 +5563,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   state — bypassing the provider wrapper that #5899 already made cancellation-safe.
   The async bridge now routes through `run_sync_lifecycle_operation()`; the synchronous
   `before_agent()` path is unchanged. ([#5949])
-
 - **runtime:** Subagent step-event flushes now survive host cancellation. A flushed
   batch was removed from `_pending` before `RunEventStore.put_batch()` was awaited, and
   only ordinary failures were re-buffered — `CancelledError` bypassed the
@@ -5557,7 +5571,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   runs in its own shielded task and absorbs repeated cancellation; if the drained write
   fails, the batch is re-buffered before the original `CancelledError` propagates, and
   ordinary store failures still log and re-buffer. ([#5950])
-
 - **context:** Two distinct `task_note` additions in one model response can no longer
   silently delete an existing note. Each call read the same state snapshot and merged
   its own update, so with seven existing notes the merged result kept only the last
@@ -5569,7 +5582,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   available in the next batch. For deployments with `task_continuity.enabled`, this
   changes the documented last-eight retention behavior for parallel overflow.
   ([#5954])
-
 - **mcp:** Deleting a thread now also tears down its persistent MCP sessions.
   `DELETE /api/threads/{id}` removed checkpoints, runs, events, feedback, and
   the live browser session but never the thread's persistent stdio MCP sessions
@@ -5581,7 +5593,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   step, matching the legacy scope and every incarnation of that user/thread
   (established entries and in-flight creations) while leaving other threads
   untouched; a failing teardown still deletes the thread. ([#5956])
-
 - **tools:** Community search tools no longer fail on an infinite
   `max_results`. The coercion guards caught only `TypeError` and `ValueError`,
   but `int(float("inf"))` raises `OverflowError`, and both `yaml.safe_load`
@@ -5592,7 +5603,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and sofya (`max_results`, plus Sofya's content limit) now also catch
   `OverflowError`, so an infinite value falls back to the default like any
   other invalid input. ([#5957])
-
 - **models:** Whitespace-only Codex CLI credentials are now rejected at model
   initialization instead of producing an invalid `Authorization` header. The
   loader accepted any string token, so an `auth.json` with
@@ -5602,7 +5612,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   whitespace-only values count as missing credentials (the existing
   "Codex CLI credential not found" error), and a valid token keeps working
   with surrounding whitespace normalized away. ([#5959])
-
 - **agents:** An agent name differing only by a trailing newline is now
   rejected with 422 instead of a 500. The Gateway router validated
   `AGENT_NAME_PATTERN` with `.match()`, and Python's `$` matches before a
@@ -5613,7 +5622,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `agent_facts_directory()` build a bucket its own validator then refuses to
   read back. Both validators now use `fullmatch`; nothing previously valid
   changes. ([#5960])
-
 - **gateway:** Gateway shutdown now closes pooled MCP sessions instead of
   abandoning them. The lifespan teardown closed the browser session manager but
   never `MCPSessionPool`, although a pooled session's owner task is the only
@@ -5623,7 +5631,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the browser-session step, bounded by the shared shutdown-hook timeout and
   best-effort: a timeout or failure is logged and the remaining teardown
   proceeds. ([#5961])
-
 - **tui:** The headless `deerflow --print` and `--json` runners no longer leak
   a Python traceback when a run fails. Session creation, thread resolution,
   and stream iteration ran without an error boundary, so any raised exception
@@ -5633,7 +5640,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `{"type": "error", "data": {"message": ...}}` record — every stdout line
   stays valid NDJSON even on a mid-stream failure — and exits 1.
   `KeyboardInterrupt` and `SystemExit` still propagate. ([#5963])
-
 - **mcp:** MCP task notification launches are now reserved atomically before an
   Agent run is created. The worker used to launch the run before persisting any
   durable launch phase, so if ownership expired or was reclaimed during that
@@ -5646,7 +5652,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   409, 422, 501) dead-letter immediately, and ambiguous 408/429/500 outcomes or
   cancellation preserve the `launching` snapshot for reconciliation without
   consuming the retry budget. No schema migration. ([#5965])
-
 - **mcp:** MCP connections created in the web editor now belong to the
   signed-in user instead of the deployment. The editor wrote deployment-wide
   configuration, so a connection added with a user's credentials became a
@@ -5664,7 +5669,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   recheck current administrator authority at discovery, invocation, and durable
   submit/poll/cancel (demotion fails closed). `config.yaml` tools and existing
   `extensions_config.json` entries remain shared. ([#5966])
-
 - **middleware:** PII redaction no longer empties `response_metadata` on the
   user messages it rewrites. The middleware hand-built the redacted
   `HumanMessage` from content/id/name/`additional_kwargs`, so a message
@@ -5675,7 +5679,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   by reference) and `response_metadata`, keeping `id`, `name`, and the message
   subclass without sharing mutable state with the original. Placeholders and
   redaction behavior are unchanged. ([#5968])
-
 - **agents:** Caller-attached `response_metadata` on the user turn now survives
   dynamic-context injection. `DynamicContextMiddleware` rebuilt the injected
   copy as a fresh `HumanMessage` carrying only
@@ -5686,7 +5689,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `original.model_copy(update={"id": ...})`, keeping the documented
   `{id}__user` id swap; `UploadsMiddleware`'s user-message rewrite gets the
   same treatment. ([#5977])
-
 - **persistence:** A literal `+` in a PostgreSQL DSN query string survives
   schema injection. When `database.postgres_schema` is set,
   `dsn_with_search_path()` round-tripped existing parameters through
@@ -5697,7 +5699,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   existing parameters through byte-for-byte and only appends (or merges into)
   a percent-encoded `options=-c search_path=<schema>`; keyword-form DSNs and
   `postgresql+asyncpg://` normalization are unchanged. ([#5978])
-
 - **goal:** An active goal now survives a failed artifact delivery. A run could write
   and present an output, receive a satisfied goal evaluation, and delete the goal — and
   only afterwards would delivery verification mark the same run as an error (a terminal
@@ -5710,7 +5711,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   retains the original goal and counters without an extra model call; normal
   completion, including runs without changed outputs, still clears the goal.
   ([#5980])
-
 - **config:** `extensions_config.json` saved as UTF-8 with a byte-order mark
   now loads. Both the runtime loader (`ExtensionsConfig.from_file`) and the
   raw read-modify-write reader behind Gateway skill toggles opened the file
@@ -5720,7 +5720,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   valid configuration. Both readers now accept an optional leading BOM;
   writes remain UTF-8 without one and raw `$VAR` references are still
   preserved. ([#5983])
-
 - **agents:** A non-finite `read_file` line bound no longer crashes the run
   inside loop detection. A model-emitted number such as `start_line: 1e999`
   parses to `float("inf")`, and `_coerce_line_number()`'s `int()` conversion
@@ -5730,7 +5729,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `OverflowError` like its other unusable inputs: the bound falls back to
   `None` and the call keys as the existing open-ended read; integral bounds
   behave exactly as before. ([#5990])
-
 - **integrations:** Completing a Lark authorization no longer flips the
   integration panel's runtime card to "not ready" in remote provisioner mode.
   The mutation response verified authorization but never probed sandbox
@@ -5743,7 +5741,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   other credential operations for a network timeout). The status API exposes
   `sandbox_runtime_probed`, letting the frontend keep previously confirmed
   runtime fields only for unprobed mutation responses. ([#5994])
-
 - **channels:** Feishu and DingTalk inbound attachments are now readable by
   the sandbox. In AIO/Docker sandbox mode the sandbox runs as a non-root user
   over the bind-mounted thread directory, and these two channels persist
@@ -5753,7 +5750,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   right after their own write, matching the channel manager and HTTP upload
   paths (Telegram was already covered by #5581). Local sandboxes are
   unaffected. ([#5998])
-
 - **database:** `DatabaseConfig` now validates `pool_size`, `pool_recycle`,
   and `command_timeout` strictly. YAML booleans were silently coerced to
   `1`/`0`, so `pool_size: true` limited the pool to a single connection and
@@ -5763,7 +5759,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `pool_size` and `pool_recycle` now enforce positive integers, and
   `command_timeout` rejects booleans and non-finite floats while `null` still
   disables the timeout. ([#6009])
-
 - **community:** The Firecrawl tools now close the pooled async HTTP client
   each call constructs. Since the async migration, `_get_firecrawl_client()`
   builds a fresh `AsyncFirecrawlApp` per call, and that app eagerly creates an
@@ -5773,7 +5768,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `_aclose_firecrawl_client` helper: a client without the internal
   `_v2_client.async_http_client` handle degrades to a no-op, and close failures
   are logged without masking the tool's own result or error. ([#6013])
-
 - **capabilities:** Administrators can manage shared MCP servers again from the
   Capability Center. After #5966 the Platform provided section rendered the
   same read-only projection for admins and ordinary users, so add, edit,
@@ -5785,7 +5779,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   configuration. MCP queries distinguish both scope and user ID, and control
   accessible names carry the localized ownership section, so same-named shared
   and personal connections are distinguishable. ([#6018])
-
 - **gateway:** Drain managed subagent store mutations across request cancellation. The
   create/update/delete endpoints of `/api/subagents` offloaded persistent store writes
   with bare `asyncio.to_thread()`: cancelling the request stopped only the awaiter, so
@@ -5794,7 +5787,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `await_drained()` helper (wrapped as one `_run_store_mutation` helper), so an
   admitted mutation reaches terminal state before the caller's cancellation propagates;
   catalog reads and validation keep their existing cancellation semantics. ([#6023])
-
 - **gateway:** Drain the admin-only managed-model save across request cancellation.
   `PUT /api/managed-models` persisted the shared encrypted model catalog through bare
   `asyncio.to_thread(_save, body)`: cancelling the request stopped only the awaiter, so
@@ -5804,7 +5796,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exception type only before the consumed result discards it — storage errors can carry
   credentials. Catalog reads and connection probes keep their existing cancellation
   semantics. ([#6024])
-
 - **config:** Numeric config fields that accepted silently-broken values now
   carry range bounds and boolean rejection, mirroring the earlier
   stream-bridge and database-pool guards. `sandbox.port` is bounded to
@@ -5819,7 +5810,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   YAML `true` no longer coerces to `1` on any of them; documented-valid
   values such as `sandbox.idle_timeout: 0` and `null` timeouts are unchanged.
   ([#6026])
-
 - **frontend:** On Windows, `pnpm dev` now binds `127.0.0.1` by default. The
   dev server otherwise listens on `0.0.0.0`, and when Hyper-V/WSL2/winnat
   reserved the port range covering 3000, startup failed with
@@ -5830,7 +5820,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   before). The default `make dev` flow is unaffected — the dev nginx upstream
   already targets `127.0.0.1:3000` — and macOS/Linux behavior is unchanged.
   ([#6034])
-
 - **gateway:** The bundled-interpreter repair hint no longer shows a
   backslash-doubled interpreter path on Windows. The HTTP 400 detail for a
   bundled MCP server pointing at a different Python interpreter interpolated
@@ -5840,7 +5829,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a JSON string for the server config and prints the raw path alongside for
   terminal use; POSIX paths only change in where the quotes come from.
   ([#6040])
-
 - **channels:** Inbound Slack text now decodes the three entities Slack always
   escapes, so `if a < b && c > d: print("R&D")` reaches the agent as typed
   instead of `if a &lt; b &amp;&amp; c &gt; d: print("R&amp;D")`. `&lt;`,
@@ -5850,7 +5838,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   once. Previously the corrupted text drove the agent's reasoning, could leak
   `&lt;` into files it wrote, and was escaped a second time when quoted back
   into Slack. Outbound escaping is unchanged. ([#6045])
-
 - **sandbox:** Glob patterns with a directory prefix are now root-relative, and `**` is
   recursive. `path_matches` — behind the `glob` tool and the `grep` `glob=` filter on
   every provider — used `PurePosixPath.match`, which on Python 3.12+ matches from the
@@ -5858,7 +5845,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   deeper files, while `docs/*.md` also matched `vendor/docs/b.md`. Patterns containing
   `/` now match segment by segment from the search root, with `**` spanning zero or
   more directories; basename-only patterns still match at any depth. ([#6046])
-
 - **cli:** `deerflow --print` and `--json` now exit 1 when a run ends in an
   LLM error fallback. Provider failures are not raised —
   `LLMErrorHandlingMiddleware` turns them into an AI message flagged
@@ -5869,7 +5855,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   adds `Error: LLM request failed (error_type=…, error_reason=…)` on stderr;
   `--json` appends a terminal error record after the streamed events. A
   mid-run fallback followed by a real final answer still exits 0. ([#6056])
-
 - **frontend:** The run duration now labels the reasoning disclosure instead
   of sitting in a separate footer row. A completed answer showed a generic
   reasoning header above the answer and a duration line under the hover-only
@@ -5881,7 +5866,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   duration footer is gone. Streaming and history entries without a duration
   keep the generic label, restored reasoning starts collapsed, and live
   reasoning still closes one second after completion. ([#6057])
-
 - **sandbox:** Every sandbox bash command now carries the authenticated user id in
   `DEERFLOW_USER_ID`. Skill scripts run as bash subprocesses inside the sandbox and
   cannot reach the Gateway auth context, so user-scoped skills had no way to learn the
@@ -5890,7 +5874,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   remote sandbox paths, ahead of the `DEERFLOW_CHANNEL_USER_ID` prefix; Windows publishes
   it via the subprocess environment instead. The variable is informational — commands can
   overwrite it — and authorization still resolves server-side. ([#6058])
-
 - **channels:** Long Discord replies split into consecutive messages now
   reconstruct exactly what the agent wrote. `_split_text` ended each chunk
   just before the newline it split on and stripped it from the remainder, so
@@ -5900,7 +5883,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `"".join(_split_text(text))` returns the original text for any input while
   every chunk still fits Discord's 2000-character limit. Replies under the
   limit and the empty string behave as before. ([#6062])
-
 - **goal:** The `/goal` evaluator now sees the assistant's tool calls and the tools'
   results, so completed file work no longer stands down with `missing_evidence`. It read
   only user and assistant text: `format_visible_conversation()` dropped tool messages,
@@ -5916,7 +5898,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   hidden assistant message's calls stay out while a clarification prompt remains. The
   system text adds fixed rules that tool results are data and never instructions and
   that a successful result alone does not show the goal is met. ([#6068])
-
 - **goal:** A failed `/goal` evaluator call is now recorded on the goal like the other
   stand-downs. The worker logged "Goal evaluator failed" and returned without writing:
   the goal stayed active with no `last_evaluation` after a first evaluation, or kept a
@@ -5928,7 +5909,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (APIConnectionError).") because a provider's error message can carry request details.
   The goal still stays active with no retry and no hidden continuation, and nothing is
   recorded if the run was aborted meanwhile. ([#6073])
-
 - **frontend:** In `/workspace/chats/new`, the first streamed assistant steps
   no longer render above the submitted question. The local human anchor that
   pins first-turn order was compared against the SDK thread id — undefined
@@ -5937,7 +5917,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   until the turn settled. First-turn ordering is now tied to the displayed
   conversation (`displayThreadId ?? threadId`) and the anchor survives
   creation confirmation; switching conversations still clears it. ([#6074])
-
 - **goal:** The `/goal` evaluator now sees the user's answer to a Human Input Card, and
   the lead prompt stops coaching scripts when no `bash` tool is bound. The web UI sends
   a card answer as a hidden human message, which `format_visible_conversation()`
@@ -5952,7 +5931,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   without bash the script guidance becomes one line telling the model to work out
   results directly and write them with `write_file` while the subagent section drops
   its `bash` examples. With bash bound, the prompt is unchanged. ([#6082])
-
 - **gateway:** Drain the agents router's persistent writes across request cancellation.
   `POST /api/agents`, `PUT /api/agents/{name}`, `DELETE /api/agents/{name}` and
   `PUT /api/user-profile` ran their store writes through bare `asyncio.to_thread`: a
@@ -5964,14 +5942,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   cancellation propagates; a lost failure is logged with the exception type only, and
   expected domain errors such as `AgentExistsError` still reach the connected caller as
   its 409. Reads stay cancellable: abandoning them loses nothing. ([#6087])
-
 - **frontend:** APNG, AVIF, and WebM artifacts now show media icons in the
   workspace artifact list and viewer instead of the generic document icon.
   All three formats are previewable in the browser, but `getFileIcon` had no
   case for their extensions: `apng` and `avif` now map to the image icon and
   `webm` to the video icon, matching the existing preview support. Unknown
   extensions keep the document fallback. ([#6089])
-
 - **frontend:** Saved `Dockerfile` and `Makefile` artifacts now open as
   editable source instead of falling back to the unsupported-file download
   view, even though both names were already in the language map.
@@ -5980,7 +5956,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   contains a dot — never resolved to its map entry. Detection now runs on the
   basename; existing suffix and hidden-file mappings are unchanged, and
   streaming write-file previews keep their own text fallback. ([#6091])
-
 - **mcp:** Drain personal MCP configuration writes across caller cancellation.
   Personal config writes ran the durable file mutation through bare
   `asyncio.to_thread(_mutate, ...)`, so a request cancelled after the worker
@@ -5989,20 +5964,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the cancellation-safe `await_drained()` helper: the route stays alive until
   the started write settles, then the original `CancelledError` propagates.
   The read-only path keeps its existing cancellation semantics. ([#6093])
-
 - **sandbox:** The local container backend pins `encoding="utf-8"` and
   `errors="replace"` on every text-mode docker/container-runtime subprocess
   call. On hosts whose locale is not UTF-8 (e.g. cp936 Chinese Windows),
   platform-default decoding previously lost entire output streams —
   `stdout`/`stderr` came back `None` — crashing JSON-parsing call sites or
   silently returning empty results. ([#5905])
-
 - **uploads:** Cancelling an upload now waits for an already-running document
   conversion worker to finish before removing its temporary source file, so
   cleanup can no longer delete a file the converter is still reading.
   Cancellation can therefore take as long as the conversion; it is still
   propagated and no Markdown is written for the cancelled conversion. ([#5999])
-
 - **agents:** The read-before-write block message now includes the existing
   file's line count and a concrete `read_file` range hint instead of a vague
   "read the last ~30 lines", and an inverted range returns
@@ -6010,65 +5982,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   misleading "no lines in range" wording that models misread as a short file.
   In-band no-content `read_file` results no longer stamp a read mark that
   would open the write gate. ([#6020])
-
 - **frontend:** Artifact editing now requires complete file content: a
   truncated byte-range preview no longer becomes the editing baseline (it can
   carry the same ETag as the full file), fixing reverted edits that stayed
   "unsaved" and deleted tails that silently returned. Existing drafts survive
   partial reloads, and Exit editing stays available while a reload is loading,
   truncated, or failing. ([#6036])
-
 - **models:** The vLLM provider falls back to the legacy `reasoning_content`
   wire field when `reasoning` is absent or null on non-streaming responses,
   streaming deltas, and follow-up tool-call turns, so reasoning from older
   vLLM-compatible endpoints is preserved; a payload carrying both fields keeps
   `reasoning`. ([#6048])
-
 - **discord:** When `discord.py` is missing, the Discord channel's startup
   error now points at the optional dependency extra (`uv sync --extra
   discord`) instead of `uv add discord.py`, which would rewrite
   `pyproject.toml` in a tree that startups re-sync with `uv sync --locked`.
   ([#6054])
-
 - **telegram:** Outbound Telegram messages are now split (and streaming
   previews truncated) by UTF-16 code units — the unit Telegram measures its
   4096-character limit in — instead of Python code points. Emoji-heavy replies
   previously passed the code-point check yet exceeded the real limit, got a
   deterministic 400 "Message is too long", and were dropped after retries; a
   non-BMP character is also never split across two chunks now. ([#6067])
-
 - **skills:** Custom-skill mutations (edit, delete, rollback, install, and
   enable/disable) now drain their persistence tail across request
   cancellation: the write, its history entry, and the skills prompt-cache
   refresh settle together before cancellation propagates, so a cancelled
   request can no longer leave a skill file without a matching history record
   or a stale prompt cache. ([#6078])
-
 - **subagents:** Tool results from `return_direct=True` tools (including tools
   contributed by extension middleware) now reach the caller instead of being
   lost to the preceding assistant message: direct-return outputs are returned
   in tool-call order, and a failed direct tool marks the task failed through
   the existing `subagent_error` contract while preserving the batch outputs,
   including successful siblings. ([#6083])
-
 - **memory:** Memory mutation endpoints (clear, fact create/update/delete, and
   import) now drain their persistence write across request cancellation via
   `await_drained`, so an admitted write settles before cancellation
   propagates instead of the request unwinding while the storage worker is
   still running. ([#6092])
-
 - **paths:** Creating host-visible paths now rejects Windows reserved device
   names (`CON`, `PRN`, `AUX`, `NUL`, `COM1-9`, `LPT1-9`) and segments ending
   with a space or dot, on every OS, across upload filenames, local sandbox
   tool and bash paths, and custom-skill support paths. Existing files stored
   under such a name remain readable and editable. ([#6102])
-
 - **frontend:** Web-fetch result titles no longer show trailing closing
   Markdown hashes: `# Release Notes ###` now labels the workspace link
   "Release Notes". Literal hashes are preserved (`C#`, escaped hashes, hashes
   followed by non-ASCII whitespace), and extraction uses a backward suffix
   scan to avoid quadratic backtracking on long titles. ([#6103])
-
 - **agents:** Externalized tool outputs are now published atomically: content
   is written to a sibling temp file and renamed into place, so a write that
   fails part-way (a full disk, an interrupted request) no longer leaves a
@@ -6076,13 +6038,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the sanitized tool call id instead of a random suffix, so host and sandbox
   paths agree on one name per call and re-externalizing the same output no
   longer leaves two files behind. ([#6109])
-
 - **auth:** OIDC login no longer fails with a 500 when the provider's ID token
   carries a non-ASCII or non-string `nonce` claim. Such claims are rejected
   through the normal validation path, so the callback redirects to
   `sso_failed` as with any other nonce mismatch; a matching non-ASCII nonce
   is still accepted byte-for-byte. ([#6115])
-
 - **sandbox:** In Lark broker mode, fresh AIO Bash runs close inherited pipe
   stdin, so commands that read default input get immediate EOF instead of
   hanging; persistent Shell commands are untouched, and explicit pipelines,
@@ -6093,7 +6053,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `DEERFLOW_LARK_BROKER_STDIN_TAIL_SECONDS`, default 2 seconds); broker logs
   record only argument count, exit code, and elapsed time, never argument
   values. ([#6117])
-
 - **uploads:** Filenames matching the reserved staging pattern
   `.upload-*.part` are rejected with a 400 and a rename hint before any file
   in the batch is written or a sandbox acquired, so a reserved name can no
@@ -6104,20 +6063,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   instead of 500. **Behavior change:** filenames that previously uploaded
   fine now require a rename, and older thread uploads matching the pattern
   are not migrated. ([#6122])
-
 - **frontend:** A re-persisted message keeps its original position in the
   thread. Deduplicating a history row re-persisted under a later journal
   sequence used to push the message towards the tail; the surviving copy is
   now re-anchored to the earliest sequence its identity held, preferring the
   earliest visible copy so a hidden control row cannot move its visible twin.
   Content still converges to the newest copy. ([#6128])
-
 - **frontend:** `.jl` files resolve to the Julia language again. The code-file
   extension map keyed Julia by the language name instead of the `jl`
   extension, so Julia files missed code-file detection and the editor
   received the extension `jl` as the language rather than `julia`; the map
   now carries both `jl` and `julia` keys pointing at `julia`. ([#6130])
-
 - **persistence:** `RunEventStore.list_messages` honors both cursors at once:
   with `after_seq` and `before_seq` supplied, the memory, JSONL, and database
   backends now apply both exclusive bounds before `limit` and return the
@@ -6125,7 +6081,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   previously ignored `after_seq` whenever `before_seq` was set and returned
   the tail of the window; keep `before_seq` fixed and advance `after_seq` to
   page forward through a bounded history range. ([#6136])
-
 - **paths:** Uploads, new skill support files, and new local sandbox paths
   reject Windows superscript device names on every platform — Windows treats
   `COM¹`/`LPT¹` through `COM³`/`LPT³`, including extensions such as
@@ -6133,7 +6088,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   unusable on Windows. Ordinary names like `COM⁴.txt` or `COM¹notes.txt`
   remain allowed, and read/removal paths keep their existing exemptions.
   ([#6148])
-
 - **uploads:** The reserved staging-name check now also rejects Win32 aliases:
   names that become `.upload-*.part` after trimming trailing dots and spaces
   or case-folding — such as `.upload-notes.part.`, `.upload-notes.part `, or
@@ -6142,7 +6096,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   New project shelf names apply the same check on upload, promotion, and
   attach; legacy alias files already on disk stay visible and are not swept.
   ([#6149])
-
 - **agents:** Concurrent externalizations of the same tool output no longer
   share one temporary file. Each writer creates a unique sibling
   `.tool-output-*.tmp` with exclusive creation and publishes it by atomic
@@ -6152,41 +6105,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   so mounted sandboxes running under another UID keep read access; an unclean
   shutdown can still leave `.tool-output-*.tmp` leftovers, which have no
   automatic sweeper. ([#6150])
-
 - **frontend:** Artifact files named `constructor`, `__proto__`, or dotted forms
   like `data.constructor` are no longer misclassified as code files: language
   detection now checks only the language map's own entries instead of its
   inherited properties, so these filenames keep the existing download fallback
   rather than failing to open an editor. ([#6152])
-
 - **models:** The Codex provider returns the completed response as soon as the
   `response.completed` SSE event arrives instead of reading until the connection
   closes, so a stream the server keeps open can no longer turn a finished answer
   into a read-timeout failure. `response.failed`, `response.incomplete`, and
   `error` events now raise with the provider's error code/message or incomplete
   reason, and partial output is never returned as a successful answer. ([#6155])
-
 - **nginx:** Opening the stack at `http://127.0.0.1:2026` or `http://[::1]:2026` now
   redirects (301, safe methods only) to the same URL on `localhost`, so the login
   session created at one loopback spelling is visible at the other. Browsers scope
   cookies per host, which previously split the session across the two origins.
   API calls and WebSocket handshakes pass through untouched, and non-loopback
   hostnames never match. ([#6158])
-
 - **config:** The shipped Gemini example for Google's official OpenAI-compatible
   endpoint now uses the standard reasoning contract (`thinking: required`,
   `dialect: none`, supported `reasoning_effort` values) on
   `gemini-3.1-pro-preview`, instead of a top-level `thinking` field that the
   endpoint rejects with HTTP 400 `Unknown name "thinking"`. Migration notes cover
   profiles copied from the previous example. ([#6161])
-
 - **sandbox:** The Tenki cloud sandbox provider now requires SDK 1.4.0+, which can
   return `timed_out=True` together with exit code zero. Timed-out commands keep
   their partial output and report `Error: command timed out` with
   `Exit Code: 124` instead of appearing to succeed; they are not retried and the
   sandbox stays usable. Warm-pool health probes reject timed-out or failed probes
   even when the output contains an `ok` line. ([#6162])
-
 - **uploads:** Converted upload outlines and previews now validate the source's
   modification timestamps in addition to device, inode, and size, so rewriting an
   uploaded document in place with different bytes of the same length no longer
@@ -6195,13 +6142,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with `uploads.auto_convert_documents: true` to restore conversion; files stay
   available and the unvalidated Markdown shows as a standalone file in the
   historical listing. ([#6165])
-
 - **tui:** The TUI composer is now a multiline editor, so pasted code, stack traces,
   and multi-paragraph prompts keep their line breaks and indentation, and `Enter`
   sends the complete document. Up/Down move the cursor inside the input and fall
   back to input history on the first/last visual row (wrapped lines included),
   leaving the slash palette and PageUp/PageDown transcript keys unchanged. ([#6168])
-
 - **config:** `tool_output` character/count budgets and every per-tool
   `tool_overrides` value now require non-negative integers: YAML booleans are
   rejected instead of being coerced to `0`/`1`, and negative overrides — which
@@ -6209,13 +6154,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `tool_overrides: {web_fetch: -1}` — fail configuration loading with the field
   and tool named. Numeric strings, integer-valued floats, and explicit zero keep
   working; a zero per-tool override still disables only externalization. ([#6172])
-
 - **telegram:** The rich-message length check now measures the reply in UTF-16 code
   units, the way Telegram enforces its cap, instead of Python code points.
   Emoji-heavy replies that fit by code points previously passed the check, were
   rejected by Telegram, and degraded to chunked plain text, losing the reply's
   markdown formatting and wasting an API round trip. ([#6174])
-
 - **community:** The Firecrawl and fastCRW web-search tools normalize a
   configured `max_results` before handing it to the search client. The raw
   YAML value previously went into the request's `limit` unvalidated;
@@ -6223,7 +6166,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   non-numeric strings, and an explicit null now log a warning and fall back
   to the default of 5, while integer strings such as `"8"` are accepted.
   ([#6175])
-
 - **frontend:** HTML artifact previews ignore literal `<base>` text that is
   not a real element. Injecting the artifact base href was previously skipped
   by a regex that also matched a base tag in a comment, in script text, or
@@ -6231,7 +6173,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the app origin and their images and styles broke. Detection now parses the
   document in an inert `<template>` and honors only a real `<base>` element;
   documents without any base text skip DOM construction entirely. ([#6176])
-
 - **artifacts:** CSV/TSV previews survive a byte-range sample that splits a
   CRLF line ending. When the truncated sample ended halfway through a CRLF,
   the parser treated the leftover CR after a quoted final field as malformed
@@ -6240,7 +6181,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   is discarded as before. LF-first files with later CRLF records are covered
   too; complete CR-only files and malformed quotes keep their behavior.
   ([#6180])
-
 - **frontend:** Inline composer references delete atomically with Backspace
   or Delete, and native undo restores them. A completed reference is a
   contenteditable object; with the caret adjacent, deletion now selects the
@@ -6249,7 +6189,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   reference's `@` separator no longer reopens the mention picker on caret
   navigation, and later edits keep a conversation reference's title and
   agent binding. ([#6184])
-
 - **scheduler:** A scheduled-task PATCH with an explicit `assistant_id: null`
   resets the task to `lead_agent`. The update handler built its change set
   with `exclude_none=True`, so a client could pin a task to a custom agent
@@ -6258,14 +6197,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `lead_agent` without re-resolving the agent config, and omitting the field
   keeps the current agent, including when that custom agent has since been
   deleted. ([#6185])
-
 - **config:** `title.max_words` and `title.max_chars` reject YAML booleans.
   Pydantic coerced `true` into the integer `1` before the range check, so a
   misaligned `true` next to neighbouring boolean knobs silently capped
   generated thread titles at one word or one character; both fields now fail
   validation with "must be an integer, not a boolean". Numeric strings such
   as `"80"` remain valid. ([#6187])
-
 - **uploads:** Markdown upload outlines no longer treat indented bold lines
   as headings. Converted PDF text frequently contains examples such as
   `    **PART II**`; four-space- or tab-indented lines were picked up as
@@ -6274,7 +6211,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Root-level indented code is now skipped for every heading style, while
   PDF-style bold headings with up to three leading spaces still work.
   ([#6194])
-
 - **artifacts:** Artifact content revisions refresh when an output file is
   atomically replaced, even if the replacement preserves size and
   modification time. The preview/save SHA-256 was cached by path, mtime, and
@@ -6285,72 +6221,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ETags without hashing the whole file, and conditional byte ranges require
   a matching ETag, with date-form `If-Range` receiving the full current file.
   ([#6195])
-
 - **channels:** Configuring or disconnecting a channel's runtime credentials now treats the
   `runtime-config.json` write and the live `app.state.channels_config` reconciliation as one
   cancellation-owned commit: the request's `CancelledError` is delivered only after both the
   durable store update and the in-memory cache have settled, so disk state and the running
   Gateway can no longer diverge when a client cancels mid-commit. ([#6198])
-
 - **wechat:** WeChat QR login persists every auth-state transition through a drained write, so
   once iLink reports `confirmed`, the `wechat-auth.json` state file contains the confirmed
   `bot_token` and bot id before the QR task's cancellation can propagate; the in-memory
   credential is never exposed without its durable copy. ([#6199])
-
 - **gateway:** Run creation no longer imports the lead-agent stack on the event loop:
   `start_run()` resolves the agent factory through the dedicated assembly pool, so the cold
   first run after startup (a multi-second import) no longer stalls every concurrent request,
   SSE stream, and channel message, and a failed factory import still prevents the run from
   being admitted. ([#6206])
-
 - **mcp:** The five MCP configuration endpoints (update config, create/update/delete a server,
   toggle a server's state) now run the `extensions_config.json` read-modify-write plus the MCP
   tools-cache reset as one cancellation-owned unit: a cancelled request no longer detaches
   from the worker holding the config lock or skips the cache reset, which could leave the
   tools cache stale against the new configuration; cancellation propagates only after both
   settle. ([#6210])
-
 - **notifications:** Notification delivery claims are fenced with a per-claim token. If a
   stalled worker resumes after the stale-sending timeout reassigned its delivery, its late
   `mark_sent`/`mark_failed` completion is ignored instead of flipping the current worker's
   `sending` delivery back to `pending` and burning an extra retry attempt; claim tokens are
   cleared whenever a delivery leaves `sending`. ([#6211])
-
 - **channels:** Feishu and DingTalk restarts no longer orphan a still-live SDK worker. When
   the bounded `stop()` join times out but the provider thread keeps running, the channel
   reports teardown failure (`ChannelStopTimeout`) and `ChannelService` retains the old
   instance and defers replacement instead of treating the channel as stopped; the wedge is
   logged as a warning instead of a full traceback on every retry. ([#6215])
-
 - **runs:** Thread and stateless `wait` endpoints now return an SDK-compatible error envelope
   for a completed failed run. A run that failed before writing a new checkpoint used to leave
   the previous answer at the thread head, so waiting on it returned that stale answer and the
   SDK did not raise; waits now report the current run's `status: error`, which the Python
   LangGraph SDK raises by default (pass `raise_error=False` to inspect it instead). ([#6217])
-
 - **agents:** Lead-agent token budgets no longer undercount finished subagents. When
   `token_budget.enabled` and `token_usage.enabled` are both on, completed subtask usage is
   backfilled onto the dispatching message before budget enforcement — including the final
   batch — so a run stops at the configured budget instead of overshooting it; current-step
   attribution stays after the guards, and terminal results are marked to avoid double
   counting. ([#6218])
-
 - **tui:** Pressing Down in the terminal composer no longer erases the unsent draft when input
   history navigation is inactive, and repeated Down after restoring a saved draft no longer
   discards later edits. Navigation to newer history entries and draft restoration, including
   an empty draft, are unchanged. ([#6219])
-
 - **sandbox:** Shutdown no longer tears down sandbox providers while the warm-pool idle
   reaper is still inside a cleanup. If the reaper thread survives its five-second join,
   `_stop_idle_checker()` fails and the AIO, BoxLite, Tenki, and OpenSandbox providers reset
   their shutdown guard so shutdown stays retryable, instead of closing provider resources
   under the live reaper and treating the failed teardown as done. ([#6231])
-
 - **models:** The Codex adapter omits tool results whose `tool_call_id` is empty or
   whitespace-only when converting messages, instead of sending the provider an unusable
   `function_call_output` from history that bypassed middleware repair; non-blank IDs are
   preserved verbatim and the input history is not rewritten. ([#6234])
-
 - **sandbox:** E2B shutdown stays retryable while a maintenance worker is live:
   the provider now verifies the lease-renewal and reconciliation threads
   actually exited before teardown, and if either survives the join budget it
@@ -6359,7 +6283,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   cleanup. Signal handlers and `atexit` log the pending cleanup instead of
   raising and still forward the original SIGTERM/SIGINT/SIGHUP action.
   ([#6244])
-
 - **skills:** The SkillScan `secret-env-assignment` rule now reports Python
   secrets bound through unpacking — tuple and list targets are paired with the
   values written in the same position, so `host, api_key = "internal", "sk-…"`
@@ -6368,25 +6291,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a key that itself matches a recognized token format is reported, while labels
   like `"access_token"` holding runtime-sourced values stay unreported.
   ([#6247])
-
 - **tui:** Composer history navigation no longer clobbers the draft, cursor, or
   undo history when nothing changes: `Up` with no input history leaves the
   composer untouched, and recalling a history entry (or restoring the saved
   draft) identical to the current input skips the reload, keeping the cursor
   position and undo state intact. ([#6248])
-
 - **tui:** Conversation switching is guarded during active runs: `/resume`,
   `/threads`, and `/switch` ask you to wait instead of switching away from
   in-flight output, a thread picker re-checks the run state when its choice is
   applied, and late stream actions from a previous thread are discarded after
   an interrupt and switch. An invalid `/resume` reference shows an error row
   and keeps the current conversation and the TUI usable. ([#6249])
-
 - **artifacts:** Saving an edited artifact bounds the existing-file read to the
   2 MiB edit limit plus one detection byte, so a file that grows or is replaced
   after the size check is rejected with 413 instead of being read into memory
   in full. ([#6250])
-
 - **gateway:** The multi-worker startup safety gates also read uvicorn's
   `WEB_CONCURRENCY`, which decides the worker count on the launches that pass
   no `--workers` (`backend/Dockerfile`, `scripts/serve.sh`). **Behavior
@@ -6394,60 +6313,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with the scheduler enabled, or with browser tools now fails startup instead
   of running multi-process with the gates inert, and each refusal names the
   variable that actually set the count. ([#6252])
-
 - **gateway:** The remaining worker-count readers resolve the count the same way
   as the startup gates: the channel inbound-dedupe store warning and the
   runtime browser gate now honor uvicorn's `WEB_CONCURRENCY` when no
   `--workers` is passed, and their warnings and refusals name the variable that
   set the count. ([#6253])
-
 - **uploads:** Markdown outline detection no longer mistakes split-bold
   financial table rows for section headings: when any block after the section
   number is numbers, punctuation, or currency only (parenthesized years, signed
   values, `$€£¥` amounts), the line is skipped, so such rows cannot crowd real
   headings out of the outline budget. Titles that carry actual text — including
   punctuated and non-ASCII ones — still parse. ([#6266])
-
 - **skills:** Eval-fixture recognition now checks every `evals/fixtures/`
   segment in a package path instead of only the first `evals` segment, so a
   fixture sample under `evals/cases/inner/evals/fixtures/` is withheld from
   SkillScan instead of blocking the whole package as a nested `SKILL.md`.
   Non-fixture nested `SKILL.md` files stay `CRITICAL`. ([#6271])
-
 - **channels:** A backend `error` frame on a streaming IM channel run now takes
   the same path as a transport failure: the channel logs the error type and
   message with the thread ID for diagnosis, replies with the generic error
   text, and releases the inbound dedupe key only after that final reply is
   published, so a provider redelivery can retry instead of the failed run
   reading as a normal no-response completion. ([#6272])
-
 - **extensions:** The agent-teams response gate now measures string answers by
   their raw UTF-8 bytes and structured interrupt answers as UTF-8 JSON, so a
   CJK or emoji answer within the documented 8,000-byte limit is accepted
   instead of being refused because JSON escaping inflated the measured size.
   Responses with unpaired Unicode surrogates get the normal validation error
   and leave the waiting job untouched. ([#6274])
-
 - **skills:** The SkillScan `secret-env-assignment` sweep now reports
   credentials whose key is quoted, so `{"api_key": "…"}` in JSON reads the same
   as the YAML, `.env`, and shell spellings, and keys where the credential word
   follows a separator (`access_token`, `client_secret`, `MY_API_KEY`) match
   too. Ordinary words that merely contain a keyword (`tokenizer`, `secretive`)
   stay quiet. ([#6276])
-
 - **models:** CLI credential files (Codex `auth.json`, Claude Code credentials)
   decode as UTF-8 with or without a BOM instead of the host locale, so a valid
   JSON file containing non-ASCII text no longer fails on a cp1252-style host.
   Invalid encoding is treated as an unreadable source — Claude Code still falls
   back to its default file after an invalid override — and `make doctor`
   accepts the same files. ([#6277])
-
 - **paths:** Uploads, new local sandbox write paths, and new skill support files
   now also reject the Windows console device aliases `CONIN$` and `CONOUT$` on
   every platform. The shared reserved-name check is case-insensitive before the
   first dot, so `conin$.txt` and `assets/CONOUT$/icon.png` are refused while
   ordinary names such as `CONIN$notes.txt` remain allowed. ([#6279])
-
 - **skills:** SkillScan classifies HTTP endpoints by parsed URL authority instead
   of a regex host grab, so uppercase local hosts such as `http://LOCALHOST:8080`
   are no longer misreported as external cleartext HTTP, bracketed IPv6 loopback
@@ -6455,7 +6365,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   findings, and userinfo cannot hide the real host
   (`http://localhost@Example.COM` stays external). Cloud-metadata hostname
   detection is also case-insensitive. ([#6280])
-
 - **scripts:** The manual Claude OAuth exporter (`export_claude_code_oauth.py`)
   validates the Keychain JSON before any export action: the container must be an
   object holding an object `claudeAiOauth` whose `accessToken` is a non-blank
@@ -6463,26 +6372,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   non-string token such as `true` was exported verbatim; both now fail with the
   existing token-missing error that never echoes the container. Valid tokens are
   exported unchanged, without trimming. ([#6281])
-
 - **sandbox:** BoxLite shutdown now drains in-flight sandbox acquisitions before
   tearing down the private event loop and rejects acquisitions that arrive during
   shutdown. If in-flight acquisitions cannot finish within five seconds, shutdown
   fails with resources still owned and can be retried, instead of leaving the
   loop thread silently running. ([#6283])
-
 - **browser:** Live browser streams now drain their owned `stop_screencast`
   cleanup across cancellation before releasing the browser-session lease. A
   gateway shutdown or client cancellation arriving mid-cleanup can no longer
   strand a screencast manager pin and consume browser-session capacity; the
   first cancellation reason is re-raised after cleanup completes. ([#6284])
-
 - **projects:** Explicit shelf document names — the upload `name` and the
   promotion `shelf_name` — now go through the same `normalize_filename`
   validation as ordinary uploads before any bytes are staged. Names containing
   NUL, Windows reserved device names such as `CON.txt`, trailing dots, or other
   non-portable forms are rejected with `400` and leave no staging files; existing
   shelf rows are not revalidated on reads. ([#6287])
-
 - **acp:** An ACP agent's `timeout_seconds` (default 1800) is now one shared
   budget covering initialization, session creation, and the prompt, starting
   after the subprocess launches — previously it only bounded the prompt, so an
@@ -6490,7 +6395,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   indefinitely. On expiry DeerFlow aborts the invocation and terminates the
   subprocess; workspace/MCP preparation and subprocess cleanup stay outside the
   budget. ([#6292])
-
 - **skills:** The SkillScan `shell-env-dump` rule now fires only when `env`,
   `printenv`, or `export -p` runs at a real command position in shell code.
   Previously any occurrence of those words anywhere in a script raised the
@@ -6498,43 +6402,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `https://env.example.com`, flags like `--env`, arguments (`echo env`),
   variables (`${env}`), comments, and heredoc bodies were all misreported as
   environment dumps. ([#6297])
-
 - **agents:** In the agent-teams extension, queued jobs blocked by an unanswered
   clarification question or interrupt no longer consume the process-wide budget
   of eight active jobs while waiting, so one team's stalled conversation cannot
   keep other teams' jobs queued. Admitted jobs — including those whose start
   acknowledgement was lost — still hold their slot. ([#6298])
-
 - **agents:** A model-generated `write_todos` call with a malformed status (for
   example a list or dict) no longer crashes token attribution. Plan-mode token
   attribution now skips non-string statuses before the set-membership check, so
   the tool layer returns its normal validation error — which the agent can
   correct — instead of the whole run aborting. ([#6299])
-
 - **tui:** After an interrupt, late stream actions from the previous run can no
   longer leak into the next run's display, usage, title, or completion state —
   even when the next prompt uses the same conversation. Each run now owns its
   cancellation flag and delivery identity; if a run cannot start, the TUI
   reports a retryable error and returns to idle instead of staying busy. ([#6302])
-
 - **channels:** Per-channel lifecycle mutations — readiness startup, restart,
   runtime configuration, and removal — now serialize on one per-channel lock,
   where previously readiness used its own lock while restart, configure, and
   remove raced it. Concurrent config updates are versioned by an epoch, so a
   stale snapshot can no longer overwrite newer credentials mid-startup. ([#6304])
-
 - **uploads:** Companion records now resolve converted markdown files with an
   uppercase suffix, so an upload converted to `report.MD` keeps its markdown
   companion and extracted outline instead of falling back to the raw original
   because the `.md` suffix was compared case-sensitively. ([#6308])
-
 - **wechat:** Outbound images and files now enforce
   `max_outbound_image_bytes` / `max_outbound_file_bytes` (20 MiB / 50 MiB
   defaults) while reading, including files that grow after resolution. Oversize
   reads are rejected before encryption/upload — with a logged skip — instead of
   sending a truncated prefix, and non-positive limits keep the corresponding cap
   disabled. ([#6309])
-
 - **skills:** SkillScan's `shell-curl-pipe-shell` warning now covers the
   variants real install scripts use: `curl | sudo [flags] bash`, absolute
   interpreter paths such as `/bin/bash` and `/usr/local/bin/sh`, more shells
@@ -6544,7 +6441,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   stall the matcher on repeated backslash text. Value-bearing sudo flags
   such as `sudo -u root bash` stay out of scope of this warning-level
   heuristic. ([#6312])
-
 - **projects:** Concurrent project-document reads no longer fail with
   `KeyError` while updating the shared character-count cache. A file-IO
   worker could find a cached count and have another worker evict that entry
@@ -6554,7 +6450,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a short lock while the full file scan stays outside it, so unrelated reads
   remain concurrent; the 256-entry LRU bound and content-identity keys are
   unchanged. ([#6315])
-
 - **subagents:** Shutting down the persistent isolated subagent event loop no
   longer discards ownership when its bounded thread join does not confirm
   termination. The shutdown path cleared the global loop/thread handles after
@@ -6564,7 +6459,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the worker exits, new submissions fail with a retryable shutdown-pending
   error while cleanup is fenced, and the next submission reaps and closes the
   retained loop before creating a replacement. ([#6316])
-
 - **sandbox:** AIO sandbox shutdown now fails closed when the lease-renewal
   thread is still running after its bounded stop join. `_stop_lease_renewal()`
   ignored the join outcome, so shutdown went on to detach and destroy every
@@ -6574,7 +6468,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   warm entry, and the installed signal handler logs a failed shutdown and
   still forwards the original signal instead of dying on the exception.
   ([#6317])
-
 - **models:** An undecodable `CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR` handoff
   no longer fails Claude model construction. The descriptor reader caught only
   `OSError`, so non-UTF-8 bytes (a UTF-16 token, a truncated sequence) raised
@@ -6583,7 +6476,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   are not cached, so Claude Code still tries `CLAUDE_CODE_CREDENTIALS_PATH`
   or `~/.claude/.credentials.json` on this and later loads, and the warning
   never includes token contents. ([#6323])
-
 - **telegram:** Stopping the Telegram channel no longer drops a polling worker
   that is still running after its bounded shutdown join. `stop()` logged a
   warning and cleared `self._thread`, so the still-live thread lost its
@@ -6591,7 +6483,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   kept polling. It now raises `ChannelStopTimeout` — the same retention
   contract Feishu and DingTalk already use — and only clears the thread
   reference when it still points at that worker. ([#6333])
-
 - **models:** A completed Codex response keeps its text, reasoning, and tool
   calls when `usage` is `null`, omitted, or empty. The parser read
   `response.get("usage", {})`, so an explicit JSON `null` produced `None` and
@@ -6600,7 +6491,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   mapping: `AIMessage.usage_metadata` stays `None` and usage fields report
   zeros, while populated usage mappings (including zero counts and
   cached/reasoning token details) are unchanged. ([#6335])
-
 - **discord:** `channels.discord.allowed_guilds` is now parsed as guild IDs
   the way `config.example.yaml` documents. Iterating the raw value turned a
   scalar `"321"` into guilds 1, 2, and 3, an unquoted YAML integer crashed
@@ -6622,7 +6512,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   normalization, so `2.1.0-rc0` still matches `2.1.0rc0`) and fails when `uv` is
   missing; `verify-versions.yml` installs the uv version the backend image pins.
   ([#6588])
-
 - **tui:** A message the TUI refuses to send now stays in the composer. Submitting
   cleared the composer before the send was checked, so a prompt typed during an
   active run, while an interrupted run was still stopping, or when the run could
@@ -6632,7 +6521,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   at its end and the command palette closed, so `Enter` resends it; accepted
   messages and local slash commands clear it as before.
   ([#6666])
-
 - **tui:** `deerflow --print` and `--json` no longer drop words of an unquoted
   message. Each flag took a single value and never read the positional words,
   so `deerflow --print summarize this repo` sent only `summarize`,
@@ -6643,7 +6531,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`deerflow hello --print there`) exits 2 with a hint to quote it, since its
   word order cannot be recovered. Passing both `--print` and `--json` now exits
   2 instead of running `--print` and dropping the `--json` message. ([#6636])
-
 - **frontend:** Signing in after a workspace session ends now returns to the
   page that was open, query string and fragment included. Opening a workspace
   page without a valid session (for example a scheduled-task notification link,
@@ -6671,7 +6558,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   rows, and removing a chat from a full page stopped the list from loading more
   until it refetched. Each cached page now records how many rows it hid and
   whether the server has more. ([#6702])
-
 - **frontend:** A one-time scheduled task whose `run_at` is a bare date
   (`"2026-12-07"`, which a chat-created task can carry) now shows midnight of
   that day in the task's timezone, which is when the server runs it. The UI read
@@ -6774,9 +6660,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   covers only those three directories, so anything else stored directly
   under the root stays hidden. `glob`, `grep`, `read_file` and writes still
   reject the root, because a search would read every file below it. ([#6991])
-
-### Security
-
 - **uploads:** Thread uploads (`POST /api/threads/{thread_id}/uploads`), upload
   deletes (`DELETE /api/threads/{thread_id}/uploads/{filename}`) and shelf
   attach-to-thread no longer put the raw `OSError` text in their `500` detail. A
@@ -6784,7 +6667,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the absolute host path of the thread's uploads directory, including the user
   and thread IDs. They now return `Failed to upload <name>.` /
   `Failed to delete <name>.`, and the full error stays in the Gateway log. ([#7217])
-  
 - **agents:** The custom-agent and user-profile routes no longer put the raw
   exception text in their `500` detail. An unparsable agent `config.yaml` or a
   filesystem error (`[Errno 13]` and the like) made them answer with the
@@ -6793,42 +6675,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   error stays in the Gateway log. Scheduled-task create and update keep the
   `invalid_assistant` 422 for an unloadable agent config but no longer echo
   the parse error, which also reached the scheduler tool result. ([#7255])
-
 - **infoquest:** Screen organic, news and image result URLs through the shared
   public-URL policy, dropping non-public and unsafe references before they
   reach the model. ([#7031])
-
 - **checkpoints:** Escape Redis glob metacharacters when purging a literal
   thread namespace, and verify scanned keys against that literal stem before
   deletion. Custom prefixes can no longer delete another namespace's cache.
   ([#6709])
-
 - **channels:** Parse Slack and DingTalk `allowed_users` through the shared
   fail-closed helper. Invalid or empty configured entries no longer silently
   disable access restrictions, and padded IDs are normalized. ([#6742])
-
 - **image-search:** Normalize Unicode hostname dot separators before shared
   address checks, rejecting disguised loopback, private, metadata and other
   blocked literal hosts while preserving accepted URL spelling. ([#6819])
-
 - **mcp:** Omit credential-bearing exception messages and tracebacks from
   discovery error logs, retaining server names and exception types without
   changing discovery failure handling. ([#6794])
-
 - **image-search:** Share public result-URL screening across DuckDuckGo,
   Brave and Serper, including thumbnail fallback and embedded IPv4 checks.
   Reject blocked literal addresses such as multicast and NAT64 loopback;
   this string-only screening does not resolve DNS. ([#6740])
-
 - **qq:** Parse scalar and collection `allowed_users` through the shared
   fail-closed helper, avoiding character-wise IDs, mapping-key authorization
   and permissive fallback from invalid configured restrictions. ([#6730])
-
 - **frontend:** Accept only own keys of the structured subagent-status map.
   Unknown prototype names such as `constructor` and `__proto__` now use the
   existing in-progress fallback without attaching result/error metadata.
   ([#6669])
-
 - **skills:** `GET /api/skills`, `GET /api/skills/custom` and
   `GET /api/skills/{name}`, which every signed-in user can call, no longer put
   the raw exception text in their `500` detail. A malformed or unreadable
@@ -6836,7 +6709,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   path (and, for a permission error, the `[Errno 13]` message). They now return
   a fixed `Failed to load skills.` / `Failed to list custom skills.` /
   `Failed to get skill.`, and the full error stays in the Gateway log. ([#7155])
-
 - **skillscan:** The pre-LLM static gate now matches fork bombs by shape
   instead of only the canonical `:(){ :|:& };:` spelling. `resource-fork-bomb`
   and the fork-bomb branch of `shell-destructive-command` matched just that
@@ -6848,7 +6720,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   rule (a function whose body recurses through a pipe into a background
   job), now backs both rules, so the static scan never passes a payload the
   sandbox would block at runtime. ([#6689])
-
 - **tools:** Deferred-tool regex discovery no longer runs unbounded, so a
   model-generated pattern such as `(a+)+$` cannot stall discovery for
   seconds on long tool names or descriptions. Both normal discovery and
@@ -6861,7 +6732,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   hint with no partial promotions, invalid patterns still fall back to
   literal matching, and `select:` stays exact, case-sensitive and uncapped.
   ([#6676])
-
 - **paths:** Uploads, new sandbox paths and new skill support-file paths
   reject Windows reserved device stems padded with ASCII spaces before the
   extension (`NUL .txt`, `COM1  .log`). The shared filename portability
@@ -6872,7 +6742,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   on Windows. Only the comparison stem is trimmed: ordinary filenames like
   `report .txt` are returned unchanged, non-ASCII spaces are not
   normalized, and existing read/removal exemptions are preserved. ([#6458])
-
 - **skillscan:** GitHub fine-grained PATs and Google API keys are now
   detected, and `.zsh` scripts are scanned as shell by suffix. The
   `secret-cloud-token` rule recognized classic GitHub tokens
@@ -6888,7 +6757,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   already treats `.zsh` as code. Both token families now match in SkillScan
   and the egress scrubber, and `.zsh` is classified as shell by suffix
   alone. ([#6423])
-
 - **skillscan:** Modern `sk-` API tokens are detected and scrubbed from
   outgoing notifications. The `sk-` pattern rejected `-` and `_`, so
   SkillScan missed modern OpenAI and Anthropic keys (`sk-proj-`,
@@ -6902,7 +6770,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   are scrubbed from outgoing notification summaries; and scanning continues
   past placeholder matches until a real credential is found while keeping
   the existing maximum of one cloud-token finding per file. ([#6394])
-
 - **memory:** Enabling `pii_redaction` now also redacts invalid and legacy
   tool-call arguments before memory admission. Admission redacted parsed
   call arguments and provider-raw `tool_calls` but left
@@ -6920,7 +6787,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   unrelated metadata are preserved, the default-off policy and each
   detector switch are respected, and existing stored data is not rewritten.
   ([#6387])
-
 - **skillscan:** The `shell-curl-pipe-shell` matcher catches a shell behind
   a sudo option that takes a value. The HIGH-severity rule ("pipes remote
   content into a shell") already handled `sudo bash` and `sudo -E bash`,
@@ -6932,7 +6798,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   consume its separate value before the shell token; standalone flags keep
   the existing branch. Launchers like `env bash` / `env -i bash` remain
   unmodelled on purpose, to keep precision. ([#6372])
-
 - **skillscan:** `scan_skill_dir()` gates a file's size before reading it.
   Every candidate was read whole with `path.read_bytes()` and the 64 MB
   `MAX_FILE_BYTES` policy limit was recorded as a finding only after the
@@ -6944,14 +6809,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `package-oversized-file` and reads at most `MAX_FILE_BYTES + 1` bytes,
   mirroring `_read_archive_member`'s gate-then-bounded-read so both entry
   points share the same discipline. ([#6359])
-
 - **skills:** Skillscan's native URL rules recognize HTTP and HTTPS scheme
   spellings case-insensitively. The regexes and prefix checks matched only
   lowercase schemes, so uppercase or mixed-case spellings of the same
   endpoint classified inconsistently. Scheme spellings are now recognized
   consistently; authority parsing, host classification, credential-redacted
   evidence and sink inference are unchanged. ([#6355])
-
 - **authz:** Enforce permission checks on routes that only had authentication, and
   scope `USER.md` per user. `POST /api/threads`, `/api/threads/search`,
   `/api/runs/stream`, `/api/runs/wait`, every `/api/memory` route, and the
@@ -7072,7 +6935,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the recorded virtual path, resolved for the current user and thread,
   matches `actual_path`; cross-thread references stay unavailable until
   `view_image` runs again. ([#5824])
-
 - **memory:** Enabling `pii_redaction` now also cleans the queued memory payload,
   closing the slice #5527 deliberately left open. Request-scoped redaction keeps
   originals in thread state, and `MemoryMiddleware._resolve_add_args()` passed
@@ -7085,7 +6947,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   shared `redact_text()` seam; the buffered payload itself becomes clean, and
   messages are rebuilt via `model_copy` so originals are never mutated. The gate
   stays off by default and behavior is unchanged while unset. ([#5577])
-
 - **goal:** Enabling `pii_redaction` now also redacts the `/goal` evaluator's
   input. The evaluator calls its model directly, outside
   `PiiRedactionMiddleware`, so it sent raw user lines, tool arguments, tool
@@ -7095,7 +6956,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   state keeps the raw text. A redaction error fails the check
   (`evaluator_failed`) instead of sending raw text. With redaction off, the
   input is byte-identical. ([#6556])
-
 - **authz:** Skill authorization is now enforced at agent assembly and
   activation, so an RBAC policy such as `skills: {allow: ["data-analysis"]}`
   can actually deny a skill — Phase 2A (#4439) covered Gateway routes, but
@@ -7107,7 +6967,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fail-closed/fail-open policy. A denied `read_file` of a `SKILL.md` is
   stamped `skill_context_denied`, so durable context, skill allowed-tools,
   and autonomous secret bindings never activate the denied skill. ([#4541])
-
 - **goal:** Enabling `pii_redaction` now also redacts the hidden `/goal`
   continuation. `PiiRedactionMiddleware` skips this framework message, so
   each continuation turn sent the goal objective and the evaluator's reason
@@ -7117,7 +6976,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   goal state keeps the raw objective. A redaction error fails the check
   (`evaluator_failed`) before the continuation is counted, instead of
   sending raw text. With redaction off, the message is byte-identical. ([#6556])
-
 - **lark:** The opt-in Lark broker subcommand denylist
   (`DEERFLOW_LARK_BROKER_DENY_SUBCOMMANDS`) can no longer be bypassed by an
   option value passed as its own token. Matching dropped only `-`-prefixed
@@ -7129,7 +6987,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   between them (`config --profile work show`), a case a contiguous match would
   still miss. Argument values that spell a denied path in order are refused too
   (fail-closed). ([#6212])
-
 - **channels:** A Telegram `allowed_users` list that contains no numeric user ID
   now denies every user instead of silently allowing all of them. Entries that
   failed `int()` were dropped without a log line, and an empty result meant "no
@@ -7138,7 +6995,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   user (`"123456"` allowed users 1–6 and blocked 123456), `null` or a bare
   integer no longer crashes the channel at startup, and every dropped entry —
   `@usernames`, floats, booleans — is logged as a warning. ([#6230])
-
 - **skills:** Windows script files, HTML applications, and scriptlets outside
   `scripts/` no longer escape SkillScan. Suffixes such as `.bat`, `.cmd`,
   `.psm1`, `.jse`, `.vbe`, `.vbs`, `.wsf`, `.hta`, and `.sct` now count as
@@ -7148,7 +7004,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   policy (a warn prevents install) applies wherever the file sits in the
   package. Previously a `hooks/install.jse` carrying one stray byte received
   no static analysis and no executable review. ([#6321])
-
 - **community:** Delegated `web_fetch`/`web_capture` backends fail closed by
   default. Browserless, Crawl4AI, Firecrawl, and fastCRW resolve the target URL
   in the backend's own network namespace, so the target-URL SSRF screen cannot
@@ -7166,7 +7021,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `allow_private_addresses` still controls target URLs only. See the
   [deployment guidance](backend/docs/CONFIGURATION.md#delegated-fetch-backend-isolation).
   ([#6531])
-
 - **scripts:** Bind local `make dev` / `make start` to loopback. `serve.sh` and
   `backend/Makefile` started the Gateway with `--host 0.0.0.0`,
   `nginx.local.conf` listened on every interface, and Next.js kept its
@@ -7177,11 +7031,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   listens on `127.0.0.1` and `[::1]` unless `BIND_HOST` is set, the same
   variable the Docker stack honors. An invalid `BIND_HOST` fails before any
   running service is stopped. ([#6587])
-
   **Behavior change:** a local stack opened from another device needs
   `BIND_HOST` (e.g. `BIND_HOST=0.0.0.0` in `.env`) and the `2026` entry; the
   Gateway and frontend ports are no longer reachable from other machines.
-
 - **scripts:** Reject local `BIND_HOST` values that nginx would misread. The
   local nginx helper checked only for address and hostname characters, so
   `BIND_HOST=0` rendered `listen 0:2026;`, which nginx resolves to `0.0.0.0`
@@ -7192,7 +7044,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (bracketed or not), or an RFC 1123 hostname. Returning to the loopback
   default also removes the `temp/nginx.local.conf` rendered for an earlier
   value. ([#6635])
-
 - **skills:** Stop `review_skill_package` from reading other users' skills.
   Local path targets were allowed anywhere under the Gateway cwd or `/tmp`,
   and every documented deployment keeps `DEER_FLOW_HOME` under the cwd, so a
@@ -7227,15 +7078,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   files pass it to the Gateway. `.jwt_secret` (and the managed-model key) are
   now created exclusively and read back, so replicas cold-starting on a shared
   volume no longer keep different session-signing secrets. ([#6611])
-
-### Documentation
-
 - **extensions:** Add an example-authoring and packaging guide plus
   `scripts/check_extension.py PACKAGE`, which builds a temporary wheel and
   checks entry points, Python syntax, API dependency compatibility and browser
   assets before installation. The checker runs trusted build backends without
   importing the extension or changing deployment configuration. ([#6755])
-
 - **docs:** Add a Korean README (`README_ko.md`), a complete translation of the
   current English README. Headings, tables, and links mirror the English
   one-to-one, and every code block and inline code span stays byte-identical;
@@ -7256,7 +7103,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exported runtime/configuration selectors, show the migration dry run
   first, and align both migration-script usage examples, config templates,
   the README and backend guidance. ([#6425])
-
 - **docs:** Fix the Apple Container verification instructions. The guide
   pointed to a `test_container_runtime.py` script that does not exist and to
   the old runtime implementation; it now references `LocalContainerBackend` in
@@ -7317,7 +7163,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   mode-mismatched request 409s, why delta runs cannot fork, and how retained
   storage really grows — periodic snapshots keep the full message list, so
   delta divides the quadratic term by the cadence rather than removing it. ([#5845])
-
 - **docs:** Fix harness client examples that document an async API which does
   not exist. `DeerFlowClient` has no `astream`/`ainvoke`, but the "Create Your
   First Harness" tutorial and the integration guide (en and zh) are built
@@ -7329,7 +7174,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`DeerFlowClient(agent_name=...)`), and use a sync generator in the FastAPI
   SSE example; "Async streaming" is retitled "Streaming". No API change.
   ([#5843])
-
 - **docs:** Document the pluggable `MemoryManager` architecture in the harness
   memory page (`frontend/src/content/{en,zh}/harness/memory.mdx`), which
   previously covered configuration and storage only, so integrating an
@@ -7342,7 +7186,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`MemoryConflictError` → HTTP 409), and the host hooks. A callout in the
   existing "Custom storage backend" section distinguishes swapping DeerMem's
   `storage_class` from attaching a fully independent backend. ([#5929])
-
 - **docs:** Correct MemoryManager guide details that fail when followed (en and
   zh; fixes to #5929). An OpenViking config with the documented
   `failure_policy.read: fail_closed` cannot build the manager — the key takes
@@ -7355,7 +7198,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `(memory_data, fact_id)` and an unknown fact id raises `KeyError`
   (HTTP 404); `staleness_review_enabled` is on by default and all five flags
   live under `memory.backend_config`. ([#5943])
-
 - **docs:** Add the missing External Chat Message Roles section to the Chinese
   README, mirroring the English one between the gateway-admin-equals-code-
   execution and deployment-defaults notices. It states that run requests and
@@ -7366,7 +7208,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `python backend/tests/poc_external_system_message_injection.py --help`,
   including `--expect vulnerable` / `--expect blocked` on a disposable thread.
   ([#6059])
-
 - **docs:** Add an extension-first evaluation gate to the agent guidance.
   `AGENTS.md` and `.github/copilot-instructions.md` now tell coding agents to
   evaluate shipping a feature as a packaged extension before editing core
@@ -7374,7 +7215,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fixes and agent-loop, memory, context-compaction, and authentication
   changes, and a generic `extension-api` hook plus an extension when existing
   contribution points cannot express the feature. ([#6178])
-
 - **docs:** Bring the run-event and extension-example docs back in line with
   the code. `backend/docs/RUN_EVENT_STREAM.md` now lists the `summarize`
   middleware tag that the catalog and contract already carried, describes the
@@ -7383,41 +7223,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   three missing `changes` fields. The extension example no longer claims to
   cover every contribution kind: it shows five of the eight, and its README
   points to the observers guide and the bookmarks plugin for the rest. ([#6582])
-
-### Internal
-
 - **frontend:** Remove the deprecated, unused `hast` and `@types/gsap`
   packages. Existing `@types/hast` and GSAP's bundled types continue to supply
   the required declarations. ([#7108])
-
 - **tests:** Skip POSIX-only skill mutation cases on Windows while retaining
   portable coverage, and release a pooled SQLite fixture connection before
   the database-removal test. ([#7154])
-
 - **benchmarks:** Add opt-in OpenSandbox coverage to the standalone sandbox
   benchmark, using the production provider for cold/warm reuse, replica
   pressure and idle reaping. Cleanup failures produce failed shutdown evidence
   instead of a successful benchmark summary. ([#7059])
-
 - **tests:** Pass an allowlist of base Windows system and temporary-directory
   environment variables to the isolated live-policy pytest child, allowing
   interpreter initialization while retaining credential isolation. ([#6439])
-
 - **tests:** Repair six Windows-host fixture and assertion failures across
   command execution, binary reads, Lark file modes, skill review and extension
   archive checks while preserving the underlying behavior contracts. ([#6787])
-
 - **ci:** Run the unified extension packaging checker on every bundled example
   when relevant examples, host code, dependencies, checker or workflow changes,
   exercising the actual wheel and browser assets. ([#6788])
-
 - **mcp:** Expose server-scoped discovery results with fully wrapped tool
   groups and stdio binding ownership. Preserve the existing ordered flattened
   public API and distinguish successful zero-tool discovery from failure,
   providing the prerequisite for selective caching. ([#6734])
-
 - **deps:** Bump `lark-oapi` from 1.5.5 to 1.7.3 in `/backend`. ([#6665])
-
 - **models:** Give reasoning capture a single owner. The byte-identical
   private copies of `_with_reasoning_content` and `_get_typed_choice_message`
   in the `patched_mimo` and `patched_stepfun` OpenAI-compatible adapters move
@@ -7426,7 +7255,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   no longer land in one adapter and leave the other behind; providers whose
   reasoning handling genuinely differs keep their own code, and a source
   census test fails if any module restates either function body. ([#6639])
-
 - **community:** Give retrieval credential handling a single owner. The
   byte-identical copies of the `SecretStr` unwrap, API-key redaction and
   URL-userinfo refusal in `community/lightrag` and `community/ragflow` move
@@ -7435,14 +7263,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   longer leaves the other silently un-patched; provider policies (LightRAG
   tolerating a missing key, RAGFlow refusing one) stay per-provider, and a
   census test fails if any provider package restates the rules. ([#6638])
-
 - **tests:** Route four backend tests that plant fixture symlinks with a
   bare `Path.symlink_to` through the existing `symlink_or_skip` helper, so
   stock Windows hosts without Developer Mode skip them instead of erroring
   with `OSError: [WinError 1314]`. The TOCTOU sandbox-perms test probes
   symlink creation before installing its `os.lstat` hook and is marked
   POSIX-only. No runtime code changed. ([#6619])
-
 - **support-bundle:** The launcher dotenv tests pass on Windows hosts.
   All 30 failures in `backend/tests/test_support_bundle.py` funneled
   through `_local_launcher_home()`: `shutil.which("bash")` resolved to the
@@ -7456,13 +7282,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `USERPROFILE` for the unquoted `~/...` fixture, which Git Bash and
   Python's `expanduser()` resolve from different variables. POSIX hosts
   are untouched. ([#6544])
-
 - **deps:** Bump `mako` from 1.3.12 to 1.4.2 in `/backend`. ([#6524])
-
 - **deps:** Bump `next` from 16.3.6 to 16.3.8 in `/frontend`. ([#6523])
-
 - **deps:** Bump `langgraph-sdk` from 0.4.2 to 0.4.4 in `/backend`. ([#6514])
-
 - **test:** Remove Windows clock and path assumptions from two backend
   tests. `test_dotenv_location_tilde_expands_like_source[quoted-config-path]`
   asserted a POSIX path spelling and now uses the platform-native
@@ -7471,7 +7293,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   compared two immediate UTC timestamps with a strict `>`, which Windows'
   coarse clock can tie, and now establishes a confirmed deadline 10 seconds
   inside the 30-second lease window. ([#6474])
-
 - **blocking-io:** Compare the blocking-I/O detector's emitted path
   portably. The JSON schema test asserted the emitted `location.path`
   against `str(source_file)`, but `scan_file` builds that field through
@@ -7480,13 +7301,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   which runs on Linux, could not see it. The assertion now uses
   `source_file.as_posix()`; a no-op on Linux, with the detector, its
   emitted schema and every other test unchanged. ([#6427])
-
 - **deps:** Bump `urllib3` from 2.7.0 to 2.8.0 in `/backend`. ([#6404])
-
 - **deps:** Bump `pyjwt` from 2.13.0 to 2.15.0 in `/backend`. ([#6403])
-
 - **deps:** Bump `next` from 16.3.3 to 16.3.6 in `/frontend`. ([#6402])
-
 - **tests:** Skip the MAX_PATH-exceeding blocking-io anchors on Windows.
   Twelve anchors under `backend/tests/blocking_io/` failed deterministically
   with `OSError: [Errno 206] Filename or extension too long` because the
@@ -7497,7 +7314,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   marker is applied to the three affected files, matching the host-bound
   anchor convention already merged; the anchors keep running on POSIX and
   the markers are no-ops there. No production code changes. ([#6361])
-
 - **persistence:** Add historical regression coverage for the run-change clock repair
   and its rollback. Databases created from the published migration graph at
   `0023_user_preferences` or `0024_project_documents` skip the later-inserted
@@ -7533,7 +7349,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and langgraph#8448 (the Postgres paged delta walk poisons its cursor, so
   older checkpoints hydrate empty), skipping until upstream fixes land. No
   runtime behavior change. ([#5797])
-
 - **tests:** Make the blocking-I/O Lark auth-completion test work on Windows.
   Its CLI fixture was an extensionless POSIX shell script that production CLI
   discovery cannot resolve there, so the test failed with HTTP 404
@@ -7543,7 +7358,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   PATH lookup; fake app credentials let auth completion reach the CLI, and the
   test asserts authentication success and the returned username. Fixture
   invariants are documented in `backend/tests/AGENTS.md`. ([#5826])
-
 - **tests:** Skip 22 POSIX-host-bound backend tests on Windows dev hosts
   instead of failing them. Eleven `test_extension_dependency_sync.py` cases
   spawn bare `make -n` (GNU make is not part of the documented Windows setup —
@@ -7552,7 +7366,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   semantics after `os.chmod`. All guards are conditional skips: a Windows host
   with `make` on PATH still runs the Makefile contract tests, the pure-logic
   tests run everywhere, and Linux/CI coverage is unchanged. ([#5931])
-
 - **tests:** Write the `tests/test_file_signature.py` fixtures as bytes so
   Windows text-mode newline translation cannot leak in. Three tests built
   fixtures with `Path.write_text(...)` yet asserted byte-exact reads; on
@@ -7560,19 +7373,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   — whose contract is returning the exact bytes on disk — correctly returned
   them, failing 3 of 10 tests. The fixtures now use `write_bytes(...)` and the
   stat-stale test appends in binary mode; no product change. ([#6042])
-
 - **gateway:** The agents, subagents, and managed-models routers share one
   `run_drained_write` helper for persistent writes drained across client
   cancellation, replacing three per-router copies; managed subagent and model
   saves now log unexpected failures with the exception type only. Endpoint
   cancellation and error contracts are unchanged. ([#6151])
-
 - **gateway:** Memory mutation routes (clear, fact create/update/delete, and
   import) now go through the shared drained-write helper used by other persistent
   writes, removing the router's private wrapper. Off-thread execution and
   cancel-drain semantics are unchanged; unexpected failures additionally leave a
   type-only lost-failure log line. ([#6164])
-
 - **tests:** Fix four backend tests that failed deterministically on Windows dev
   hosts, all from test-side platform assumptions: skill-review timing assertions
   now use `time.perf_counter()` (Windows' ~15.6 ms `monotonic` tick measured the
@@ -7580,7 +7390,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   skipped where `chmod` cannot express it, and the project-shelf recency test pins
   strictly increasing `updated_at` values instead of relying on clock granularity.
   No production change. ([#6167])
-
 - **guardrails:** The TypeSafe risk-gate evaluation script
   (`backend/scripts/eval_typesafe_risk_gate.py`) accepts rubric overrides and
   records the evaluated policy. New `--instructions`, `--criteria-true`, and
@@ -7592,7 +7401,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   become public constants (`DEFAULT_INSTRUCTIONS`, `DEFAULT_CRITERIA_TRUE`,
   `DEFAULT_CRITERIA_FALSE`); the guardrail's runtime behavior is unchanged.
   ([#6179])
-
 - **tests:** The LangGraph Studio route tests stop the dev server gracefully
   on Windows. `terminate()` is `TerminateProcess` there, so the server never
   ran its shutdown hooks and the dev persistence flush never landed — state
@@ -7600,11 +7408,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `CTRL_BREAK_EVENT` to the child's process group (handled as SIGBREAK by
   uvicorn), falling back to a hard kill when the graceful stop exceeds ten
   seconds. POSIX behavior is unchanged. ([#6197])
-
 - **config:** The 14 copies of the boolean-rejection guard across `deerflow/config` converge
   into one shared helper; numeric fields that rejected booleans with a bare message now name
   the field, e.g. `pool_size must be an integer, not a boolean`. ([#6226])
-
 - **tests:** Blocking-I/O web-tool URL-validation tests no longer depend on
   platform numeric-host parsing or external DNS. The `http://127.1/` probe
   relied on each OS resolver expanding that shorthand to loopback; a synthetic
@@ -7613,7 +7419,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   web tool path asserts it reached the fixture. On-loop resolution still fails
   the strict gate, and unsupported address families fail rather than receive
   a fabricated IPv4 answer. ([#6314])
-
 - **tests:** `cd backend && make test` now runs the offline suite as four
   duration-balanced shards concurrently and fails if any shard fails, instead
   of a single serial pytest run. `TEST_JOBS` (default 4) controls the shard
@@ -7632,12 +7437,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   reporting a healthy CLI as unavailable. ([#6590])
 
 ## v2.1.0 — 2026-09-24
-
 This section accumulates work toward the **2.1.0** milestone
 ([2.1.0](https://github.com/bytedance/deer-flow/milestone/2)).
 This release closes that milestone with **772 merged pull requests**.
-
-### ⚠ Breaking changes
 
 - **gateway:** Request trace ids are now issued unconditionally, and every
   Gateway HTTP response carries an `X-Trace-Id` header. Previously both were
@@ -7726,10 +7528,6 @@ This release closes that milestone with **772 merged pull requests**.
   default in both compose files, matching the documented local-trust deployment
   model. Deployments that relied on the old `0.0.0.0` binding must set
   `BIND_HOST` to expose the stack on other interfaces. ([#4618])
-
-### Added
-
-#### Scheduler
 - **scheduler:** Scheduled tasks accept `interval` (`schedule_spec.every_seconds`)
   in addition to `once` and `cron`. Cadence is UTC `now + N` with no
   missed-beat catch-up. N is at least `scheduler.min_once_delay_seconds`
@@ -7762,8 +7560,6 @@ This release closes that milestone with **772 merged pull requests**.
   resets to the latest page and cancels the obsolete request so a late result
   cannot replace the new task's history, and only the latest page polls.
   ([#5363])
-
-#### Authentication
 - **auth:** Personal access tokens (PAT) for programmatic API access:
   `POST/GET/DELETE /api/v1/auth/pats` manage tokens (shown once, stored as
   SHA-256 digests); a default-deny route policy admits only the thread/run
@@ -7788,9 +7584,6 @@ This release closes that milestone with **772 merged pull requests**.
   preference. Existing unscoped local settings are not migrated, since they
   carry no known owner, so users reselect these four once after upgrading.
   ([#5397])
-
-#### Agents & runtime
-
 - **scheduler:** Scheduled tasks can pin `assistant_id` to `lead_agent` (the
   default) or a custom agent the owner already has. Unknown or malformed names
   return 422. The workspace create/edit form exposes the same choice.
@@ -8032,9 +7825,6 @@ This release closes that milestone with **772 merged pull requests**.
   using the stable identifier, so nothing needs migrating, and an invalid
   stored value is ignored on read rather than breaking list/detail/bootstrap.
   ([#5324])
-
-#### Memory
-
 - **memory:** Memory consolidation synthesizes fragmented facts, and a staleness
   review prunes silently-outdated facts using LLM-assigned per-fact
   `expected_valid_days` / `staleFactsToExtend`. ([#3996], [#3860], [#4143])
@@ -8071,9 +7861,6 @@ This release closes that milestone with **772 merged pull requests**.
   near-dedup, removal proposals exclude their own targets from matching, and no
   confirmation signal is fabricated — reinforcement still requires a genuine
   human message. ([#5254])
-
-#### Skills
-
 - **skills:** The built-in image-generation skill can use OpenAI-compatible
   Images APIs for generation and reference-image editing, with configurable
   endpoint, model, size, and output format. ([#5389])
@@ -8116,9 +7903,6 @@ This release closes that milestone with **772 merged pull requests**.
   bounded to 256 characters and 16 unique terms. `select:` exact selection and
   `+required` name filtering are unchanged, and no embeddings, model calls, or
   telemetry are involved. ([#5369])
-
-#### Models & integrations
-
 - **community:** New web search/fetch engines - GroundRoute, Crawl4AI
   (`web_fetch`), and a fastCRW provider - plus a Browserless `web_capture`
   screenshot tool and Brave `image_search`. ([#3675], [#3821], [#3585], [#3881],
@@ -8191,9 +7975,6 @@ This release closes that milestone with **772 merged pull requests**.
   process, so an operator must partition an account allowance across workers,
   replicas and other clients; the limiter counts requests, not tokens, and
   unconfigured models behave exactly as before. ([#5432])
-
-#### MCP
-
 - **mcp:** A durable task runtime for MCP: long-running tool tasks survive
   Gateway restarts through a durable driver, and their progress and
   completion notifications surface in the chat UI. ([#4665], [#4690],
@@ -8217,9 +7998,6 @@ This release closes that milestone with **772 merged pull requests**.
   `extensions_config.example.json`, disabled by default; enabling it exposes
   `parallel-search_web_search` and `parallel-search_web_fetch`, with optional
   Bearer authentication documented. ([#5028], [#5501])
-
-#### Channels
-
 - **channels:** Expose the IM `channel_user_id` to sandbox commands as
   `DEERFLOW_CHANNEL_USER_ID`. ([#3926])
 - **channels:** Queue rapid same-thread messages and preserve topic-card
@@ -8237,9 +8015,6 @@ This release closes that milestone with **772 merged pull requests**.
   channel defaults, IM-created threads route through the same agent when
   opened in the web UI, and `/agent` is reserved across the slash-skill
   parser, frontend, and TUI so no skill can shadow the command. ([#5168])
-
-#### Auth & guardrails
-
 - **auth:** Generic OIDC/SSO authentication with Keycloak support. ([#3506])
 - **guardrails:** Authenticated runtime context is exposed in `GuardrailRequest`,
   and security interventions are persisted as run events. ([#3665], [#3837])
@@ -8273,9 +8048,6 @@ This release closes that milestone with **772 merged pull requests**.
   or not-yet-loaded permission list is treated as permissive, so a mixed
   old-backend/new-frontend deploy can never hide an action the caller can still
   perform. ([#5294])
-
-#### Sandbox & provisioner
-
 - **sandbox:** New E2B and BoxLite (micro-VM) sandbox providers; BoxLite ships
   with a warm pool. ([#3883], [#3940], [#3951])
 - **provisioner:** ClusterIP Services and scoped per-skill PVC mounts, plus a
@@ -8301,9 +8073,6 @@ This release closes that milestone with **772 merged pull requests**.
   non-interactive runs fail closed, and the sandbox API is no longer
   published directly in restricted modes. Requires Docker Engine 28+;
   `open` remains the default. ([#5152])
-
-#### Extensions & plugins
-
 - **extensions:** An out-of-tree Python extension system: extensions can
   contribute middleware, task-lifecycle and system-model observers, Gateway
   services, and HTTP routers, and are managed with `deerflow extensions`
@@ -8348,16 +8117,10 @@ This release closes that milestone with **772 merged pull requests**.
   misleadingly empty one. The production reader is app-scoped with global
   cross-user visibility for trusted operator extensions; it redacts event
   metadata but leaves content unchanged. ([#5405])
-
-#### Persistence
-
 - **persistence:** A custom PostgreSQL schema can be selected via
   `postgres_schema`; ORM, LangGraph checkpointer, and store tables are all
   created there, and the schema is created automatically at startup.
   ([#3442])
-
-#### Frontend
-
 - **frontend:** Branching support for assistant turns and side conversations for
   quoted follow-ups. ([#3950], [#3934])
 - **frontend:** Regenerate the latest answer. ([#3637])
@@ -8473,9 +8236,6 @@ This release closes that milestone with **772 merged pull requests**.
   import, creation, and custom-skill export. Settings keeps its seven remaining
   sections, API contracts and permissions are unchanged, and the old
   `?settings=tools|integrations|skills` entry points are removed. ([#5468])
-
-#### Observability & tooling
-
 - **observability:** Trace-id correlation with enhanced logging and agent
   observability via Monocle. ([#3902], [#4024])
 - **tooling:** A Hermes-like terminal workbench (`deerflow` CLI) backed by
@@ -8508,9 +8268,6 @@ This release closes that milestone with **772 merged pull requests**.
   checkpoint internals are exposed. An initial snapshot can already contain a
   restored summary, so a changed value alone is not a causal compaction event.
   ([#5249])
-
-### Changed
-
 - **frontend performance:** Keep the public root and localized docs static;
   lazy-load closed workspace panels and editor/highlighter dependencies;
   incrementally derive streamed message state; bound streaming Markdown work;
@@ -8564,9 +8321,6 @@ This release closes that milestone with **772 merged pull requests**.
 - **agents:** Subagent delegation is now routed by net benefit: the lead agent
   defaults to direct execution unless parallel latency, specialist capability,
   or context isolation clearly pays off. ([#4384])
-
-### Fixed
-
 - **frontend:** Keep the `…` (kebab) menu on project chat rows inside the
   sidebar. In the sidebar's grouped Projects mode the indented nested menus
   kept `SidebarMenu`'s `w-full` while carrying an extra `ml-4`, so they were
@@ -10457,9 +10211,6 @@ This release closes that milestone with **772 merged pull requests**.
   `values` messages were ~75% of SSE payload — folding reducer events into
   rendered state locally while keeping full snapshots only for replay-gap
   recovery. ([#5159])
-
-### Security
-
 - **skills:** Close gaps that let files skip SkillScan in the public skill
   review gate. The review analyzer passed SkillScan only files it had decoded
   as text, so executable binaries and nested archives were never checked; it
@@ -10596,9 +10347,6 @@ This release closes that milestone with **772 merged pull requests**.
   subtype) is now treated as active content, including `.skill` archive
   members; the artifacts panel keeps previewing XML through its ranged fetch.
   ([#5353])
-
-### Documentation
-
 - **docs:** Clarify how `LocalSandboxProvider` resolves `sandbox.mounts[].host_path`
   under production Docker, with gateway bind-mount and config examples. ([#3833])
 - **docs:** Document that Crawl4AI >= 0.9 requires a bearer token. ([#4518])
@@ -10627,9 +10375,6 @@ This release closes that milestone with **772 merged pull requests**.
   and a reference of every public name with the contract's version history.
   Also correct stale descriptions of the contribution kinds and of run
   evidence metadata redaction in `AGENTS.md`. ([#5769])
-
-### Internal
-
 - **tests:** Migrate frontend unit tests to rstest and run hook-level tests in
   a DOM environment. ([#3703], [#4453])
 - **tests:** Require explicit opt-in for live client tests. ([#4482])
@@ -10711,6 +10456,7 @@ the [`main-1.x` branch](https://github.com/bytedance/deer-flow/tree/main-1.x).
 
 This release closes [milestone 2.0.0](https://github.com/bytedance/deer-flow/milestone/1)
 with **180 merged pull requests** since the first 2.0 milestone tag.
+
 - **harness:** Hydrate runs from `RunStore` and persist interrupted status. Run
   cancellation/multitask semantics now require a working RunStore on the
   worker that owns the run; cross-worker cancels return 409 instead of

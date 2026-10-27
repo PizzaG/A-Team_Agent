@@ -1,12 +1,19 @@
-# A-Team Agent
+# A-Team Agent — based on A-Team Agent
 
 
 
-> **A-Team Agent** is a locally deployable AI agent workspace evolved from [ByteDance DeerFlow](https://github.com/bytedance/deer-flow), with visual design and animation work inspired by [Odysseus](https://github.com/odysseus). It brings A-Team branding, configurable assistant identity, animated wallpapers, and a shared native workspace together. See [`ATEAM_CUSTOMIZATIONS.md`](ATEAM_CUSTOMIZATIONS.md) for project-specific setup notes.
+> **A-Team Agent** is a customized, locally deployable AI agent workspace with A-Team branding, Odysseus-inspired color themes and animated wallpapers, a configurable assistant name, and a shared native workspace. See [`ATEAM_CUSTOMIZATIONS.md`](ATEAM_CUSTOMIZATIONS.md) for setup notes and caveats.
 
 ## Official Website
 
 Learn more and see **real demos** on our [**official website**](/).
+The landing-page case studies open as allowlisted, read-only showcases without requiring a sign-in.
+
+## Sister Projects
+
+<img width="446" height="280" alt="image" align="middle" src="https://github.com/user-attachments/assets/077edef4-d560-41af-bb0d-d0a5f14fcc20" />
+
+- [**LLM Space**](https://github.com/A-Team-Agent/llm-space) - Meet our secret weapon behind A-Team Agent — one desktop tool to prototype agent ideas, inspect each harness step, replay failures, and benchmark performance.
 
 ## Coding Plan from ByteDance Volcengine
 
@@ -32,8 +39,9 @@ A-Team Agent has newly integrated the intelligent search and crawling toolset in
 
 ## Table of Contents
 
-- [A-Team Agent](#a-team-agent)
+- [🦌 A-Team Agent - 2.0](#-deerflow---20)
   - [Official Website](#official-website)
+  - [Sister Projects](#sister-projects)
   - [Coding Plan from ByteDance Volcengine](#coding-plan-from-bytedance-volcengine)
   - [InfoQuest](#infoquest)
   - [Table of Contents](#table-of-contents)
@@ -3718,7 +3726,11 @@ matching the local-trusted-environment model described above. To reach it from
 another machine, set `BIND_HOST` in `.env` (e.g. `BIND_HOST=0.0.0.0`) — and only
 after putting the security measures below in place. Local runs apply `BIND_HOST`
 to nginx on port `2026` only; the Gateway and frontend stay on loopback behind
-it.
+it. This v2.4 bundle also includes [connection profiles](CONNECTION_PROFILES.md): the default
+`local` profile preserves loopback behavior, while the editable `remote` profile groups the
+Ollama endpoint and browser-origin settings needed for LAN/reverse-proxy access. Set
+`active_profile: remote` in `connection.yaml` after replacing its example host values, or run
+`ATEAM_CONNECTION_PROFILE=remote ./Run-A-Team_Agent.sh` for a one-run selection.
 
 **Complete first-run setup before the host becomes reachable.** A fresh
 instance has no accounts yet, so create the admin account through `/setup`
@@ -3784,20 +3796,23 @@ This project is open source and available under the [MIT License](./LICENSE).
 
 ## Acknowledgments
 
-A-Team Agent builds on open-source work and preserves attribution to its upstream projects.
+A-Team Agent is built upon the incredible work of the open-source community. We are deeply grateful to all the projects and contributors whose efforts have made A-Team Agent possible. Truly, we stand on the shoulders of giants.
 
-- **[DeerFlow](https://github.com/bytedance/deer-flow)** by ByteDance: the agent-workspace foundation and substantial upstream functionality.
-- **[Odysseus](https://github.com/odysseus)**: code and inspiration used for visual styling and animated wallpaper work.
-- **[LangChain](https://github.com/langchain-ai/langchain)** and **[LangGraph](https://github.com/langchain-ai/langgraph)**: frameworks used for LLM interactions and agent orchestration.
+We would like to extend our sincere appreciation to the following projects for their invaluable contributions:
 
-Please consult the repository's `LICENSE` and upstream notices for the applicable license terms and attribution requirements.
+- **[LangChain](https://github.com/langchain-ai/langchain)**: Their exceptional framework powers our LLM interactions and chains, enabling seamless integration and functionality.
+- **[LangGraph](https://github.com/langchain-ai/langgraph)**: Their innovative approach to multi-agent orchestration has been instrumental in enabling A-Team Agent's sophisticated workflows.
+
+These projects exemplify the transformative power of open-source collaboration, and we are proud to build upon their foundations.
 
 ### Key Contributors
 
-A heartfelt thank you to the core authors and contributors whose work helped bring the project to life:
+A heartfelt thank you goes out to the core authors of `A-Team Agent`, whose vision, passion, and dedication have brought this project to life:
 
 - **[Daniel Walnut](https://github.com/hetaoBackend/)**
 - **[Henry Li](https://github.com/magiccube/)**
+
+Your unwavering commitment and expertise have been the driving force behind A-Team Agent's success. We are honored to have you at the helm of this journey.
 
 ## Star History
 
