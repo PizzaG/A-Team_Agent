@@ -1,6 +1,18 @@
 ## Changelog
 All notable changes to A-Team Agent are documented in this file.
 
+## v2.5
+- **Updater / data safety:** The in-app updater no longer touches the runtime data directory (`backend/.deer-flow`), so user-created chats, memories, users, the admin login, and the login session secret are preserved across updates. The directory is excluded from the file replacement, a lightweight safety copy of the database, users, and memory files is taken before updating, and anything missing afterward is restored without overwriting existing files.
+- **Updater / installer handoff:** The installer now hands off to the newer `install-update.sh` included in the downloaded update before replacing any files, so installer fixes apply to the same update that delivers them (effective for updates installed from v2.5 onward).
+- **Update restart:** The terminal that restarts after an update now opens minimized and hands focus back to the updating app window instead of covering it. Normal launches are unchanged.
+- **About page:** Renamed the notice to “** A-Team Agent Is SI / AI & Can Make Mistakes **” (asterisks included) and moved it to the bottom center of the page.
+- **About page:** Updated the build description to “This Agent is Based on & Built from DeerFlow, includes A-Team re-branding, Odysseus inspired visual themes & animated wallpapers, and a configurable native workspace.”
+- **Appearance:** Renamed the “Odysseus Color Themes” section to “Color Themes”.
+- **Settings:** Renamed the page heading to “- Adjust How A-Team Agent Looks & Behaves”.
+- **Configuration:** Updated `config.yaml` to config version 63.
+- **Updater:** Updated the app release label to 2.5 and updater sequence to 4.
+- **Releases:** Release v2.5
+
 ## v2.4
 - **UI:** Moved the Reasoning Effort selector inline beside the Reasoning selector in the chat composer, preserving existing functionality and other layout elements.
 - **Chat composer layout:** Kept the Reasoning mode selector in its original left-side position and placed Reasoning Effort immediately to its right.

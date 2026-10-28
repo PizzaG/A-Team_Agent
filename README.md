@@ -1,4 +1,4 @@
-# A-Team Agent — based on A-Team Agent
+# A-Team Agent — based on DeerFlow & Odysseus
 
 
 
