@@ -1,8 +1,8 @@
 {
-    "addon_1_version": "1.5",
+    "addon_1_version": "1.6",
     "addon_1_display": "A-Team ROM Builder",
     "addon_1_file": "ROM-Builder.zip",
-    "addon_2_version": "1.0",
+    "addon_2_version": "1.1",
     "addon_2_display": "Ghidra MCP Server",
     "addon_2_file": "Ghidra-MCP-Server.zip"
 }
